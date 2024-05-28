@@ -30,7 +30,7 @@
 const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_IMG_DISC_F_1 uint8_t disc_f_1_map[] = {
     0xbd, 0xc1, 0xbe, 0xff,  /* Color of index 0: foreground */
     0x00, 0x00, 0x00, 0x00,  /* Color of index 1: background */
-    
+
     0xff, 0xff, 0xff, 0xff,
     0xff, 0xff, 0xff, 0xc0,
     0xff, 0xff, 0xfc, 0x00,
@@ -67,7 +67,7 @@ const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_IMG_DISC_F_1 uint8_t disc_f_1_map[] = 
 
 const lv_img_dsc_t disc_f_1 = {
     {
-        LV_IMG_CF_INDEXED_1BIT,
+        LV_COLOR_FORMAT_I1,
         0,
         0,
         32,

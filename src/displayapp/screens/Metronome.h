@@ -34,7 +34,7 @@ namespace Pinetime {
         lv_obj_t* playPause;
         lv_obj_t* lblPlayPause;
 
-        lv_task_t* taskRefresh;
+        lv_timer_t* taskRefresh;
       };
     }
 

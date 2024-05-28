@@ -128,11 +128,11 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
   lv_label_set_text_static(txtTrack, "This is a very long getTrack name");
 
   /** Init animation */
-  imgDisc = lv_img_create(lv_scr_act(), nullptr);
+  imgDisc = lv_img_create(lv_scr_act());
   lv_img_set_src_arr(imgDisc, &disc);
   lv_obj_align(imgDisc, nullptr, LV_ALIGN_IN_TOP_RIGHT, -15, 15);
 
-  imgDiscAnim = lv_img_create(lv_scr_act(), nullptr);
+  imgDiscAnim = lv_img_create(lv_scr_act());
   lv_img_set_src_arr(imgDiscAnim, &disc_f_1);
   lv_obj_align(imgDiscAnim, nullptr, LV_ALIGN_IN_TOP_RIGHT, -15 - 32, 15);
 
@@ -140,8 +140,7 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
 
   musicService.event(Controllers::MusicService::EVENT_MUSIC_OPEN);
 
-  taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
-}
+  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);}
 
 Music::~Music() {
   lv_task_del(taskRefresh);

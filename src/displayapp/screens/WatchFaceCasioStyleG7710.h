@@ -1,7 +1,7 @@
 #pragma once
 
 #include <displayapp/screens/BatteryIcon.h>
-#include <lvgl/src/lv_core/lv_obj.h>
+#include <lvgl/src/core/lv_obj.h>
 #include <chrono>
 #include <cstdint>
 #include <memory>
@@ -95,7 +95,7 @@ namespace Pinetime {
         Controllers::HeartRateController& heartRateController;
         Controllers::MotionController& motionController;
 
-        lv_task_t* taskRefresh;
+        lv_timer_t* taskRefresh;
         lv_font_t* font_dot40 = nullptr;
         lv_font_t* font_segment40 = nullptr;
         lv_font_t* font_segment115 = nullptr;

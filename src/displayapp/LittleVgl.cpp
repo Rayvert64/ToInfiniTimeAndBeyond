@@ -85,7 +85,7 @@ void LittleVgl::Init() {
 }
 
 void LittleVgl::InitDisplay() {
-  lv_disp_buf_init(&disp_buf_2, buf2_1, buf2_2, LV_HOR_RES_MAX * 4); /*Initialize the display buffer*/
+  lv_disp_buf_init(&disp_buf_2, buf2_1, buf2_2, LV_HOR_RES * 4); /*Initialize the display buffer*/
   lv_disp_drv_init(&disp_drv);                                       /*Basic initialization*/
 
   /*Set up the functions to access to your display*/

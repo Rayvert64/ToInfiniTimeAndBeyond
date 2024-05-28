@@ -11,7 +11,7 @@ Paddle::Paddle(Pinetime::Components::LittleVgl& lvgl) : lvgl {lvgl} {
   lv_obj_set_size(background, LV_HOR_RES + 1, LV_VER_RES);
   lv_obj_set_pos(background, -1, 0);
   lv_obj_set_style_local_radius(background, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, 0);
-  lv_obj_set_style_local_bg_color(background, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
+  lv_obj_set_style_local_bg_color(background, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_RB_COLOR_BLACK);
   lv_obj_set_style_local_border_color(background, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);
   lv_obj_set_style_local_border_width(background, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, 1);
 
@@ -30,8 +30,7 @@ Paddle::Paddle(Pinetime::Components::LittleVgl& lvgl) : lvgl {lvgl} {
   lv_obj_set_style_local_radius(ball, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_RADIUS_CIRCLE);
   lv_obj_set_size(ball, ballSize, ballSize);
 
-  taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
-}
+  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);}
 
 Paddle::~Paddle() {
   lv_task_del(taskRefresh);

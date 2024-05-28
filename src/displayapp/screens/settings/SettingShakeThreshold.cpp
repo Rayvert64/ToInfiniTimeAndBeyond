@@ -68,8 +68,7 @@ SettingShakeThreshold::SettingShakeThreshold(Controllers::Settings& settingsCont
     EnableForCal = true;
     settingsController.setWakeUpMode(Pinetime::Controllers::Settings::WakeUpMode::Shake, true);
   }
-  refreshTask = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
-}
+  refreshTask = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);}
 
 SettingShakeThreshold::~SettingShakeThreshold() {
   settingsController.SetShakeThreshold(lv_arc_get_value(positionArc));

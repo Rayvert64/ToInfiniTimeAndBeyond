@@ -40,7 +40,7 @@ namespace Pinetime {
         DisplayApp* app;
         Controllers::DateTime& dateTimeController;
 
-        lv_task_t* taskUpdate;
+        lv_timer_t* taskUpdate;
 
         lv_obj_t* label_time;
         lv_obj_t* btnm1;

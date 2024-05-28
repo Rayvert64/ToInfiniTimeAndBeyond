@@ -37,8 +37,7 @@ Motion::Motion(Controllers::MotionController& motionController) : motionControll
   lv_obj_align(labelStep, chart, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
   lv_label_set_text_static(labelStep, "Steps ---");
 
-  taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
-}
+  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);}
 
 Motion::~Motion() {
   lv_task_del(taskRefresh);

@@ -6,7 +6,7 @@
 using namespace Pinetime::Applications::Screens;
 
 namespace {
-  void lv_update_task(struct _lv_task_t* task) {
+  void lv_update_task(struct _lv_timer_t* task) {
     auto* user_data = static_cast<Tile*>(task->user_data);
     user_data->UpdateScreen();
   }
@@ -83,8 +83,7 @@ Tile::Tile(uint8_t screenID,
   btnm1->user_data = this;
   lv_obj_set_event_cb(btnm1, event_handler);
 
-  taskUpdate = lv_task_create(lv_update_task, 5000, LV_TASK_PRIO_MID, this);
-
+  taskUpdate = lv_timer_create(lv_update_task, 5000, this);
   UpdateScreen();
 }
 

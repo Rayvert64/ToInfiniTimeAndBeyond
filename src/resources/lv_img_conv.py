@@ -45,12 +45,12 @@ def main():
         help="name of image structure (not implemented)")
     parser.add_argument("-c", "--color-format",
         help="color format of image",
-        default="CF_TRUE_COLOR_ALPHA",
+        default="LV_COLOR_FORMAT_NATIVE_WITH_ALPHA",
         choices=[
-            "CF_ALPHA_1_BIT", "CF_ALPHA_2_BIT", "CF_ALPHA_4_BIT",
-            "CF_ALPHA_8_BIT", "CF_INDEXED_1_BIT", "CF_INDEXED_2_BIT", "CF_INDEXED_4_BIT",
-            "CF_INDEXED_8_BIT", "CF_RAW", "CF_RAW_CHROMA", "CF_RAW_ALPHA",
-            "CF_TRUE_COLOR", "CF_TRUE_COLOR_ALPHA", "CF_TRUE_COLOR_CHROMA", "CF_RGB565A8",
+            "LV_COLOR_FORMAT_A1", "LV_COLOR_FORMAT_A2", "LV_COLOR_FORMAT_A4",
+            "LV_COLOR_FORMAT_A8", "LV_COLOR_FORMAT_I1", "LV_COLOR_FORMAT_I2", "LV_COLOR_FORMAT_I4",
+            "LV_COLOR_FORMAT_I8", "CF_RAW", "CF_RAW_CHROMA", "CF_RAW_ALPHA",
+            "CF_TRUE_COLOR", "LV_COLOR_FORMAT_NATIVE_WITH_ALPHA", "CF_TRUE_COLOR_CHROMA", "CF_RGB565A8",
         ],
         required=True)
     parser.add_argument("-t", "--output-format",
@@ -84,7 +84,7 @@ def main():
     out.touch()
 
     # only implemented the bare minimum, everything else is not implemented
-    if args.color_format not in ["CF_INDEXED_1_BIT", "CF_TRUE_COLOR_ALPHA"]:
+    if args.color_format not in ["LV_COLOR_FORMAT_I1", "LV_COLOR_FORMAT_NATIVE_WITH_ALPHA"]:
         raise NotImplementedError(f"argument --color-format '{args.color_format}' not implemented")
     if args.output_format != "bin":
         raise NotImplementedError(f"argument --output-format '{args.output_format}' not implemented")
@@ -105,10 +105,10 @@ def main():
         # support pictures stored in other formats like with a color palette 'P'
         # see: https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes
         img = img.convert(mode="RGBA")
-    elif args.color_format == "CF_INDEXED_1_BIT" and img.mode != "L":
-        # for CF_INDEXED_1_BIT we need just a grayscale value per pixel
+    elif args.color_format == "LV_COLOR_FORMAT_I1" and img.mode != "L":
+        # for LV_COLOR_FORMAT_I1 we need just a grayscale value per pixel
         img = img.convert(mode="L")
-    if args.color_format == "CF_TRUE_COLOR_ALPHA" and args.binary_format == "ARGB8888":
+    if args.color_format == "LV_COLOR_FORMAT_NATIVE_WITH_ALPHA" and args.binary_format == "ARGB8888":
         buf = bytearray(img_height*img_width*4) # 4 bytes (32 bit) per pixel
         for y in range(img_height):
             for x in range(img_width):
@@ -120,7 +120,7 @@ def main():
                 buf[i + 2] = b
                 buf[i + 3] = a
 
-    elif args.color_format == "CF_TRUE_COLOR_ALPHA" and args.binary_format == "ARGB8565_RBSWAP":
+    elif args.color_format == "LV_COLOR_FORMAT_NATIVE_WITH_ALPHA" and args.binary_format == "ARGB8565_RBSWAP":
         buf = bytearray(img_height*img_width*3) # 3 bytes (24 bit) per pixel
         for y in range(img_height):
             for x in range(img_width):
@@ -138,7 +138,7 @@ def main():
                 buf[i + 1] = c16 & 0xFF
                 buf[i + 2] = a
 
-    elif args.color_format == "CF_INDEXED_1_BIT": # ignore binary format, use color format as binary format
+    elif args.color_format == "LV_COLOR_FORMAT_I1": # ignore binary format, use color format as binary format
         w = img_width >> 3
         if img_width & 0x07:
             w+=1
@@ -168,9 +168,9 @@ def main():
 
     # write header
     match args.color_format:
-        case "CF_TRUE_COLOR_ALPHA":
+        case "LV_COLOR_FORMAT_NATIVE_WITH_ALPHA":
             lv_cf = 5
-        case "CF_INDEXED_1_BIT":
+        case "LV_COLOR_FORMAT_I1":
             lv_cf = 7
         case _:
             # raise just to be sure

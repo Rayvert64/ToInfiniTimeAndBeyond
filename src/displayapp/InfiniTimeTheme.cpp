@@ -54,7 +54,7 @@ static void style_init_reset(lv_style_t* style) {
 static void basic_init() {
   style_init_reset(&style_bg);
   lv_style_set_bg_opa(&style_bg, LV_STATE_DEFAULT, LV_OPA_COVER);
-  lv_style_set_bg_color(&style_bg, LV_STATE_DEFAULT, LV_COLOR_BLACK);
+  lv_style_set_bg_color(&style_bg, LV_STATE_DEFAULT, LV_RB_COLOR_BLACK);
   lv_style_set_text_font(&style_bg, LV_STATE_DEFAULT, theme.font_normal);
 
   style_init_reset(&style_box);
@@ -284,8 +284,8 @@ static void theme_apply(lv_obj_t* obj, lv_theme_style_t name) {
       break;
 
     case LV_THEME_IMAGE:
-      lv_obj_clean_style_list(obj, LV_IMG_PART_MAIN);
-      list = lv_obj_get_style_list(obj, LV_IMG_PART_MAIN);
+      lv_obj_clean_style_list(obj, LV_PART_MAIN);
+      list = lv_obj_get_style_list(obj, LV_PART_MAIN);
       _lv_style_list_add_style(list, &style_icon);
       break;
 

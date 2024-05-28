@@ -38,7 +38,7 @@ namespace Pinetime {
         Controllers::MotorController& motorController;
         Controllers::Settings& settingsController;
 
-        lv_task_t* taskUpdate;
+        lv_timer_t* taskUpdate;
         lv_obj_t* label_time;
 
         lv_style_t btn_style;

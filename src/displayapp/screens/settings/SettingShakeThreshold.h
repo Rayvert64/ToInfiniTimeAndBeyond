@@ -30,7 +30,7 @@ namespace Pinetime {
         bool EnableForCal;
         uint32_t vDecay, vCalTime;
         lv_obj_t *positionArc, *animArc, *calButton, *calLabel;
-        lv_task_t* refreshTask;
+        lv_timer_t* refreshTask;
       };
     }
   }

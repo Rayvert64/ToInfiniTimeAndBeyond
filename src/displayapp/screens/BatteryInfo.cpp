@@ -38,8 +38,7 @@ BatteryInfo::BatteryInfo(const Pinetime::Controllers::Battery& batteryController
   lv_label_set_align(voltage, LV_LABEL_ALIGN_CENTER);
   lv_obj_align(voltage, nullptr, LV_ALIGN_CENTER, 0, 95);
 
-  taskRefresh = lv_task_create(RefreshTaskCallback, 5000, LV_TASK_PRIO_MID, this);
-  Refresh();
+  taskRefresh = lv_timer_create(RefreshTaskCallback, 5000, this);  Refresh();
 }
 
 BatteryInfo::~BatteryInfo() {

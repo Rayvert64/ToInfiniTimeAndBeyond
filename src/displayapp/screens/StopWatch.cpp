@@ -58,7 +58,7 @@ StopWatch::StopWatch(System::SystemTask& systemTask) : systemTask {systemTask} {
   lv_label_set_text_static(lapText, "\n");
   lv_label_set_long_mode(lapText, LV_LABEL_LONG_BREAK);
   lv_label_set_align(lapText, LV_LABEL_ALIGN_CENTER);
-  lv_obj_set_width(lapText, LV_HOR_RES_MAX);
+  lv_obj_set_width(lapText, LV_HOR_RES);
   lv_obj_align(lapText, lv_scr_act(), LV_ALIGN_IN_BOTTOM_MID, 0, -btnHeight);
 
   msecTime = lv_label_create(lv_scr_act(), nullptr);
@@ -74,8 +74,7 @@ StopWatch::StopWatch(System::SystemTask& systemTask) : systemTask {systemTask} {
 
   SetInterfaceStopped();
 
-  taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
-}
+  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);}
 
 StopWatch::~StopWatch() {
   lv_task_del(taskRefresh);

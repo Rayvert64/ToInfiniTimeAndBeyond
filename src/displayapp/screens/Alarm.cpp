@@ -39,7 +39,7 @@ static void btnEventHandler(lv_obj_t* obj, lv_event_t event) {
   screen->OnButtonEvent(obj, event);
 }
 
-static void StopAlarmTaskCallback(lv_task_t* task) {
+static void StopAlarmTaskCallback(lv_timer_t* task) {
   auto* screen = static_cast<Alarm*>(task->user_data);
   screen->StopAlerting();
 }
@@ -102,7 +102,7 @@ Alarm::Alarm(Controllers::AlarmController& alarmController,
   lv_obj_align(btnInfo, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, -4);
   lv_obj_set_style_local_bg_color(btnInfo, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, bgColor);
   lv_obj_set_style_local_border_width(btnInfo, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, 4);
-  lv_obj_set_style_local_border_color(btnInfo, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
+  lv_obj_set_style_local_border_color(btnInfo, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_RB_COLOR_BLACK);
 
   lv_obj_t* txtInfo = lv_label_create(btnInfo, nullptr);
   lv_label_set_text_static(txtInfo, "i");
@@ -203,8 +203,7 @@ void Alarm::UpdateAlarmTime() {
 void Alarm::SetAlerting() {
   lv_obj_set_hidden(enableSwitch, true);
   lv_obj_set_hidden(btnStop, false);
-  taskStopAlarm = lv_task_create(StopAlarmTaskCallback, pdMS_TO_TICKS(60 * 1000), LV_TASK_PRIO_MID, this);
-  motorController.StartRinging();
+  taskStopAlarm = lv_timer_create(StopAlarmTaskCallback, pdMS_TO_TICKS(60 * 1000), this);  motorController.StartRinging();
   systemTask.PushMessage(System::Messages::DisableSleeping);
 }
 

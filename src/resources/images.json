@@ -1,21 +1,21 @@
 {
    "pine_small" : {
       "sources": "images/pine_logo.png",
-      "color_format": "CF_TRUE_COLOR_ALPHA",
+      "color_format": "LV_COLOR_FORMAT_NATIVE_WITH_ALPHA",
       "output_format": "bin",
       "binary_format": "ARGB8565_RBSWAP",
       "target_path": "/images/"
    },
    "navigation0" : {
       "sources": "images/navigation0.png",
-      "color_format": "CF_INDEXED_1_BIT",
+      "color_format": "LV_COLOR_FORMAT_I1",
       "output_format": "bin",
       "binary_format": "ARGB8565_RBSWAP",
       "target_path": "/images/"
    },
    "navigation1" : {
       "sources": "images/navigation1.png",
-      "color_format": "CF_INDEXED_1_BIT",
+      "color_format": "LV_COLOR_FORMAT_I1",
       "output_format": "bin",
       "binary_format": "ARGB8565_RBSWAP",
       "target_path": "/images/"

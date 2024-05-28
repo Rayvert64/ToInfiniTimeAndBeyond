@@ -1,17 +1,17 @@
 # External resources
-Since InfiniTime 1.11 apps and watchfaces can benefit from the external flash memory to store images and fonts. 
+Since InfiniTime 1.11 apps and watchfaces can benefit from the external flash memory to store images and fonts.
 This external memory is a lot bigger (4MB) than the internal memory that contains the firmware (512KB).
 
 This page describes how the resources are integrated in InfiniTime from a developer perspective. [This page](gettingStarted/updating-software.md) explains how to install and update the external resources using companion apps.
 
 ## Resources generation
 
-Resources are generated at build time via the [CMake target `Generate  Resources`](https://github.com/InfiniTimeOrg/InfiniTime/blob/main/src/resources/CMakeLists.txt#L19). 
+Resources are generated at build time via the [CMake target `Generate  Resources`](https://github.com/InfiniTimeOrg/InfiniTime/blob/main/src/resources/CMakeLists.txt#L19).
 It runs 3 Python scripts that respectively convert the fonts to binary format, convert the images to binary format and package everything in a .zip file.
 
-The resulting file `infinitime-resources-x.y.z.zip` contains the images and fonts converted in binary `.bin` files and a JSON file `resources.json`. 
+The resulting file `infinitime-resources-x.y.z.zip` contains the images and fonts converted in binary `.bin` files and a JSON file `resources.json`.
 
-Companion apps use this file to upload the files to the watch. 
+Companion apps use this file to upload the files to the watch.
 
 ```
 {
@@ -30,7 +30,7 @@ Companion apps use this file to upload the files to the watch.
 }
 ```
 
-The resource JSON file describes an array of resources and an array of obsolete files : 
+The resource JSON file describes an array of resources and an array of obsolete files :
 
 - `resources` : a resource is a file that must be flashed to the watch
   - `filename`: name of the resources in the zip file.
@@ -49,7 +49,7 @@ The update procedure is based on the [BLE FS API](BLEFS.md). The companion app s
 Load a picture from the external resources:
 
 ```
-lv_obj_t* logo = lv_img_create(lv_scr_act(), nullptr);
+lv_obj_t* logo = lv_img_create(lv_scr_act());
 lv_img_set_src(logo, "F:/images/logo.bin");
 ```
 

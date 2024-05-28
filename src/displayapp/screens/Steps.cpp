@@ -64,8 +64,7 @@ Steps::Steps(Controllers::MotionController& motionController, Controllers::Setti
   lv_label_set_text_fmt(tripLabel, "Trip: %5li", currentTripSteps);
   lv_obj_align(tripLabel, lstepsGoal, LV_ALIGN_IN_LEFT_MID, 0, 20);
 
-  taskRefresh = lv_task_create(RefreshTaskCallback, 100, LV_TASK_PRIO_MID, this);
-}
+  taskRefresh = lv_timer_create(RefreshTaskCallback, 100, this);}
 
 Steps::~Steps() {
   lv_task_del(taskRefresh);

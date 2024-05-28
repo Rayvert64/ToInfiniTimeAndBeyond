@@ -9,9 +9,9 @@ using namespace Pinetime::Applications::Screens;
 BatteryIcon::BatteryIcon(bool colorOnLowBattery) : colorOnLowBattery {colorOnLowBattery} {};
 
 void BatteryIcon::Create(lv_obj_t* parent) {
-  batteryImg = lv_img_create(parent, nullptr);
+  batteryImg = lv_img_create(parent);
   lv_img_set_src(batteryImg, &batteryicon);
-  lv_obj_set_style_local_image_recolor(batteryImg, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
+  lv_obj_set_style_bg_image_recolor(batteryImg, LV_PART_MAIN, LV_STATE_DEFAULT, LV_RB_COLOR_BLACK);
 
   batteryJuice = lv_obj_create(batteryImg, nullptr);
   lv_obj_set_width(batteryJuice, 8);
@@ -40,8 +40,8 @@ void BatteryIcon::SetBatteryPercentage(uint8_t percentage) {
 }
 
 void BatteryIcon::SetColor(lv_color_t color) {
-  lv_obj_set_style_local_image_recolor(batteryImg, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, color);
-  lv_obj_set_style_local_image_recolor_opa(batteryImg, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER);
+  lv_obj_set_style_bg_image_recolor(batteryImg, LV_PART_MAIN, LV_STATE_DEFAULT, color);
+  lv_obj_set_style_bg_image_recolor_opa(batteryImg, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER);
   lv_obj_set_style_local_bg_color(batteryJuice, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, color);
 }
 

@@ -192,14 +192,14 @@ namespace {
  */
 Navigation::Navigation(Pinetime::Controllers::NavigationService& nav) : navService(nav) {
   const auto& image = GetIcon("flag");
-  imgFlag = lv_img_create(lv_scr_act(), nullptr);
+  imgFlag = lv_img_create(lv_scr_act());
   lv_img_set_auto_size(imgFlag, false);
   lv_obj_set_size(imgFlag, 80, 80);
   lv_img_set_src(imgFlag, image.fileName);
   lv_img_set_offset_x(imgFlag, 0);
   lv_img_set_offset_y(imgFlag, image.offset);
-  lv_obj_set_style_local_image_recolor_opa(imgFlag, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER);
-  lv_obj_set_style_local_image_recolor(imgFlag, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
+  lv_obj_set_style_bg_image_recolor_opa(imgFlag, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER);
+  lv_obj_set_style_bg_image_recolor(imgFlag, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
   lv_obj_align(imgFlag, nullptr, LV_ALIGN_CENTER, 0, -60);
 
   txtNarrative = lv_label_create(lv_scr_act(), nullptr);
@@ -229,8 +229,7 @@ Navigation::Navigation(Pinetime::Controllers::NavigationService& nav) : navServi
   lv_bar_set_range(barProgress, 0, 100);
   lv_bar_set_value(barProgress, 0, LV_ANIM_OFF);
 
-  taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
-}
+  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);}
 
 Navigation::~Navigation() {
   lv_task_del(taskRefresh);
@@ -242,8 +241,8 @@ void Navigation::Refresh() {
     flag = navService.getFlag();
     const auto& image = GetIcon(flag);
     lv_img_set_src(imgFlag, image.fileName);
-    lv_obj_set_style_local_image_recolor_opa(imgFlag, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER);
-    lv_obj_set_style_local_image_recolor(imgFlag, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
+    lv_obj_set_style_bg_image_recolor_opa(imgFlag, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER);
+    lv_obj_set_style_bg_image_recolor(imgFlag, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
     lv_img_set_offset_y(imgFlag, image.offset);
   }
 

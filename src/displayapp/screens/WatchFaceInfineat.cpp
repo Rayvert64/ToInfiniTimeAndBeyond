@@ -166,7 +166,7 @@ WatchFaceInfineat::WatchFaceInfineat(Controllers::DateTime& dateTimeController,
     lv_line_set_points(lines[i], linePoints[i], 2);
   }
 
-  logoPine = lv_img_create(lv_scr_act(), nullptr);
+  logoPine = lv_img_create(lv_scr_act());
   lv_img_set_src(logoPine, "F:/images/pine_small.bin");
   lv_obj_set_pos(logoPine, 15, 106);
 
@@ -296,8 +296,7 @@ WatchFaceInfineat::WatchFaceInfineat(Controllers::DateTime& dateTimeController,
   lv_label_set_text_static(labelBtnSettings, Symbols::settings);
   lv_obj_set_hidden(btnSettings, true);
 
-  taskRefresh = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
-  Refresh();
+  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);  Refresh();
 }
 
 WatchFaceInfineat::~WatchFaceInfineat() {
@@ -475,12 +474,12 @@ void WatchFaceInfineat::SetBatteryLevel(uint8_t batteryPercent) {
 
 void WatchFaceInfineat::ToggleBatteryIndicatorColor(bool showSideCover) {
   if (!showSideCover) { // make indicator and notification icon color white
-    lv_obj_set_style_local_image_recolor_opa(logoPine, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_100);
-    lv_obj_set_style_local_image_recolor(logoPine, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-    lv_obj_set_style_local_line_color(lineBattery, LV_LINE_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
+    lv_obj_set_style_bg_image_recolor_opa(logoPine, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_100);
+    lv_obj_set_style_bg_image_recolor(logoPine, LV_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);
+    lv_obj_set_style_local_line_color(lineBattery, LV_LINE_PART_MAIN, LV_STATE_DEFAULT, LV_RB_COLOR_BLACK);
     lv_obj_set_style_local_bg_color(notificationIcon, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);
   } else {
-    lv_obj_set_style_local_image_recolor_opa(logoPine, LV_IMG_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_0);
+    lv_obj_set_style_bg_image_recolor_opa(logoPine, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_0);
     const std::array<lv_color_t, nLines>* colors = returnColor(static_cast<enum colors>(settingsController.GetInfineatColorIndex()));
     lv_obj_set_style_local_line_color(lineBattery, LV_LINE_PART_MAIN, LV_STATE_DEFAULT, (*colors)[4]);
     lv_obj_set_style_local_bg_color(notificationIcon, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, (*colors)[7]);

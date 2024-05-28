@@ -50,7 +50,7 @@ namespace Pinetime {
         lv_obj_t* lblampm = nullptr;
         lv_obj_t* txtMessage = nullptr;
         lv_obj_t* btnMessage = nullptr;
-        lv_task_t* taskStopAlarm = nullptr;
+        lv_timer_t* taskStopAlarm = nullptr;
 
         enum class EnableButtonState { On, Off, Alerting };
         void DisableAlarm();

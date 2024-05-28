@@ -13,8 +13,8 @@ Twos::Twos() {
   };
 
   static constexpr colorPair colors[nColors] = {
-    {LV_COLOR_MAKE(0xcd, 0xc0, 0xb4), LV_COLOR_BLACK},
-    {LV_COLOR_MAKE(0xef, 0xdf, 0xc6), LV_COLOR_BLACK},
+    {LV_COLOR_MAKE(0xcd, 0xc0, 0xb4), LV_RB_COLOR_BLACK},
+    {LV_COLOR_MAKE(0xef, 0xdf, 0xc6), LV_RB_COLOR_BLACK},
     {LV_COLOR_MAKE(0xef, 0x92, 0x63), LV_COLOR_WHITE},
     {LV_COLOR_MAKE(0xf7, 0x61, 0x42), LV_COLOR_WHITE},
     {LV_COLOR_MAKE(0x00, 0x7d, 0xc5), LV_COLOR_WHITE},
@@ -38,7 +38,7 @@ Twos::Twos() {
   lv_table_set_col_cnt(gridDisplay, nCols);
   lv_table_set_row_cnt(gridDisplay, nRows);
   for (int col = 0; col < nCols; col++) {
-    static constexpr int colWidth = LV_HOR_RES_MAX / nCols;
+    static constexpr int colWidth = LV_HOR_RES / nCols;
     lv_table_set_col_width(gridDisplay, col, colWidth);
     for (int row = 0; row < nRows; row++) {
       grid[row][col].value = 0;

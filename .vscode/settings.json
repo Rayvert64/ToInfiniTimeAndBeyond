@@ -65,6 +65,9 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "cinttypes": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "lv_os.h": "c",
+        "lv_freertos.h": "c",
+        "lv_demo_stress.h": "c"
     }
 }

@@ -15,7 +15,7 @@ namespace {
     }
   }
 
-  void lv_update_task(struct _lv_task_t* task) {
+  void lv_update_task(struct _lv_timer_t* task) {
     auto* user_data = static_cast<QuickSettings*>(task->user_data);
     user_data->UpdateScreen();
   }
@@ -52,10 +52,10 @@ QuickSettings::QuickSettings(Pinetime::Applications::DisplayApp* app,
   lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 0, 0);
 
   static constexpr uint8_t barHeight = 20 + innerDistance;
-  static constexpr uint8_t buttonHeight = (LV_VER_RES_MAX - barHeight - innerDistance) / 2;
-  static constexpr uint8_t buttonWidth = (LV_HOR_RES_MAX - innerDistance) / 2; // wide buttons
+  static constexpr uint8_t buttonHeight = (LV_VER_RES - barHeight - innerDistance) / 2;
+  static constexpr uint8_t buttonWidth = (LV_HOR_RES - innerDistance) / 2; // wide buttons
   // static constexpr uint8_t buttonWidth = buttonHeight; // square buttons
-  static constexpr uint8_t buttonXOffset = (LV_HOR_RES_MAX - buttonWidth * 2 - innerDistance) / 2;
+  static constexpr uint8_t buttonXOffset = (LV_HOR_RES - buttonWidth * 2 - innerDistance) / 2;
 
   lv_style_init(&btn_style);
   lv_style_set_radius(&btn_style, LV_STATE_DEFAULT, buttonHeight / 4);
@@ -118,8 +118,7 @@ QuickSettings::QuickSettings(Pinetime::Applications::DisplayApp* app,
   lv_obj_set_style_local_text_font(lbl_btn, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_sys_48);
   lv_label_set_text_static(lbl_btn, Symbols::settings);
 
-  taskUpdate = lv_task_create(lv_update_task, 5000, LV_TASK_PRIO_MID, this);
-
+  taskUpdate = lv_timer_create(lv_update_task, 5000, this);
   UpdateScreen();
 }
 

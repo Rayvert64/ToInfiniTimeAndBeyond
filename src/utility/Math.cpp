@@ -1,6 +1,6 @@
 #include "utility/Math.h"
 
-#include <lvgl/src/lv_misc/lv_math.h>
+#include <lvgl/src/misc/lv_math.h>
 
 using namespace Pinetime::Utility;
 

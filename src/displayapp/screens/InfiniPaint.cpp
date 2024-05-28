@@ -43,7 +43,7 @@ bool InfiniPaint::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
           selectColor = LV_COLOR_BLUE;
           break;
         case 7:
-          selectColor = LV_COLOR_BLACK;
+          selectColor = LV_RB_COLOR_BLACK;
           break;
 
         default:

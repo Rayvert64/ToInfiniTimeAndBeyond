@@ -43,9 +43,9 @@ namespace Pinetime {
       Pinetime::Drivers::St7789& lcd;
       Pinetime::Controllers::FS& filesystem;
 
-      lv_disp_buf_t disp_buf_2;
-      lv_color_t buf2_1[LV_HOR_RES_MAX * 4];
-      lv_color_t buf2_2[LV_HOR_RES_MAX * 4];
+      lv_draw_buf_t disp_buf_2;
+      lv_color_t buf2_1[LV_HOR_RES * 4];
+      lv_color_t buf2_2[LV_HOR_RES * 4];
 
       lv_disp_drv_t disp_drv;
 
@@ -55,7 +55,7 @@ namespace Pinetime {
       static constexpr uint16_t visibleNbLines = 240;
 
       static constexpr uint8_t MaxScrollOffset() {
-        return LV_VER_RES_MAX - nbWriteLines;
+        return LV_VER_RES - nbWriteLines;
       }
 
       FullRefreshDirections scrollDirection = FullRefreshDirections::None;

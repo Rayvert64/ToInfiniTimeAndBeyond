@@ -128,8 +128,7 @@ Dice::Dice(Controllers::MotionController& motionController,
   if (enableShakeForDice) {
     settingsController.setWakeUpMode(Pinetime::Controllers::Settings::WakeUpMode::Shake, true);
   }
-  refreshTask = lv_task_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, LV_TASK_PRIO_MID, this);
-}
+  refreshTask = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);}
 
 Dice::~Dice() {
   // reset the shake to wake mode.

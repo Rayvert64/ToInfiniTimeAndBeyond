@@ -51,12 +51,12 @@ FlashLight::FlashLight(System::SystemTask& systemTask, Controllers::BrightnessCo
 
 FlashLight::~FlashLight() {
   lv_obj_clean(lv_scr_act());
-  lv_obj_set_style_local_bg_color(lv_scr_act(), LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
+  lv_obj_set_style_local_bg_color(lv_scr_act(), LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_RB_COLOR_BLACK);
   systemTask.PushMessage(Pinetime::System::Messages::EnableSleeping);
 }
 
 void FlashLight::SetColors() {
-  lv_color_t bgColor = isOn ? LV_COLOR_WHITE : LV_COLOR_BLACK;
+  lv_color_t bgColor = isOn ? LV_COLOR_WHITE : LV_RB_COLOR_BLACK;
   lv_color_t fgColor = isOn ? Colors::lightGray : LV_COLOR_WHITE;
 
   lv_obj_set_style_local_bg_color(lv_scr_act(), LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, bgColor);

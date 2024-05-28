@@ -94,7 +94,7 @@ namespace Pinetime {
         void SetBatteryLevel(uint8_t batteryPercent);
         void ToggleBatteryIndicatorColor(bool showSideCover);
 
-        lv_task_t* taskRefresh;
+        lv_timer_t* taskRefresh;
         lv_font_t* font_teko = nullptr;
         lv_font_t* font_bebas = nullptr;
       };
