@@ -27,6 +27,9 @@ namespace Pinetime {
       void Sleep();
       void Wakeup();
 
+      static constexpr uint16_t PixelWidth = 240;
+      static constexpr uint16_t PixelHeight = 320;
+
     private:
       Spi& spi;
       uint8_t pinDataCommand;
@@ -75,9 +78,11 @@ namespace Pinetime {
       void WriteData(const uint8_t* data, size_t size);
       void ColumnAddressSet();
 
+      void RowAddressSet();
+
+
       static constexpr uint16_t Width = 240;
       static constexpr uint16_t Height = 320;
-      void RowAddressSet();
     };
   }
 }

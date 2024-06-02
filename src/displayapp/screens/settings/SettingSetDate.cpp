@@ -49,13 +49,13 @@ SettingSetDate::SettingSetDate(Pinetime::Controllers::DateTime& dateTimeControll
                                Pinetime::Applications::Screens::SettingSetDateTime& settingSetDateTime)
   : dateTimeController {dateTimeController}, settingSetDateTime {settingSetDateTime} {
 
-  lv_obj_t* title = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_t* title = lv_label_create(lv_scr_act());
   lv_label_set_text_static(title, "Set current date");
   lv_label_set_align(title, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(title, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 15, 15);
+  lv_obj_align(title, lv_scr_act(), LV_ALIGN_TOP_MID, 15, 15);
 
-  lv_obj_t* icon = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(icon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_ORANGE);
+  lv_obj_t* icon = lv_label_create(lv_scr_act());
+  lv_obj_set_style_local_text_color(icon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, PINETIME_COLOR_ORANGE);
 
   lv_label_set_text_static(icon, Symbols::clock);
   lv_label_set_align(icon, LV_LABEL_ALIGN_CENTER);
@@ -80,9 +80,9 @@ SettingSetDate::SettingSetDate(Pinetime::Controllers::DateTime& dateTimeControll
   btnSetTime = lv_btn_create(lv_scr_act(), nullptr);
   btnSetTime->user_data = this;
   lv_obj_set_size(btnSetTime, 120, 48);
-  lv_obj_align(btnSetTime, lv_scr_act(), LV_ALIGN_IN_BOTTOM_MID, 0, 0);
-  lv_obj_set_style_local_bg_color(btnSetTime, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_MAKE(0x38, 0x38, 0x38));
-  lblSetTime = lv_label_create(btnSetTime, nullptr);
+  lv_obj_align(btnSetTime, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, 0);
+  lv_obj_set_style_bg_color(btnSetTime, LV_PART_MAIN, LV_STATE_DEFAULT, 0x38), LV_COLOR_MAKE(0x38);
+  lblSetTime = lv_label_create(btnSetTime);
   lv_label_set_text_static(lblSetTime, "Set");
   lv_obj_set_event_cb(btnSetTime, event_handler);
 }

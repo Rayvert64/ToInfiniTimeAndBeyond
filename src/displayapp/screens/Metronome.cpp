@@ -11,7 +11,7 @@ namespace {
   }
 
   lv_obj_t* createLabel(const char* name, lv_obj_t* reference, lv_align_t align, lv_font_t* font, uint8_t x, uint8_t y) {
-    lv_obj_t* label = lv_label_create(lv_scr_act(), nullptr);
+    lv_obj_t* label = lv_label_create(lv_scr_act());
     lv_obj_set_style_local_text_font(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font);
     lv_obj_set_style_local_text_color(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
     lv_label_set_text(label, name);
@@ -33,29 +33,29 @@ Metronome::Metronome(Controllers::MotorController& motorController, System::Syst
   lv_arc_set_value(bpmArc, bpm);
   lv_obj_set_size(bpmArc, 210, 210);
   lv_arc_set_adjustable(bpmArc, true);
-  lv_obj_align(bpmArc, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 0);
+  lv_obj_align(bpmArc, lv_scr_act(), LV_ALIGN_TOP_MID, 0, 0);
 
-  bpmValue = createLabel("120", bpmArc, LV_ALIGN_IN_TOP_MID, &jetbrains_mono_76, 0, 55);
+  bpmValue = createLabel("120", bpmArc, LV_ALIGN_TOP_MID, &jetbrains_mono_76, 0, 55);
   createLabel("bpm", bpmValue, LV_ALIGN_OUT_BOTTOM_MID, &jetbrains_mono_bold_20, 0, 0);
 
   bpmTap = lv_btn_create(lv_scr_act(), nullptr);
   bpmTap->user_data = this;
   lv_obj_set_event_cb(bpmTap, eventHandler);
-  lv_obj_set_style_local_bg_opa(bpmTap, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
+  lv_obj_set_style_local_bg_opa(bpmTap, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
   lv_obj_set_height(bpmTap, 80);
-  lv_obj_align(bpmTap, bpmValue, LV_ALIGN_IN_TOP_MID, 0, 0);
+  lv_obj_align(bpmTap, bpmValue, LV_ALIGN_TOP_MID, 0, 0);
 
   bpbDropdown = lv_dropdown_create(lv_scr_act(), nullptr);
   bpbDropdown->user_data = this;
   lv_obj_set_event_cb(bpbDropdown, eventHandler);
   lv_obj_set_size(bpbDropdown, 115, 50);
-  lv_obj_align(bpbDropdown, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
+  lv_obj_align(bpbDropdown, lv_scr_act(), LV_ALIGN_BOTTOM_LEFT, 0, 0);
   lv_dropdown_set_options(bpbDropdown, "1\n2\n3\n4\n5\n6\n7\n8\n9");
   lv_dropdown_set_selected(bpbDropdown, bpb - 1);
   lv_dropdown_set_show_selected(bpbDropdown, false);
   lv_dropdown_set_text(bpbDropdown, "");
 
-  currentBpbText = lv_label_create(bpbDropdown, nullptr);
+  currentBpbText = lv_label_create(bpbDropdown);
   lv_label_set_text_fmt(currentBpbText, "%d bpb", bpb);
   lv_obj_align(currentBpbText, bpbDropdown, LV_ALIGN_CENTER, 0, 0);
 
@@ -63,8 +63,8 @@ Metronome::Metronome(Controllers::MotorController& motorController, System::Syst
   playPause->user_data = this;
   lv_obj_set_event_cb(playPause, eventHandler);
   lv_obj_set_size(playPause, 115, 50);
-  lv_obj_align(playPause, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, 0, 0);
-  lblPlayPause = lv_label_create(playPause, nullptr);
+  lv_obj_align(playPause, lv_scr_act(), LV_ALIGN_BOTTOM_RIGHT, 0, 0);
+  lblPlayPause = lv_label_create(playPause);
   lv_label_set_text_static(lblPlayPause, Symbols::play);
 
   taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);}
@@ -99,7 +99,7 @@ void Metronome::OnEvent(lv_obj_t* obj, lv_event_t event) {
       } else if (obj == bpbDropdown) {
         bpb = lv_dropdown_get_selected(obj) + 1;
         lv_label_set_text_fmt(currentBpbText, "%d bpb", bpb);
-        lv_obj_realign(currentBpbText);
+
       }
       break;
     }

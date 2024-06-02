@@ -14,15 +14,15 @@ void StatusIcons::Create() {
   lv_obj_set_style_local_pad_inner(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 5);
   lv_obj_set_style_local_bg_opa(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
 
-  bleIcon = lv_label_create(container, nullptr);
+  bleIcon = lv_label_create(container);
   lv_label_set_text_static(bleIcon, Screens::Symbols::bluetooth);
 
-  batteryPlug = lv_label_create(container, nullptr);
+  batteryPlug = lv_label_create(container);
   lv_label_set_text_static(batteryPlug, Screens::Symbols::plug);
 
   batteryIcon.Create(container);
 
-  lv_obj_align(container, nullptr, LV_ALIGN_IN_TOP_RIGHT, 0, 0);
+  lv_obj_align(container, nullptr, LV_ALIGN_TOP_RIGHT, 0, 0);
 }
 
 void StatusIcons::Update() {
@@ -43,5 +43,5 @@ void StatusIcons::Update() {
     lv_obj_set_hidden(bleIcon, !bleState.Get());
   }
 
-  lv_obj_realign(container);
+
 }

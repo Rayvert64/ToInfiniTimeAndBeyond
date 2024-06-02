@@ -19,15 +19,15 @@ FlashLight::FlashLight(System::SystemTask& systemTask, Controllers::BrightnessCo
 
   brightnessController.Set(Controllers::BrightnessController::Levels::Low);
 
-  flashLight = lv_label_create(lv_scr_act(), nullptr);
+  flashLight = lv_label_create(lv_scr_act());
   lv_obj_set_style_local_text_font(flashLight, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_sys_48);
   lv_label_set_text_static(flashLight, Symbols::flashlight);
   lv_obj_align(flashLight, nullptr, LV_ALIGN_CENTER, 0, 0);
 
   for (auto& indicator : indicators) {
-    indicator = lv_obj_create(lv_scr_act(), nullptr);
+    indicator = lv_obj_create(lv_scr_act());;
     lv_obj_set_size(indicator, 15, 10);
-    lv_obj_set_style_local_border_width(indicator, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 2);
+    lv_obj_set_style_border_width(indicator, 2, LV_PART_MAIN);
   }
 
   lv_obj_align(indicators[1], flashLight, LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
@@ -37,7 +37,7 @@ FlashLight::FlashLight(System::SystemTask& systemTask, Controllers::BrightnessCo
   SetIndicators();
   SetColors();
 
-  backgroundAction = lv_label_create(lv_scr_act(), nullptr);
+  backgroundAction = lv_label_create(lv_scr_act());
   lv_label_set_long_mode(backgroundAction, LV_LABEL_LONG_CROP);
   lv_obj_set_size(backgroundAction, 240, 240);
   lv_obj_set_pos(backgroundAction, 0, 0);
@@ -51,20 +51,20 @@ FlashLight::FlashLight(System::SystemTask& systemTask, Controllers::BrightnessCo
 
 FlashLight::~FlashLight() {
   lv_obj_clean(lv_scr_act());
-  lv_obj_set_style_local_bg_color(lv_scr_act(), LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_RB_COLOR_BLACK);
+  lv_obj_set_style_bg_color(lv_scr_act(), lv_color_black(), LV_PART_MAIN);
   systemTask.PushMessage(Pinetime::System::Messages::EnableSleeping);
 }
 
 void FlashLight::SetColors() {
-  lv_color_t bgColor = isOn ? LV_COLOR_WHITE : LV_RB_COLOR_BLACK;
-  lv_color_t fgColor = isOn ? Colors::lightGray : LV_COLOR_WHITE;
+  lv_color_t bgColor = isOn ? lv_color_white() : lv_color_black();
+  lv_color_t fgColor = isOn ? Colors::lightGray : lv_color_white();
 
-  lv_obj_set_style_local_bg_color(lv_scr_act(), LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, bgColor);
+  lv_obj_set_style_bg_color(lv_scr_act(), bgColor, LV_PART_MAIN);
   lv_obj_set_style_local_text_color(flashLight, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, fgColor);
   for (auto& indicator : indicators) {
-    lv_obj_set_style_local_bg_color(indicator, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, fgColor);
-    lv_obj_set_style_local_bg_color(indicator, LV_OBJ_PART_MAIN, LV_STATE_DISABLED, bgColor);
-    lv_obj_set_style_local_border_color(indicator, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, fgColor);
+    lv_obj_set_style_bg_color(indicator, fgColor, LV_PART_MAIN);
+    lv_obj_set_style_bg_color(indicator, bgColor, LV_PART_MAIN);
+    lv_obj_set_style_border_color(indicator, fgColor, LV_PART_MAIN);
   }
 }
 

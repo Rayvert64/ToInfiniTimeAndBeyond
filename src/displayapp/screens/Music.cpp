@@ -59,9 +59,9 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
   btnVolDown->user_data = this;
   lv_obj_set_event_cb(btnVolDown, event_handler);
   lv_obj_set_size(btnVolDown, 76, 76);
-  lv_obj_align(btnVolDown, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
+  lv_obj_align(btnVolDown, nullptr, LV_ALIGN_BOTTOM_LEFT, 0, 0);
   lv_obj_add_style(btnVolDown, LV_STATE_DEFAULT, &btn_style);
-  label = lv_label_create(btnVolDown, nullptr);
+  label = lv_label_create(btnVolDown);
   lv_label_set_text_static(label, Symbols::volumDown);
   lv_obj_set_hidden(btnVolDown, true);
 
@@ -69,9 +69,9 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
   btnVolUp->user_data = this;
   lv_obj_set_event_cb(btnVolUp, event_handler);
   lv_obj_set_size(btnVolUp, 76, 76);
-  lv_obj_align(btnVolUp, nullptr, LV_ALIGN_IN_BOTTOM_RIGHT, 0, 0);
+  lv_obj_align(btnVolUp, nullptr, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
   lv_obj_add_style(btnVolUp, LV_STATE_DEFAULT, &btn_style);
-  label = lv_label_create(btnVolUp, nullptr);
+  label = lv_label_create(btnVolUp);
   lv_label_set_text_static(label, Symbols::volumUp);
   lv_obj_set_hidden(btnVolUp, true);
 
@@ -79,62 +79,62 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
   btnPrev->user_data = this;
   lv_obj_set_event_cb(btnPrev, event_handler);
   lv_obj_set_size(btnPrev, 76, 76);
-  lv_obj_align(btnPrev, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
+  lv_obj_align(btnPrev, nullptr, LV_ALIGN_BOTTOM_LEFT, 0, 0);
   lv_obj_add_style(btnPrev, LV_STATE_DEFAULT, &btn_style);
-  label = lv_label_create(btnPrev, nullptr);
+  label = lv_label_create(btnPrev);
   lv_label_set_text_static(label, Symbols::stepBackward);
 
   btnNext = lv_btn_create(lv_scr_act(), nullptr);
   btnNext->user_data = this;
   lv_obj_set_event_cb(btnNext, event_handler);
   lv_obj_set_size(btnNext, 76, 76);
-  lv_obj_align(btnNext, nullptr, LV_ALIGN_IN_BOTTOM_RIGHT, 0, 0);
+  lv_obj_align(btnNext, nullptr, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
   lv_obj_add_style(btnNext, LV_STATE_DEFAULT, &btn_style);
-  label = lv_label_create(btnNext, nullptr);
+  label = lv_label_create(btnNext);
   lv_label_set_text_static(label, Symbols::stepForward);
 
   btnPlayPause = lv_btn_create(lv_scr_act(), nullptr);
   btnPlayPause->user_data = this;
   lv_obj_set_event_cb(btnPlayPause, event_handler);
   lv_obj_set_size(btnPlayPause, 76, 76);
-  lv_obj_align(btnPlayPause, nullptr, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
+  lv_obj_align(btnPlayPause, nullptr, LV_ALIGN_BOTTOM_MID, 0, 0);
   lv_obj_add_style(btnPlayPause, LV_STATE_DEFAULT, &btn_style);
-  txtPlayPause = lv_label_create(btnPlayPause, nullptr);
+  txtPlayPause = lv_label_create(btnPlayPause);
   lv_label_set_text_static(txtPlayPause, Symbols::play);
 
-  txtTrackDuration = lv_label_create(lv_scr_act(), nullptr);
+  txtTrackDuration = lv_label_create(lv_scr_act());
   lv_label_set_long_mode(txtTrackDuration, LV_LABEL_LONG_SROLL);
-  lv_obj_align(txtTrackDuration, nullptr, LV_ALIGN_IN_TOP_LEFT, 12, 20);
+  lv_obj_align(txtTrackDuration, nullptr, LV_ALIGN_TOP_LEFT, 12, 20);
   lv_label_set_text_static(txtTrackDuration, "--:--/--:--");
-  lv_label_set_align(txtTrackDuration, LV_ALIGN_IN_LEFT_MID);
+  lv_label_set_align(txtTrackDuration, LV_ALIGN_LEFT_MID);
   lv_obj_set_width(txtTrackDuration, LV_HOR_RES);
 
   constexpr uint8_t FONT_HEIGHT = 12;
   constexpr uint8_t LINE_PAD = 15;
   constexpr int8_t MIDDLE_OFFSET = -25;
-  txtArtist = lv_label_create(lv_scr_act(), nullptr);
+  txtArtist = lv_label_create(lv_scr_act());
   lv_label_set_long_mode(txtArtist, LV_LABEL_LONG_SROLL_CIRC);
-  lv_obj_align(txtArtist, nullptr, LV_ALIGN_IN_LEFT_MID, 12, MIDDLE_OFFSET + 1 * FONT_HEIGHT);
-  lv_label_set_align(txtArtist, LV_ALIGN_IN_LEFT_MID);
+  lv_obj_align(txtArtist, nullptr, LV_ALIGN_LEFT_MID, 12, MIDDLE_OFFSET + 1 * FONT_HEIGHT);
+  lv_label_set_align(txtArtist, LV_ALIGN_LEFT_MID);
   lv_obj_set_width(txtArtist, LV_HOR_RES - 12);
   lv_label_set_text_static(txtArtist, "Artist Name");
 
-  txtTrack = lv_label_create(lv_scr_act(), nullptr);
+  txtTrack = lv_label_create(lv_scr_act());
   lv_label_set_long_mode(txtTrack, LV_LABEL_LONG_SROLL_CIRC);
-  lv_obj_align(txtTrack, nullptr, LV_ALIGN_IN_LEFT_MID, 12, MIDDLE_OFFSET + 2 * FONT_HEIGHT + LINE_PAD);
+  lv_obj_align(txtTrack, nullptr, LV_ALIGN_LEFT_MID, 12, MIDDLE_OFFSET + 2 * FONT_HEIGHT + LINE_PAD);
 
-  lv_label_set_align(txtTrack, LV_ALIGN_IN_LEFT_MID);
+  lv_label_set_align(txtTrack, LV_ALIGN_LEFT_MID);
   lv_obj_set_width(txtTrack, LV_HOR_RES - 12);
   lv_label_set_text_static(txtTrack, "This is a very long getTrack name");
 
   /** Init animation */
   imgDisc = lv_img_create(lv_scr_act());
   lv_img_set_src_arr(imgDisc, &disc);
-  lv_obj_align(imgDisc, nullptr, LV_ALIGN_IN_TOP_RIGHT, -15, 15);
+  lv_obj_align(imgDisc, nullptr, LV_ALIGN_TOP_RIGHT, -15, 15);
 
   imgDiscAnim = lv_img_create(lv_scr_act());
   lv_img_set_src_arr(imgDiscAnim, &disc_f_1);
-  lv_obj_align(imgDiscAnim, nullptr, LV_ALIGN_IN_TOP_RIGHT, -15 - 32, 15);
+  lv_obj_align(imgDiscAnim, nullptr, LV_ALIGN_TOP_RIGHT, -15 - 32, 15);
 
   frameB = false;
 

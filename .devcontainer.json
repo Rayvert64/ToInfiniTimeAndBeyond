@@ -28,5 +28,7 @@
 			]
 		}
 	},
-	"remoteUser": "infinitime"
+	"runArgs": [ "--security-opt=label=disable",
+	"--volume=${localWorkspaceFolder}:/source",
+	"--network=host"]
 }

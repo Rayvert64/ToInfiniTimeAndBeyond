@@ -18,7 +18,7 @@ namespace {
                       lv_align_t alignment,
                       int8_t x,
                       int8_t y) {
-    lv_obj_t* label = lv_label_create(lv_scr_act(), nullptr);
+    lv_obj_t* label = lv_label_create(lv_scr_act());
     lv_obj_set_style_local_text_font(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font);
     lv_obj_set_style_local_text_color(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, color);
     lv_label_set_long_mode(label, longMode);
@@ -50,18 +50,18 @@ Dice::Dice(Controllers::MotionController& motionController,
   gen.seed(sseq);
 
   lv_obj_t* nCounterLabel = MakeLabel(&jetbrains_mono_bold_20,
-                                      LV_COLOR_WHITE,
+                                      lv_color_white(),
                                       LV_LABEL_LONG_EXPAND,
                                       0,
                                       LV_LABEL_ALIGN_CENTER,
                                       "count",
                                       lv_scr_act(),
-                                      LV_ALIGN_IN_TOP_LEFT,
+                                      LV_ALIGN_TOP_LEFT,
                                       0,
                                       0);
 
   lv_obj_t* dCounterLabel = MakeLabel(&jetbrains_mono_bold_20,
-                                      LV_COLOR_WHITE,
+                                      lv_color_white(),
                                       LV_LABEL_LONG_EXPAND,
                                       0,
                                       LV_LABEL_ALIGN_CENTER,
@@ -89,7 +89,7 @@ Dice::Dice(Controllers::MotionController& motionController,
                                LV_LABEL_ALIGN_CENTER,
                                "",
                                lv_scr_act(),
-                               LV_ALIGN_IN_TOP_RIGHT,
+                               LV_ALIGN_TOP_RIGHT,
                                11,
                                38);
   resultIndividualLabel = MakeLabel(&jetbrains_mono_bold_20,
@@ -110,10 +110,10 @@ Dice::Dice(Controllers::MotionController& motionController,
   btnRoll->user_data = this;
   lv_obj_set_event_cb(btnRoll, btnRollEventHandler);
   lv_obj_set_size(btnRoll, 240, 50);
-  lv_obj_align(btnRoll, lv_scr_act(), LV_ALIGN_IN_BOTTOM_MID, 0, 0);
+  lv_obj_align(btnRoll, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, 0);
 
   btnRollLabel = MakeLabel(&jetbrains_mono_bold_20,
-                           LV_COLOR_WHITE,
+                           lv_color_white(),
                            LV_LABEL_LONG_EXPAND,
                            0,
                            LV_LABEL_ALIGN_CENTER,

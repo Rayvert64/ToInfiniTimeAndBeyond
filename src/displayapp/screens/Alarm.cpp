@@ -51,11 +51,11 @@ Alarm::Alarm(Controllers::AlarmController& alarmController,
   : alarmController {alarmController}, systemTask {systemTask}, motorController {motorController} {
 
   hourCounter.Create();
-  lv_obj_align(hourCounter.GetObject(), nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+  lv_obj_align(hourCounter.GetObject(), nullptr, LV_ALIGN_TOP_LEFT, 0, 0);
   if (clockType == Controllers::Settings::ClockType::H12) {
     hourCounter.EnableTwelveHourMode();
 
-    lblampm = lv_label_create(lv_scr_act(), nullptr);
+    lblampm = lv_label_create(lv_scr_act());
     lv_obj_set_style_local_text_font(lblampm, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_bold_20);
     lv_label_set_text_static(lblampm, "AM");
     lv_label_set_align(lblampm, LV_LABEL_ALIGN_CENTER);
@@ -65,11 +65,11 @@ Alarm::Alarm(Controllers::AlarmController& alarmController,
   hourCounter.SetValueChangedEventCallback(this, ValueChangedHandler);
 
   minuteCounter.Create();
-  lv_obj_align(minuteCounter.GetObject(), nullptr, LV_ALIGN_IN_TOP_RIGHT, 0, 0);
+  lv_obj_align(minuteCounter.GetObject(), nullptr, LV_ALIGN_TOP_RIGHT, 0, 0);
   minuteCounter.SetValue(alarmController.Minutes());
   minuteCounter.SetValueChangedEventCallback(this, ValueChangedHandler);
 
-  lv_obj_t* colonLabel = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_t* colonLabel = lv_label_create(lv_scr_act());
   lv_obj_set_style_local_text_font(colonLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_76);
   lv_label_set_text_static(colonLabel, ":");
   lv_obj_align(colonLabel, lv_scr_act(), LV_ALIGN_CENTER, 0, -29);
@@ -78,9 +78,9 @@ Alarm::Alarm(Controllers::AlarmController& alarmController,
   btnStop->user_data = this;
   lv_obj_set_event_cb(btnStop, btnEventHandler);
   lv_obj_set_size(btnStop, 115, 50);
-  lv_obj_align(btnStop, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
-  lv_obj_set_style_local_bg_color(btnStop, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
-  txtStop = lv_label_create(btnStop, nullptr);
+  lv_obj_align(btnStop, lv_scr_act(), LV_ALIGN_BOTTOM_LEFT, 0, 0);
+  lv_obj_set_style_bg_color(btnStop, PINETIME_COLOR_RED, LV_PART_MAIN);
+  txtStop = lv_label_create(btnStop);
   lv_label_set_text_static(txtStop, Symbols::stop);
   lv_obj_set_hidden(btnStop, true);
 
@@ -90,21 +90,21 @@ Alarm::Alarm(Controllers::AlarmController& alarmController,
   btnRecur->user_data = this;
   lv_obj_set_event_cb(btnRecur, btnEventHandler);
   lv_obj_set_size(btnRecur, 115, 50);
-  lv_obj_align(btnRecur, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, 0, 0);
-  txtRecur = lv_label_create(btnRecur, nullptr);
+  lv_obj_align(btnRecur, lv_scr_act(), LV_ALIGN_BOTTOM_RIGHT, 0, 0);
+  txtRecur = lv_label_create(btnRecur);
   SetRecurButtonState();
-  lv_obj_set_style_local_bg_color(btnRecur, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, bgColor);
+  lv_obj_set_style_bg_color(btnRecur, bgColor, LV_PART_MAIN);
 
   btnInfo = lv_btn_create(lv_scr_act(), nullptr);
   btnInfo->user_data = this;
   lv_obj_set_event_cb(btnInfo, btnEventHandler);
   lv_obj_set_size(btnInfo, 50, 50);
-  lv_obj_align(btnInfo, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, -4);
-  lv_obj_set_style_local_bg_color(btnInfo, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, bgColor);
-  lv_obj_set_style_local_border_width(btnInfo, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, 4);
-  lv_obj_set_style_local_border_color(btnInfo, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_RB_COLOR_BLACK);
+  lv_obj_align(btnInfo, lv_scr_act(), LV_ALIGN_TOP_MID, 0, -4);
+  lv_obj_set_style_bg_color(btnInfo, bgColor, LV_PART_MAIN);
+  lv_obj_set_style_border_width(btnInfo, 4, LV_PART_MAIN);
+  lv_obj_set_style_border_color(btnInfo, lv_color_black(), LV_PART_MAIN);
 
-  lv_obj_t* txtInfo = lv_label_create(btnInfo, nullptr);
+  lv_obj_t* txtInfo = lv_label_create(btnInfo);
   lv_label_set_text_static(txtInfo, "i");
 
   enableSwitch = lv_switch_create(lv_scr_act(), nullptr);
@@ -112,8 +112,8 @@ Alarm::Alarm(Controllers::AlarmController& alarmController,
   lv_obj_set_event_cb(enableSwitch, btnEventHandler);
   lv_obj_set_size(enableSwitch, 100, 50);
   // Align to the center of 115px from edge
-  lv_obj_align(enableSwitch, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 7, 0);
-  lv_obj_set_style_local_bg_color(enableSwitch, LV_SWITCH_PART_BG, LV_STATE_DEFAULT, bgColor);
+  lv_obj_align(enableSwitch, lv_scr_act(), LV_ALIGN_BOTTOM_LEFT, 7, 0);
+  lv_obj_set_style_bg_color(enableSwitch, bgColor, LV_SWITCH_PART_BG);
 
   UpdateAlarmTime();
 
@@ -243,8 +243,8 @@ void Alarm::ShowInfo() {
   lv_obj_set_height(btnMessage, 200);
   lv_obj_set_width(btnMessage, 150);
   lv_obj_align(btnMessage, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
-  txtMessage = lv_label_create(btnMessage, nullptr);
-  lv_obj_set_style_local_bg_color(btnMessage, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_NAVY);
+  txtMessage = lv_label_create(btnMessage);
+  lv_obj_set_style_bg_color(btnMessage, PINETIME_COLOR_NAVY, LV_PART_MAIN);
 
   if (alarmController.State() == AlarmController::AlarmState::Set) {
     auto timeToAlarm = alarmController.SecondsToAlarm();

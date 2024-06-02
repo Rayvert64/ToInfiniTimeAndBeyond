@@ -47,7 +47,7 @@ namespace Pinetime {
       lv_color_t buf2_1[LV_HOR_RES * 4];
       lv_color_t buf2_2[LV_HOR_RES * 4];
 
-      lv_disp_drv_t disp_drv;
+      lv_display_t* disp_drv;
 
       bool fullRefresh = false;
       static constexpr uint8_t nbWriteLines = 4;

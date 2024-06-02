@@ -3,6 +3,7 @@
 #include <lvgl/lvgl.h>
 #include <cstdint>
 #include <algorithm> // std::fill
+#include "displayapp/Colors.h"
 #include "displayapp/screens/Screen.h"
 #include "components/motor/MotorController.h"
 #include "Symbols.h"
@@ -34,7 +35,7 @@ namespace Pinetime {
         static constexpr uint16_t height = 10;
         static constexpr uint16_t bufferSize = width * height;
         lv_color_t b[bufferSize];
-        lv_color_t selectColor = LV_COLOR_WHITE;
+        lv_color_t selectColor = lv_color_white();
         uint8_t color = 2;
       };
     }

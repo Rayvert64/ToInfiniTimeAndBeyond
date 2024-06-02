@@ -2,8 +2,8 @@
 #include "displayapp/InfiniTimeTheme.h"
 
 void Pinetime::Applications::Screens::SetRadioButtonStyle(lv_obj_t* checkbox) {
-  lv_obj_set_style_local_radius(checkbox, LV_CHECKBOX_PART_BULLET, LV_STATE_DEFAULT, LV_RADIUS_CIRCLE);
-  lv_obj_set_style_local_border_width(checkbox, LV_CHECKBOX_PART_BULLET, LV_STATE_CHECKED, 9);
-  lv_obj_set_style_local_border_color(checkbox, LV_CHECKBOX_PART_BULLET, LV_STATE_CHECKED, Colors::highlight);
-  lv_obj_set_style_local_bg_color(checkbox, LV_CHECKBOX_PART_BULLET, LV_STATE_CHECKED, LV_COLOR_WHITE);
+  lv_obj_set_style_radius(checkbox, LV_RADIUS_CIRCLE, LV_STATE_DEFAULT);
+  lv_obj_set_style_border_width(checkbox, 9, LV_CHECKBOX_PART_BULLET);
+  lv_obj_set_style_border_color(checkbox, Colors::highlight, LV_CHECKBOX_PART_BULLET);
+  lv_obj_set_style_bg_color(checkbox, lv_color_white(), LV_CHECKBOX_PART_BULLET);
 }

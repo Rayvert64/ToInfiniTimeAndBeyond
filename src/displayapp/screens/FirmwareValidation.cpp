@@ -15,7 +15,7 @@ namespace {
 }
 
 FirmwareValidation::FirmwareValidation(Pinetime::Controllers::FirmwareValidator& validator) : validator {validator} {
-  labelVersion = lv_label_create(lv_scr_act(), nullptr);
+  labelVersion = lv_label_create(lv_scr_act());
   lv_label_set_text_fmt(labelVersion,
                         "Version : %lu.%lu.%lu\n"
                         "ShortRef : %s",
@@ -23,9 +23,9 @@ FirmwareValidation::FirmwareValidation(Pinetime::Controllers::FirmwareValidator&
                         Version::Minor(),
                         Version::Patch(),
                         Version::GitCommitHash());
-  lv_obj_align(labelVersion, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+  lv_obj_align(labelVersion, nullptr, LV_ALIGN_TOP_LEFT, 0, 0);
 
-  labelIsValidated = lv_label_create(lv_scr_act(), nullptr);
+  labelIsValidated = lv_label_create(lv_scr_act());
   lv_obj_align(labelIsValidated, labelVersion, LV_ALIGN_OUT_BOTTOM_LEFT, 0, 0);
   lv_label_set_recolor(labelIsValidated, true);
   lv_label_set_long_mode(labelIsValidated, LV_LABEL_LONG_BREAK);
@@ -40,21 +40,21 @@ FirmwareValidation::FirmwareValidation(Pinetime::Controllers::FirmwareValidator&
     buttonValidate = lv_btn_create(lv_scr_act(), nullptr);
     buttonValidate->user_data = this;
     lv_obj_set_size(buttonValidate, 115, 50);
-    lv_obj_align(buttonValidate, nullptr, LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
+    lv_obj_align(buttonValidate, nullptr, LV_ALIGN_BOTTOM_LEFT, 0, 0);
     lv_obj_set_event_cb(buttonValidate, ButtonEventHandler);
-    lv_obj_set_style_local_bg_color(buttonValidate, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::highlight);
+    lv_obj_set_style_bg_color(buttonValidate, Colors::highlight, LV_LABEL_PART_MAIN);
 
-    labelButtonValidate = lv_label_create(buttonValidate, nullptr);
+    labelButtonValidate = lv_label_create(buttonValidate);
     lv_label_set_text_static(labelButtonValidate, "Validate");
 
     buttonReset = lv_btn_create(lv_scr_act(), nullptr);
     buttonReset->user_data = this;
     lv_obj_set_size(buttonReset, 115, 50);
-    lv_obj_align(buttonReset, nullptr, LV_ALIGN_IN_BOTTOM_RIGHT, 0, 0);
-    lv_obj_set_style_local_bg_color(buttonReset, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_RED);
+    lv_obj_align(buttonReset, nullptr, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
+    lv_obj_set_style_bg_color(buttonReset, PINETIME_COLOR_RED, LV_LABEL_PART_MAIN);
     lv_obj_set_event_cb(buttonReset, ButtonEventHandler);
 
-    labelButtonReset = lv_label_create(buttonReset, nullptr);
+    labelButtonReset = lv_label_create(buttonReset);
     lv_label_set_text_static(labelButtonReset, "Reset");
   }
 }

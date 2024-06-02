@@ -31,7 +31,7 @@ namespace Pinetime {
 
         std::mt19937 gen;
 
-        std::array<lv_color_t, 3> resultColors = {LV_COLOR_YELLOW, LV_COLOR_MAGENTA, LV_COLOR_AQUA};
+        std::array<lv_color_t, 3> resultColors = {PINETIME_COLOR_YELLOW, PINETIME_COLOR_MAGENTA, LV_COLOR_AQUA};
         uint8_t currentColorIndex;
         void NextColor();
 

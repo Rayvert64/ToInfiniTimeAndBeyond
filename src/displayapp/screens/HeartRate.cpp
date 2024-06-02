@@ -31,7 +31,7 @@ namespace {
 HeartRate::HeartRate(Controllers::HeartRateController& heartRateController, System::SystemTask& systemTask)
   : heartRateController {heartRateController}, systemTask {systemTask} {
   bool isHrRunning = heartRateController.State() != Controllers::HeartRateController::States::Stopped;
-  label_hr = lv_label_create(lv_scr_act(), nullptr);
+  label_hr = lv_label_create(lv_scr_act());
 
   lv_obj_set_style_local_text_font(label_hr, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_76);
 
@@ -44,12 +44,12 @@ HeartRate::HeartRate(Controllers::HeartRateController& heartRateController, Syst
   lv_label_set_text_static(label_hr, "---");
   lv_obj_align(label_hr, nullptr, LV_ALIGN_CENTER, 0, -40);
 
-  label_bpm = lv_label_create(lv_scr_act(), nullptr);
+  label_bpm = lv_label_create(lv_scr_act());
   lv_label_set_text_static(label_bpm, "Heart rate BPM");
   lv_obj_align(label_bpm, label_hr, LV_ALIGN_OUT_TOP_MID, 0, -20);
 
-  label_status = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(label_status, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY);
+  label_status = lv_label_create(lv_scr_act());
+  lv_obj_set_style_local_text_color(label_status, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, PINETIME_COLOR_GRAY);
   lv_label_set_text_static(label_status, ToString(Pinetime::Controllers::HeartRateController::States::NotEnoughData));
 
   lv_obj_align(label_status, label_hr, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
@@ -58,9 +58,9 @@ HeartRate::HeartRate(Controllers::HeartRateController& heartRateController, Syst
   btn_startStop->user_data = this;
   lv_obj_set_height(btn_startStop, 50);
   lv_obj_set_event_cb(btn_startStop, btnStartStopEventHandler);
-  lv_obj_align(btn_startStop, nullptr, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
+  lv_obj_align(btn_startStop, nullptr, LV_ALIGN_BOTTOM_MID, 0, 0);
 
-  label_startStop = lv_label_create(btn_startStop, nullptr);
+  label_startStop = lv_label_create(btn_startStop);
   UpdateStartStopButton(isHrRunning);
   if (isHrRunning) {
     systemTask.PushMessage(Pinetime::System::Messages::DisableSleeping);

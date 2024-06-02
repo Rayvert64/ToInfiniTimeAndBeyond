@@ -13,11 +13,11 @@ Twos::Twos() {
   };
 
   static constexpr colorPair colors[nColors] = {
-    {LV_COLOR_MAKE(0xcd, 0xc0, 0xb4), LV_RB_COLOR_BLACK},
-    {LV_COLOR_MAKE(0xef, 0xdf, 0xc6), LV_RB_COLOR_BLACK},
-    {LV_COLOR_MAKE(0xef, 0x92, 0x63), LV_COLOR_WHITE},
-    {LV_COLOR_MAKE(0xf7, 0x61, 0x42), LV_COLOR_WHITE},
-    {LV_COLOR_MAKE(0x00, 0x7d, 0xc5), LV_COLOR_WHITE},
+    {LV_COLOR_MAKE(0xcd, 0xc0, 0xb4), lv_color_black()},
+    {LV_COLOR_MAKE(0xef, 0xdf, 0xc6), lv_color_black()},
+    {LV_COLOR_MAKE(0xef, 0x92, 0x63), lv_color_white()},
+    {LV_COLOR_MAKE(0xf7, 0x61, 0x42), lv_color_white()},
+    {LV_COLOR_MAKE(0x00, 0x7d, 0xc5), lv_color_white()},
   };
 
   gridDisplay = lv_table_create(lv_scr_act(), nullptr);
@@ -47,7 +47,7 @@ Twos::Twos() {
     }
   }
   // Move one pixel down to remove a gap
-  lv_obj_align(gridDisplay, nullptr, LV_ALIGN_IN_BOTTOM_MID, 0, 1);
+  lv_obj_align(gridDisplay, nullptr, LV_ALIGN_BOTTOM_MID, 0, 1);
 
   lv_obj_clean_style_list(gridDisplay, LV_TABLE_PART_BG);
 
@@ -55,10 +55,10 @@ Twos::Twos() {
   placeNewTile();
 
   // format score text
-  scoreText = lv_label_create(lv_scr_act(), nullptr);
+  scoreText = lv_label_create(lv_scr_act());
   lv_obj_set_width(scoreText, LV_HOR_RES);
-  lv_label_set_align(scoreText, LV_ALIGN_IN_LEFT_MID);
-  lv_obj_align(scoreText, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+  lv_label_set_align(scoreText, LV_ALIGN_LEFT_MID);
+  lv_obj_align(scoreText, nullptr, LV_ALIGN_TOP_LEFT, 0, 0);
   lv_label_set_recolor(scoreText, true);
   lv_label_set_text_fmt(scoreText, "Score #FFFF00 %i#", score);
 }

@@ -34,52 +34,52 @@ WatchFaceDigital::WatchFaceDigital(Controllers::DateTime& dateTimeController,
 
   statusIcons.Create();
 
-  notificationIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(notificationIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_LIME);
+  notificationIcon = lv_label_create(lv_scr_act());
+  lv_obj_set_style_local_text_color(notificationIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, PINETIME_COLOR_LIME);
   lv_label_set_text_static(notificationIcon, NotificationIcon::GetIcon(false));
-  lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+  lv_obj_align(notificationIcon, nullptr, LV_ALIGN_TOP_LEFT, 0, 0);
 
-  weatherIcon = lv_label_create(lv_scr_act(), nullptr);
+  weatherIcon = lv_label_create(lv_scr_act());
   lv_obj_set_style_local_text_color(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x999999));
   lv_obj_set_style_local_text_font(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &fontawesome_weathericons);
   lv_label_set_text(weatherIcon, "");
-  lv_obj_align(weatherIcon, nullptr, LV_ALIGN_IN_TOP_MID, -20, 50);
+  lv_obj_align(weatherIcon, nullptr, LV_ALIGN_TOP_MID, -20, 50);
   lv_obj_set_auto_realign(weatherIcon, true);
 
-  temperature = lv_label_create(lv_scr_act(), nullptr);
+  temperature = lv_label_create(lv_scr_act());
   lv_obj_set_style_local_text_color(temperature, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x999999));
   lv_label_set_text(temperature, "");
-  lv_obj_align(temperature, nullptr, LV_ALIGN_IN_TOP_MID, 20, 50);
+  lv_obj_align(temperature, nullptr, LV_ALIGN_TOP_MID, 20, 50);
 
-  label_date = lv_label_create(lv_scr_act(), nullptr);
+  label_date = lv_label_create(lv_scr_act());
   lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_CENTER, 0, 60);
   lv_obj_set_style_local_text_color(label_date, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x999999));
 
-  label_time = lv_label_create(lv_scr_act(), nullptr);
+  label_time = lv_label_create(lv_scr_act());
   lv_obj_set_style_local_text_font(label_time, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_extrabold_compressed);
 
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_RIGHT_MID, 0, 0);
+  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_RIGHT_MID, 0, 0);
 
-  label_time_ampm = lv_label_create(lv_scr_act(), nullptr);
+  label_time_ampm = lv_label_create(lv_scr_act());
   lv_label_set_text_static(label_time_ampm, "");
-  lv_obj_align(label_time_ampm, lv_scr_act(), LV_ALIGN_IN_RIGHT_MID, -30, -55);
+  lv_obj_align(label_time_ampm, lv_scr_act(), LV_ALIGN_RIGHT_MID, -30, -55);
 
-  heartbeatIcon = lv_label_create(lv_scr_act(), nullptr);
+  heartbeatIcon = lv_label_create(lv_scr_act());
   lv_label_set_text_static(heartbeatIcon, Symbols::heartBeat);
   lv_obj_set_style_local_text_color(heartbeatIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xCE1B1B));
-  lv_obj_align(heartbeatIcon, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
+  lv_obj_align(heartbeatIcon, lv_scr_act(), LV_ALIGN_BOTTOM_LEFT, 0, 0);
 
-  heartbeatValue = lv_label_create(lv_scr_act(), nullptr);
+  heartbeatValue = lv_label_create(lv_scr_act());
   lv_obj_set_style_local_text_color(heartbeatValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xCE1B1B));
   lv_label_set_text_static(heartbeatValue, "");
   lv_obj_align(heartbeatValue, heartbeatIcon, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
 
-  stepValue = lv_label_create(lv_scr_act(), nullptr);
+  stepValue = lv_label_create(lv_scr_act());
   lv_obj_set_style_local_text_color(stepValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x00FFE7));
   lv_label_set_text_static(stepValue, "0");
-  lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, 0, 0);
+  lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_BOTTOM_RIGHT, 0, 0);
 
-  stepIcon = lv_label_create(lv_scr_act(), nullptr);
+  stepIcon = lv_label_create(lv_scr_act());
   lv_obj_set_style_local_text_color(stepIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x00FFE7));
   lv_label_set_text_static(stepIcon, Symbols::shoe);
   lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
@@ -118,7 +118,7 @@ void WatchFaceDigital::Refresh() {
       }
       lv_label_set_text(label_time_ampm, ampmChar);
       lv_label_set_text_fmt(label_time, "%2d:%02d", hour, minute);
-      lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_RIGHT_MID, 0, 0);
+      lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_RIGHT_MID, 0, 0);
     } else {
       lv_label_set_text_fmt(label_time, "%02d:%02d", hour, minute);
       lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
@@ -143,7 +143,7 @@ void WatchFaceDigital::Refresh() {
                               day,
                               year);
       }
-      lv_obj_realign(label_date);
+
     }
   }
 
@@ -158,15 +158,15 @@ void WatchFaceDigital::Refresh() {
       lv_label_set_text_static(heartbeatValue, "");
     }
 
-    lv_obj_realign(heartbeatIcon);
-    lv_obj_realign(heartbeatValue);
+
+
   }
 
   stepCount = motionController.NbSteps();
   if (stepCount.IsUpdated()) {
     lv_label_set_text_fmt(stepValue, "%lu", stepCount.Get());
-    lv_obj_realign(stepValue);
-    lv_obj_realign(stepIcon);
+
+
   }
 
   currentWeather = weatherService.Current();
@@ -186,7 +186,7 @@ void WatchFaceDigital::Refresh() {
       lv_label_set_text_static(temperature, "");
       lv_label_set_text(weatherIcon, "");
     }
-    lv_obj_realign(temperature);
-    lv_obj_realign(weatherIcon);
+
+
   }
 }

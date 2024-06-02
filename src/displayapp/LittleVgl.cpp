@@ -85,24 +85,9 @@ void LittleVgl::Init() {
 }
 
 void LittleVgl::InitDisplay() {
-  lv_disp_buf_init(&disp_buf_2, buf2_1, buf2_2, LV_HOR_RES * 4); /*Initialize the display buffer*/
-  lv_disp_drv_init(&disp_drv);                                       /*Basic initialization*/
-
-  /*Set up the functions to access to your display*/
-
-  /*Set the resolution of the display*/
-  disp_drv.hor_res = 240;
-  disp_drv.ver_res = 240;
-
-  /*Used to copy the buffer's content to the display*/
-  disp_drv.flush_cb = disp_flush;
-  /*Set a display buffer*/
-  disp_drv.buffer = &disp_buf_2;
-  disp_drv.user_data = this;
-  disp_drv.rounder_cb = rounder;
-
+  disp_drv = lv_create_display(PixelWidth, PixelHeight);
   /*Finally register the driver*/
-  lv_disp_drv_register(&disp_drv);
+  lv_disp_drv_register(disp_drv);
 }
 
 void LittleVgl::InitTouchpad() {

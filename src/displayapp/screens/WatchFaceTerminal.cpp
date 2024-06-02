@@ -27,40 +27,40 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
     settingsController {settingsController},
     heartRateController {heartRateController},
     motionController {motionController} {
-  batteryValue = lv_label_create(lv_scr_act(), nullptr);
+  batteryValue = lv_label_create(lv_scr_act());
   lv_label_set_recolor(batteryValue, true);
-  lv_obj_align(batteryValue, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, -20);
+  lv_obj_align(batteryValue, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, -20);
 
-  connectState = lv_label_create(lv_scr_act(), nullptr);
+  connectState = lv_label_create(lv_scr_act());
   lv_label_set_recolor(connectState, true);
-  lv_obj_align(connectState, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 40);
+  lv_obj_align(connectState, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, 40);
 
-  notificationIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_LEFT_MID, 0, -100);
+  notificationIcon = lv_label_create(lv_scr_act());
+  lv_obj_align(notificationIcon, nullptr, LV_ALIGN_LEFT_MID, 0, -100);
 
-  label_date = lv_label_create(lv_scr_act(), nullptr);
+  label_date = lv_label_create(lv_scr_act());
   lv_label_set_recolor(label_date, true);
-  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, -40);
+  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, -40);
 
-  label_prompt_1 = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(label_prompt_1, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, -80);
+  label_prompt_1 = lv_label_create(lv_scr_act());
+  lv_obj_align(label_prompt_1, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, -80);
   lv_label_set_text_static(label_prompt_1, "user@watch:~ $ now");
 
-  label_prompt_2 = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(label_prompt_2, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 60);
+  label_prompt_2 = lv_label_create(lv_scr_act());
+  lv_obj_align(label_prompt_2, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, 60);
   lv_label_set_text_static(label_prompt_2, "user@watch:~ $");
 
-  label_time = lv_label_create(lv_scr_act(), nullptr);
+  label_time = lv_label_create(lv_scr_act());
   lv_label_set_recolor(label_time, true);
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, -60);
+  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, -60);
 
-  heartbeatValue = lv_label_create(lv_scr_act(), nullptr);
+  heartbeatValue = lv_label_create(lv_scr_act());
   lv_label_set_recolor(heartbeatValue, true);
-  lv_obj_align(heartbeatValue, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 20);
+  lv_obj_align(heartbeatValue, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, 20);
 
-  stepValue = lv_label_create(lv_scr_act(), nullptr);
+  stepValue = lv_label_create(lv_scr_act());
   lv_label_set_recolor(stepValue, true);
-  lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 0);
+  lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, 0);
 
   taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);  Refresh();
 }

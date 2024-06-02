@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "displayapp/screens/Screen.h"
 #include "components/datetime/DateTimeController.h"
 #include "systemtask/SystemTask.h"
@@ -26,15 +27,26 @@ namespace Pinetime::Applications {
       void SetTimerRunning();
       void SetTimerStopped();
       void UpdateMask();
+      void CreatePlayPauseBtnStyles();
+
       Pinetime::Controllers::Timer& timer;
 
-      lv_obj_t* btnPlayPause;
-      lv_obj_t* txtPlayPause;
+      constexpr enum btnStates {
+        BTN_STATE_ANY,
+        BTN_STATE_IDLE,
+        BTN_STATE_PRESSED,
+        BTN_STATE_HELD,
+        NUMBER_BTN_STATES
+      };
+      shared_ptr<lv_obj_t> btnPlayPause;
+      shared_ptr<lv_obj_t> txtPlayPause;
+      lv_style_t styles_btn[];
 
-      lv_obj_t* btnObjectMask;
-      lv_obj_t* highlightObjectMask;
-      lv_objmask_mask_t* btnMask;
-      lv_objmask_mask_t* highlightMask;
+      const lv_style_prop_t btnTransitionElements[] = {
+                                            LV_STYLE_BG_OPA, PINETIME_COLOR_ORANGE,
+                                            0, /*End marker*/
+      };
+      lv_style_transition_dsc_t* btnTransitionDescription;
 
       lv_timer_t* taskRefresh;
       Widgets::Counter minuteCounter = Widgets::Counter(0, 59, jetbrains_mono_76);
