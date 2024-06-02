@@ -20,7 +20,7 @@ static void btnEventHandler(lv_obj_t* obj, lv_event_t event) {
 
 Timer::Timer(Controllers::Timer& timerController) : timer {timerController} {
 
-  lv_obj_t* colonLabel = lv_label_create(lv_scr_act());
+  lv_obj_t* colonLabel = std::make_shared<lv_obj_t>(lv_label_create(lv_scr_act()));
   lv_obj_set_style_local_text_font(colonLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_76);
   lv_obj_set_style_local_text_color(colonLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_white());
   lv_label_set_text_static(colonLabel, ":");
@@ -31,38 +31,38 @@ Timer::Timer(Controllers::Timer& timerController) : timer {timerController} {
   lv_obj_align(minuteCounter.GetObject(), LV_ALIGN_TOP_LEFT, 0, 0);
   lv_obj_align(secondCounter.GetObject(), LV_ALIGN_TOP_RIGHT, 0, 0);
 
-  btnPlayPause = make_shared<lv_obj_t>(lv_button_create(lv_scr_act()));
+  btnPlayPause = std::make_shared<lv_obj_t>(lv_button_create(lv_scr_act()));
 
   /* Short clicked */
   lv_obj_add_style(btnPlayPause, &style_btn, LV_STATE_DEFAULT);
   lv_obj_add_style(btnPlayPause, &style_button_pressed, LV_EVENT_SHORT_CLICKED);
 
-/*
-  highlightObjectMask = lv_objmask_create(lv_scr_act(), nullptr);
-  lv_obj_set_size(highlightObjectMask, 240, 50);
-  lv_obj_align(highlightObjectMask, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, 0);
+  /*
+    highlightObjectMask = lv_objmask_create(lv_scr_act(), nullptr);
+    lv_obj_set_size(highlightObjectMask, 240, 50);
+    lv_obj_align(highlightObjectMask, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, 0);
 
-  lv_obj_t* btnHighlight = lv_obj_create(highlightObjectMask);;
-  lv_obj_set_style_radius(btnHighlight, LV_RADIUS_CIRCLE, LV_STATE_DEFAULT);
-  lv_obj_set_style_bg_color(btnHighlight, PINETIME_COLOR_ORANGE, LV_PART_MAIN);
-  lv_obj_set_size(btnHighlight, LV_HOR_RES, 50);
-  lv_obj_align(btnHighlight, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, 0);
+    lv_obj_t* btnHighlight = lv_obj_create(highlightObjectMask);;
+    lv_obj_set_style_radius(btnHighlight, LV_RADIUS_CIRCLE, LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(btnHighlight, PINETIME_COLOR_ORANGE, LV_PART_MAIN);
+    lv_obj_set_size(btnHighlight, LV_HOR_RES, 50);
+    lv_obj_align(btnHighlight, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, 0);
 
-  btnObjectMask = lv_objmask_create(lv_scr_act(), nullptr);
-  lv_obj_set_size(btnObjectMask, 240, 50);
-  lv_obj_align(btnObjectMask, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, 0);
+    btnObjectMask = lv_objmask_create(lv_scr_act(), nullptr);
+    lv_obj_set_size(btnObjectMask, 240, 50);
+    lv_obj_align(btnObjectMask, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, 0);
 
-  btnPlayPause = lv_btn_create(btnObjectMask, nullptr);
-  btnPlayPause->user_data = this;
-  lv_obj_set_style_radius(btnPlayPause, LV_RADIUS_CIRCLE, LV_STATE_DEFAULT);
-  lv_obj_set_style_bg_color(btnPlayPause, Colors::bgAlt, LV_PART_MAIN);
-  lv_obj_set_event_cb(btnPlayPause, btnEventHandler);
-  lv_obj_set_size(btnPlayPause, LV_HOR_RES, 50);
-*/
+    btnPlayPause = lv_btn_create(btnObjectMask, nullptr);
+    btnPlayPause->user_data = this;
+    lv_obj_set_style_radius(btnPlayPause, LV_RADIUS_CIRCLE, LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(btnPlayPause, Colors::bgAlt, LV_PART_MAIN);
+    lv_obj_set_event_cb(btnPlayPause, btnEventHandler);
+    lv_obj_set_size(btnPlayPause, LV_HOR_RES, 50);
+  */
 
   lv_obj_add_event_cb(btnPlayPause, ButtonPressed, LV_EVENT_PRESSED, this);
   lv_obj_add_event_cb(btnPlayPause, MaskReset, LV_EVENT_RELEASED | LV_EVENT_PRESS_LOST, this);
-  lv_obj_add_event_cb(btnPlayPause, ToggleRunning, LV_EVENT_SHORT_CLICKED , this);
+  lv_obj_add_event_cb(btnPlayPause, ToggleRunning, LV_EVENT_SHORT_CLICKED, this);
 
   txtPlayPause = lv_label_create(lv_scr_act());
   lv_obj_align(txtPlayPause, btnPlayPause, LV_ALIGN_CENTER, 0, 0);
@@ -92,7 +92,9 @@ void Timer::CreatePlayPauseBtnStyles() {
   lv_style_transition_dsc_init(btnTransitionDescription, btnTransitionElements, lv_anim_path_linear, 1000, 0, NULL);
 
   lv_style_init(&styles_btn[BTN_STATE_IDLE]);
-  lv_style_set_radius(&styles_btn[BTN_STATE_IDLE], LV_STATE_DEFAULT, 0);
+  lv_style_set_radius(&styles_btn run-- rm - it - v $ {PWD}
+                      : / sources-- user $(id - u)
+                      : $(id - g) infinitime - build[BTN_STATE_IDLE], LV_STATE_DEFAULT, 0);
   lv_style_set_bg_color(&styles_btn[BTN_STATE_IDLE], LV_STATE_DEFAULT, Colors::bgAlt);
   lv_style_set_bg_opa(&styles_btn[BTN_STATE_IDLE], LV_STATE_DEFAULT, LV_OPA_COVER);
   lv_style_set_text_color(&styles_btn[BTN_STATE_IDLE], LV_STATE_DEFAULT, Colors::fg);

@@ -2,8 +2,9 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.154.2/containers/cpp
 {
 	"build": {
-		"dockerfile": "docker/Dockerfile"
+		"dockerfile": "../docker/Dockerfile"
 	},
+	"runArgs": [ "--privileged", "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined", "--net=host" ],
 	"customizations": {
 		"vscode": {
 			"settings": {
@@ -27,8 +28,5 @@
 				"mjohns.clang-format"
 			]
 		}
-	},
-	"runArgs": [ "--security-opt=label=disable",
-	"--volume=${localWorkspaceFolder}:/source",
-	"--network=host"]
+	}
 }

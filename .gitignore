@@ -45,7 +45,7 @@ Testing/Temporary/
 .vscode/.cortex-debug.peripherals.state.json
 
 #build files
-src/nRF5_SDK_15.3.0_59ac345
+src/nRF5_SDK_17.0.2_d674dde
 src/arm-none-eabi
 
 # clangd

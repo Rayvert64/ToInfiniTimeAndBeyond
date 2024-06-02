@@ -5,7 +5,7 @@
 To build this project, you'll need:
 
 - A cross-compiler : [ARM-GCC (10.3-2021.10)](https://developer.arm.com/downloads/-/gnu-rm)
-- The NRF52 SDK 15.3.0 : [nRF-SDK v15.3.0](https://developer.nordicsemi.com/nRF5_SDK/nRF5_SDK_v15.x.x/nRF5_SDK_15.3.0_59ac345.zip)
+- The NRF52 SDK 15.3.0 : [nRF-SDK v17.0.2](https://developer.nordicsemi.com/nRF5_SDK/nRF5_SDK_v17.x.x/nRF5_SDK_17.0.2_d674dde.zip)
 - The Python 3 modules `cbor`, `intelhex`, `click` and `cryptography` modules for the `mcuboot` tool (see [requirements.txt](../tools/mcuboot/requirements.txt))
   - To keep the system clean, you can install python modules into a python virtual environment (`venv`)
     ```sh
@@ -63,7 +63,7 @@ target_compile_options(littlefs PRIVATE
 #### (\*\*) Note about **BUILD_DFU**
 DFU files are the files you'll need to install your build of InfiniTime using OTA (over-the-air) mechanism. To generate the DFU file, the Python tool [adafruit-nrfutil](https://github.com/adafruit/Adafruit_nRF52_nrfutil) is needed on your system. Check that this tool is properly installed before enabling this option.
 
-#### CMake command 
+#### CMake command
 
 ```
 cmake -DARM_NONE_EABI_TOOLCHAIN_PATH=... -DNRF5_SDK_PATH=...
