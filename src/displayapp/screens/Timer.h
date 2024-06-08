@@ -2,6 +2,7 @@
 
 #include <memory>
 #include "displayapp/screens/Screen.h"
+#include "displayapp/Colors.h"
 #include "components/datetime/DateTimeController.h"
 #include "systemtask/SystemTask.h"
 #include "displayapp/LittleVgl.h"
@@ -26,27 +27,22 @@ namespace Pinetime::Applications {
     private:
       void SetTimerRunning();
       void SetTimerStopped();
-      void UpdateMask();
       void CreatePlayPauseBtnStyles();
+      void AddPlayPauseBtnEvents();
 
       Pinetime::Controllers::Timer& timer;
 
-      constexpr enum btnStates {
-        BTN_STATE_ANY,
-        BTN_STATE_IDLE,
-        BTN_STATE_PRESSED,
-        BTN_STATE_HELD,
-        NUMBER_BTN_STATES
-      };
-      shared_ptr<lv_obj_t> btnPlayPause;
-      shared_ptr<lv_obj_t> txtPlayPause;
-      lv_style_t styles_btn[];
+      enum btnStates { BTN_STATE_ANY, BTN_STATE_IDLE, BTN_STATE_SHORT_PRESS, BTN_STATE_HELD, NUMBER_BTN_STATES };
 
-      const lv_style_prop_t btnTransitionElements[] = {
-                                            LV_STYLE_BG_OPA, PINETIME_COLOR_ORANGE,
-                                            0, /*End marker*/
+      std::shared_ptr<lv_obj_t> btnPlayPause;
+      std::shared_ptr<lv_obj_t> txtPlayPause;
+      lv_style_t styles_btn[NUMBER_BTN_STATES];
+
+      const lv_style_prop_t btnTransitionElements[2] = {
+        LV_STYLE_BG_OPA,
+        (lv_style_prop_t) 0, /*End marker*/
       };
-      lv_style_transition_dsc_t* btnTransitionDescription;
+      std::shared_ptr<lv_style_transition_dsc_t> btnTransitionDescription;
 
       lv_timer_t* taskRefresh;
       Widgets::Counter minuteCounter = Widgets::Counter(0, 59, jetbrains_mono_76);

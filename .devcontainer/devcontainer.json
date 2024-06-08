@@ -4,7 +4,7 @@
 	"build": {
 		"dockerfile": "../docker/Dockerfile"
 	},
-	"runArgs": [ "--privileged", "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined", "--net=host" ],
+	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined", "--net=host" ],
 	"customizations": {
 		"vscode": {
 			"settings": {

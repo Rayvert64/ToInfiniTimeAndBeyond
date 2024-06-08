@@ -40,6 +40,7 @@ RUN apt-get update -qq \
 # Add the necessary apt-gets for the devcontainer
 RUN apt-get update -qq \
     && apt-get install -y \
+        clangd \
         clang-format-14 \
         clang-tidy \
         libncurses5
@@ -64,6 +65,6 @@ RUN bash -c "source /opt/build.sh; GetMcuBoot;"
 
 # Add the infinitime user for connecting devcontainer
 RUN adduser infinitime
-    
+
 ENV SOURCES_DIR /sources
 CMD ["/opt/build.sh"]
