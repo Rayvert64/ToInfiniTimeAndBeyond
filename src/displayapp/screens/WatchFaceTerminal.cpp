@@ -28,45 +28,46 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
     heartRateController {heartRateController},
     motionController {motionController} {
   batteryValue = lv_label_create(lv_scr_act());
-  lv_label_set_recolor(batteryValue, true);
-  lv_obj_align(batteryValue, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, -20);
+
+  lv_obj_align(batteryValue, LV_ALIGN_LEFT_MID, 0, -20);
 
   connectState = lv_label_create(lv_scr_act());
-  lv_label_set_recolor(connectState, true);
-  lv_obj_align(connectState, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, 40);
+
+  lv_obj_align(connectState, LV_ALIGN_LEFT_MID, 0, 40);
 
   notificationIcon = lv_label_create(lv_scr_act());
-  lv_obj_align(notificationIcon, nullptr, LV_ALIGN_LEFT_MID, 0, -100);
+  lv_obj_align(notificationIcon, LV_ALIGN_LEFT_MID, 0, -100);
 
   label_date = lv_label_create(lv_scr_act());
-  lv_label_set_recolor(label_date, true);
-  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, -40);
+
+  lv_obj_align(label_date, LV_ALIGN_LEFT_MID, 0, -40);
 
   label_prompt_1 = lv_label_create(lv_scr_act());
-  lv_obj_align(label_prompt_1, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, -80);
+  lv_obj_align(label_prompt_1, LV_ALIGN_LEFT_MID, 0, -80);
   lv_label_set_text_static(label_prompt_1, "user@watch:~ $ now");
 
   label_prompt_2 = lv_label_create(lv_scr_act());
-  lv_obj_align(label_prompt_2, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, 60);
+  lv_obj_align(label_prompt_2, LV_ALIGN_LEFT_MID, 0, 60);
   lv_label_set_text_static(label_prompt_2, "user@watch:~ $");
 
   label_time = lv_label_create(lv_scr_act());
-  lv_label_set_recolor(label_time, true);
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, -60);
+
+  lv_obj_align(label_time, LV_ALIGN_LEFT_MID, 0, -60);
 
   heartbeatValue = lv_label_create(lv_scr_act());
-  lv_label_set_recolor(heartbeatValue, true);
-  lv_obj_align(heartbeatValue, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, 20);
+
+  lv_obj_align(heartbeatValue, LV_ALIGN_LEFT_MID, 0, 20);
 
   stepValue = lv_label_create(lv_scr_act());
-  lv_label_set_recolor(stepValue, true);
-  lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_LEFT_MID, 0, 0);
 
-  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);  Refresh();
+  lv_obj_align(stepValue, LV_ALIGN_LEFT_MID, 0, 0);
+
+  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DEF_REFR_PERIOD, this);
+  Refresh();
 }
 
 WatchFaceTerminal::~WatchFaceTerminal() {
-  lv_task_del(taskRefresh);
+  lv_timer_del(taskRefresh);
   lv_obj_clean(lv_scr_act());
 }
 

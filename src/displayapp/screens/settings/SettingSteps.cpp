@@ -28,43 +28,43 @@ SettingSteps::SettingSteps(Pinetime::Controllers::Settings& settingsController) 
 
   lv_obj_t* title = lv_label_create(lv_scr_act());
   lv_label_set_text_static(title, "Daily steps goal");
-  lv_label_set_align(title, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(title, lv_scr_act(), LV_ALIGN_TOP_MID, 15, 15);
+  lv_obj_set_align(title, LV_ALIGN_CENTER);
+  lv_obj_align(title, LV_ALIGN_TOP_MID, 15, 15);
 
   lv_obj_t* icon = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(icon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, PINETIME_COLOR_ORANGE);
+  lv_obj_set_style_text_color(icon, PINETIME_COLOR_ORANGE, LV_STATE_DEFAULT);
 
   lv_label_set_text_static(icon, Symbols::shoe);
-  lv_label_set_align(icon, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(icon, title, LV_ALIGN_OUT_LEFT_MID, -10, 0);
+  lv_obj_set_align(icon, LV_ALIGN_CENTER);
+  lv_obj_align(icon, LV_ALIGN_OUT_LEFT_MID, -10, 0);
 
   stepValue = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_font(stepValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
+  lv_obj_set_style_text_font(stepValue, &jetbrains_mono_42, LV_STATE_DEFAULT);
   lv_label_set_text_fmt(stepValue, "%lu", settingsController.GetStepsGoal());
-  lv_label_set_align(stepValue, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_CENTER, 0, -20);
+  lv_obj_set_align(stepValue, LV_ALIGN_CENTER);
+  lv_obj_align(stepValue, LV_ALIGN_CENTER, 0, -20);
 
   static constexpr uint8_t btnWidth = 115;
   static constexpr uint8_t btnHeight = 80;
 
-  btnPlus = lv_btn_create(lv_scr_act(), nullptr);
+  btnPlus = lv_button_create(lv_scr_act());
   btnPlus->user_data = this;
   lv_obj_set_size(btnPlus, btnWidth, btnHeight);
-  lv_obj_align(btnPlus, lv_scr_act(), LV_ALIGN_BOTTOM_RIGHT, 0, 0);
-  lv_obj_set_style_bg_color(btnPlus, Colors::bgAlt, LV_LABEL_PART_MAIN);
+  lv_obj_align(btnPlus, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
+  lv_obj_set_style_bg_color(btnPlus, Colors::bgAlt, LV_PART_MAIN);
   lv_obj_t* lblPlus = lv_label_create(btnPlus);
-  lv_obj_set_style_local_text_font(lblPlus, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
+  lv_obj_set_style_text_font(lblPlus, &jetbrains_mono_42, LV_STATE_DEFAULT);
   lv_label_set_text_static(lblPlus, "+");
-  lv_obj_set_event_cb(btnPlus, event_handler);
+  lv_obj_add_event_cb(btnPlus, event_handler);
 
-  btnMinus = lv_btn_create(lv_scr_act(), nullptr);
+  btnMinus = lv_button_create(lv_scr_act());
   btnMinus->user_data = this;
   lv_obj_set_size(btnMinus, btnWidth, btnHeight);
-  lv_obj_set_event_cb(btnMinus, event_handler);
-  lv_obj_align(btnMinus, lv_scr_act(), LV_ALIGN_BOTTOM_LEFT, 0, 0);
-  lv_obj_set_style_bg_color(btnMinus, Colors::bgAlt, LV_LABEL_PART_MAIN);
+  lv_obj_add_event_cb(btnMinus, event_handler);
+  lv_obj_align(btnMinus, LV_ALIGN_BOTTOM_LEFT, 0, 0);
+  lv_obj_set_style_bg_color(btnMinus, Colors::bgAlt, LV_PART_MAIN);
   lv_obj_t* lblMinus = lv_label_create(btnMinus);
-  lv_obj_set_style_local_text_font(lblMinus, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
+  lv_obj_set_style_text_font(lblMinus, &jetbrains_mono_42, LV_STATE_DEFAULT);
   lv_label_set_text_static(lblMinus, "-");
 }
 
@@ -94,6 +94,5 @@ void SettingSteps::UpdateSelected(lv_obj_t* object, lv_event_t event) {
   if (value >= 1000 && value <= 500000) {
     settingsController.SetStepsGoal(value);
     lv_label_set_text_fmt(stepValue, "%lu", settingsController.GetStepsGoal());
-
   }
 }

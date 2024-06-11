@@ -1,12 +1,10 @@
 #pragma once
 
+#include <displayapp/Controllers.h>
+#include <lvgl/src/widgets/roller/lv_roller.h>
 #include <memory>
+#include "Apps.h"
 #include "displayapp/screens/Screen.h"
-#include "displayapp/Colors.h"
-#include "components/datetime/DateTimeController.h"
-#include "systemtask/SystemTask.h"
-#include "displayapp/LittleVgl.h"
-#include "displayapp/widgets/Counter.h"
 #include <lvgl/lvgl.h>
 
 #include "components/timer/Timer.h"
@@ -27,26 +25,27 @@ namespace Pinetime::Applications {
     private:
       void SetTimerRunning();
       void SetTimerStopped();
+      void CreateTimeCounters();
       void CreatePlayPauseBtnStyles();
       void AddPlayPauseBtnEvents();
 
       Pinetime::Controllers::Timer& timer;
 
-      enum btnStates { BTN_STATE_ANY, BTN_STATE_IDLE, BTN_STATE_SHORT_PRESS, BTN_STATE_HELD, NUMBER_BTN_STATES };
+      enum btnStates { BTN_STATE_IDLE, BTN_STATE_SHORT_PRESS, BTN_STATE_HELD, NUMBER_BTN_STATES };
 
       std::shared_ptr<lv_obj_t> btnPlayPause;
       std::shared_ptr<lv_obj_t> txtPlayPause;
       lv_style_t styles_btn[NUMBER_BTN_STATES];
 
-      const lv_style_prop_t btnTransitionElements[2] = {
+      lv_style_prop_t btnTransitionElements[2] = {
         LV_STYLE_BG_OPA,
         (lv_style_prop_t) 0, /*End marker*/
       };
       std::shared_ptr<lv_style_transition_dsc_t> btnTransitionDescription;
 
-      lv_timer_t* taskRefresh;
-      Widgets::Counter minuteCounter = Widgets::Counter(0, 59, jetbrains_mono_76);
-      Widgets::Counter secondCounter = Widgets::Counter(0, 59, jetbrains_mono_76);
+      std::shared_ptr<lv_timer_t> taskRefresh;
+      std::shared_ptr<lv_obj_t> minuteCounter;
+      std::shared_ptr<lv_obj_t> secondCounter;
 
       bool buttonPressing = false;
       lv_coord_t maskPosition = 0;

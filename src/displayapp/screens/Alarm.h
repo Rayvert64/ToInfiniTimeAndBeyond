@@ -17,6 +17,7 @@
 */
 #pragma once
 
+#include <memory>
 #include "displayapp/apps/Apps.h"
 #include "components/settings/Settings.h"
 #include "displayapp/screens/Screen.h"
@@ -35,11 +36,16 @@ namespace Pinetime {
                        Controllers::MotorController& motorController);
         ~Alarm() override;
         void SetAlerting();
-        void OnButtonEvent(lv_obj_t* obj, lv_event_t event);
+        [[nodiscard]] bool GetSwitchState() const;
         bool OnButtonPushed() override;
         bool OnTouchEvent(TouchEvents event) override;
         void OnValueChanged();
         void StopAlerting();
+        void ShowInfo();
+        void HideInfo();
+        void EnableAlarm();
+        void DisableAlarm();
+        void ToggleRecurrence();
 
       private:
         Controllers::AlarmController& alarmController;
@@ -53,16 +59,11 @@ namespace Pinetime {
         lv_timer_t* taskStopAlarm = nullptr;
 
         enum class EnableButtonState { On, Off, Alerting };
-        void DisableAlarm();
         void SetRecurButtonState();
-        void SetSwitchState(lv_anim_enable_t anim);
-        void SetAlarm();
-        void ShowInfo();
-        void HideInfo();
-        void ToggleRecurrence();
+        void SetSwitchState(bool state);
         void UpdateAlarmTime();
-        Widgets::Counter hourCounter = Widgets::Counter(0, 23, jetbrains_mono_76);
-        Widgets::Counter minuteCounter = Widgets::Counter(0, 59, jetbrains_mono_76);
+        std::shared_ptr<lv_obj_t> hourCounter;
+        std::shared_ptr<lv_obj_t> minuteCounter;
       };
     }
 

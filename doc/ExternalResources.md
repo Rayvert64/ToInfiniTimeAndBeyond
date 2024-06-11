@@ -63,7 +63,7 @@ if (filesystem.FileOpen(&f, "/fonts/font.bin", LFS_O_RDONLY) >= 0) {
 }
 
 if(font != nullptr) {
-    lv_obj_set_style_local_text_font(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font);
+    lv_obj_set_style_text_font(label,  font,  LV_STATE_DEFAULT);
 }
 
 ```

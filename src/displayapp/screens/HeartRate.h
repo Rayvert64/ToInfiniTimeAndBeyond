@@ -23,7 +23,7 @@ namespace Pinetime {
 
         void Refresh() override;
 
-        void OnStartStopEvent(lv_event_t event);
+        void OnStartStopEvent();
 
       private:
         Controllers::HeartRateController& heartRateController;

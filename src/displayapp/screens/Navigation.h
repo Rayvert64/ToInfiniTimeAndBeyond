@@ -21,7 +21,6 @@
 #include <lvgl/src/core/lv_obj.h>
 #include <string>
 #include "displayapp/screens/Screen.h"
-#include <array>
 #include "displayapp/apps/Apps.h"
 #include "displayapp/Controllers.h"
 #include "Symbols.h"

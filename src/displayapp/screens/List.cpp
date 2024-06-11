@@ -43,27 +43,27 @@ List::List(uint8_t screenID,
     if (applications[i].application != Apps::None) {
 
       static constexpr int btnHeight = (LV_HOR_RES - ((MAXLISTITEMS - 1) * innerPad)) / MAXLISTITEMS;
-      itemApps[i] = lv_btn_create(container, nullptr);
+      itemApps[i] = lv_button_create(container);
       lv_obj_set_style_radius(itemApps[i], btnHeight / 3, LV_STATE_DEFAULT);
       lv_obj_set_style_bg_color(itemApps[i], Colors::bgAlt, LV_PART_MAIN);
       lv_obj_set_width(itemApps[i], LV_HOR_RES - 8);
       lv_obj_set_height(itemApps[i], btnHeight);
-      lv_obj_set_event_cb(itemApps[i], ButtonEventHandler);
+      lv_obj_add_event_cb(itemApps[i], ButtonEventHandler);
       lv_btn_set_layout(itemApps[i], LV_LAYOUT_OFF);
       itemApps[i]->user_data = this;
       lv_obj_set_style_local_clip_corner(itemApps[i], LV_PART_MAIN, LV_STATE_DEFAULT, true);
 
       lv_obj_t* icon = lv_label_create(itemApps[i]);
-      lv_obj_set_style_local_text_color(icon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, PINETIME_COLOR_YELLOW);
+      lv_obj_set_style_text_color(icon, PINETIME_COLOR_YELLOW, LV_STATE_DEFAULT);
       lv_label_set_text_static(icon, applications[i].icon);
       lv_label_set_long_mode(icon, LV_LABEL_LONG_CROP);
-      lv_label_set_align(icon, LV_LABEL_ALIGN_CENTER);
+      lv_obj_set_align(icon, LV_ALIGN_CENTER);
       lv_obj_set_width(icon, btnHeight);
-      lv_obj_align(icon, nullptr, LV_ALIGN_LEFT_MID, 0, 0);
+      lv_obj_align(icon, LV_ALIGN_LEFT_MID, 0, 0);
 
       lv_obj_t* text = lv_label_create(itemApps[i]);
       lv_label_set_text_fmt(text, "%s", applications[i].name);
-      lv_obj_align(text, icon, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+      lv_obj_align(text, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
     }
   }
 }

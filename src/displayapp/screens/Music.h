@@ -40,7 +40,13 @@ namespace Pinetime {
 
         void Refresh() override;
 
-        void OnObjectEvent(lv_obj_t* obj, lv_event_t event);
+        void OnObjectEvent(lv_event_t event);
+
+        void VolUp();
+        void VolDown();
+        void Prev();
+        void Next();
+        void PlayPause();
 
       private:
         bool OnTouchEvent(TouchEvents event) override;
@@ -78,7 +84,7 @@ namespace Pinetime {
         /** Last time an animation update or timer was incremented */
         TickType_t lastIncrement = 0;
 
-        bool playing;
+        int playing;
 
         lv_timer_t* taskRefresh;
 

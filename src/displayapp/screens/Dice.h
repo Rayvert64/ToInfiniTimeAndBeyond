@@ -1,9 +1,10 @@
 #pragma once
 
+#include <memory>
 #include "displayapp/apps/Apps.h"
 #include "displayapp/screens/Screen.h"
-#include "displayapp/widgets/Counter.h"
 #include "displayapp/Controllers.h"
+#include "displayapp/Colors.h"
 #include "Symbols.h"
 
 #include <array>
@@ -31,12 +32,12 @@ namespace Pinetime {
 
         std::mt19937 gen;
 
-        std::array<lv_color_t, 3> resultColors = {PINETIME_COLOR_YELLOW, PINETIME_COLOR_MAGENTA, LV_COLOR_AQUA};
+        std::array<lv_color_t, 3> resultColors = {PINETIME_COLOR_YELLOW, PINETIME_COLOR_MAGENTA, PINETIME_COLOR_CYAN};
         uint8_t currentColorIndex;
         void NextColor();
 
-        Widgets::Counter nCounter = Widgets::Counter(1, 9, jetbrains_mono_42);
-        Widgets::Counter dCounter = Widgets::Counter(2, 99, jetbrains_mono_42);
+        std::shared_ptr<lv_obj_t> nCounter;
+        std::shared_ptr<lv_obj_t> dCounter;
 
         bool openingRoll = true;
         uint8_t currentRollHysteresis = 0;

@@ -22,7 +22,7 @@ void StatusIcons::Create() {
 
   batteryIcon.Create(container);
 
-  lv_obj_align(container, nullptr, LV_ALIGN_TOP_RIGHT, 0, 0);
+  lv_obj_align(container, LV_ALIGN_TOP_RIGHT, 0, 0);
 }
 
 void StatusIcons::Update() {
@@ -42,6 +42,4 @@ void StatusIcons::Update() {
   if (bleState.IsUpdated() || bleRadioEnabled.IsUpdated()) {
     lv_obj_set_hidden(bleIcon, !bleState.Get());
   }
-
-
 }

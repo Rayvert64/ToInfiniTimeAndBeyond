@@ -161,8 +161,8 @@ using namespace Pinetime::Applications::Screens;
 MyApp::MyApp() {
   lv_obj_t* title = lv_label_create(lv_scr_act());
   lv_label_set_text_static(title, "My test application");
-  lv_label_set_align(title, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(title, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+  lv_obj_set_align(title, LV_ALIGN_CENTER);
+  lv_obj_align(title, LV_ALIGN_CENTER, 0, 0);
 }
 
 MyApp::~MyApp() {

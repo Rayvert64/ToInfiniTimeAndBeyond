@@ -180,128 +180,129 @@ WatchFaceInfineat::WatchFaceInfineat(Controllers::DateTime& dateTimeController,
   lv_line_set_points(lineBattery, lineBatteryPoints, 2);
   lv_obj_move_foreground(lineBattery);
 
-  notificationIcon = lv_obj_create(lv_scr_act());;
+  notificationIcon = lv_obj_create(lv_scr_act());
   lv_obj_set_style_bg_color(notificationIcon, (*colors)[7], LV_PART_MAIN);
   lv_obj_set_style_radius(notificationIcon, LV_RADIUS_CIRCLE, LV_STATE_DEFAULT);
   lv_obj_set_size(notificationIcon, 13, 13);
-  lv_obj_set_hidden(notificationIcon, true);
+  lv_obj_add_flag(notificationIcon, LV_OBJ_FLAG_HIDDEN);
 
   if (!settingsController.GetInfineatShowSideCover()) {
     ToggleBatteryIndicatorColor(false);
     for (auto& line : lines) {
-      lv_obj_set_hidden(line, true);
+      lv_obj_add_flag(line, LV_OBJ_FLAG_HIDDEN);
     }
   }
 
-  timeContainer = lv_obj_create(lv_scr_act());;
+  timeContainer = lv_obj_create(lv_scr_act());
   lv_obj_set_style_local_bg_opa(timeContainer, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
   lv_obj_set_size(timeContainer, 185, 185);
-  lv_obj_align(timeContainer, lv_scr_act(), LV_ALIGN_CENTER, 0, -10);
+  lv_obj_align(timeContainer, LV_ALIGN_CENTER, 0, -10);
 
   labelHour = lv_label_create(lv_scr_act());
   lv_label_set_text_static(labelHour, "01");
-  lv_obj_set_style_local_text_font(labelHour, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_bebas);
-  lv_obj_align(labelHour, timeContainer, LV_ALIGN_TOP_MID, 0, 0);
+  lv_obj_set_style_text_font(labelHour, font_bebas, LV_STATE_DEFAULT);
+  lv_obj_align(labelHour, LV_ALIGN_TOP_MID, 0, 0);
 
   labelMinutes = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_font(labelMinutes, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_bebas);
+  lv_obj_set_style_text_font(labelMinutes, font_bebas, LV_STATE_DEFAULT);
   lv_label_set_text_static(labelMinutes, "00");
-  lv_obj_align(labelMinutes, timeContainer, LV_ALIGN_BOTTOM_MID, 0, 0);
+  lv_obj_align(labelMinutes, LV_ALIGN_BOTTOM_MID, 0, 0);
 
   labelTimeAmPm = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_font(labelTimeAmPm, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_teko);
+  lv_obj_set_style_text_font(labelTimeAmPm, font_teko, LV_STATE_DEFAULT);
 
   lv_label_set_text_static(labelTimeAmPm, "");
-  lv_obj_align(labelTimeAmPm, timeContainer, LV_ALIGN_OUT_RIGHT_TOP, 0, 15);
+  lv_obj_align(labelTimeAmPm, LV_ALIGN_OUT_RIGHT_TOP, 0, 15);
 
-  dateContainer = lv_obj_create(lv_scr_act());;
+  dateContainer = lv_obj_create(lv_scr_act());
   lv_obj_set_style_local_bg_opa(dateContainer, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
   lv_obj_set_size(dateContainer, 60, 30);
-  lv_obj_align(dateContainer, lv_scr_act(), LV_ALIGN_RIGHT_MID, 0, 5);
+  lv_obj_align(dateContainer, LV_ALIGN_RIGHT_MID, 0, 5);
 
   static constexpr lv_color_t grayColor = LV_COLOR_MAKE(0x99, 0x99, 0x99);
   labelDate = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(labelDate, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, grayColor);
-  lv_obj_set_style_local_text_font(labelDate, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_teko);
-  lv_obj_align(labelDate, dateContainer, LV_ALIGN_TOP_MID, 0, 0);
+  lv_obj_set_style_text_color(labelDate, grayColor, LV_STATE_DEFAULT);
+  lv_obj_set_style_text_font(labelDate, font_teko, LV_STATE_DEFAULT);
+  lv_obj_align(labelDate, LV_ALIGN_TOP_MID, 0, 0);
   lv_label_set_text_static(labelDate, "Mon 01");
 
   bleIcon = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(bleIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, grayColor);
+  lv_obj_set_style_text_color(bleIcon, grayColor, LV_STATE_DEFAULT);
   lv_label_set_text_static(bleIcon, Symbols::bluetooth);
-  lv_obj_align(bleIcon, dateContainer, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
+  lv_obj_align(bleIcon, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
 
   stepValue = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(stepValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, grayColor);
-  lv_obj_set_style_local_text_font(stepValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_teko);
-  lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_BOTTOM_RIGHT, 10, 0);
+  lv_obj_set_style_text_color(stepValue, grayColor, LV_STATE_DEFAULT);
+  lv_obj_set_style_text_font(stepValue, font_teko, LV_STATE_DEFAULT);
+  lv_obj_align(stepValue, LV_ALIGN_BOTTOM_RIGHT, 10, 0);
   lv_label_set_text_static(stepValue, "0");
 
   stepIcon = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(stepIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, grayColor);
+  lv_obj_set_style_text_color(stepIcon, grayColor, LV_STATE_DEFAULT);
   lv_label_set_text_static(stepIcon, Symbols::shoe);
-  lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+  lv_obj_align(stepIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 
   // Setting buttons
-  btnClose = lv_btn_create(lv_scr_act(), nullptr);
+  btnClose = lv_button_create(lv_scr_act());
   btnClose->user_data = this;
   lv_obj_set_size(btnClose, 60, 60);
-  lv_obj_align(btnClose, lv_scr_act(), LV_ALIGN_CENTER, 0, -80);
+  lv_obj_align(btnClose, LV_ALIGN_CENTER, 0, -80);
   lv_obj_set_style_local_bg_opa(btnClose, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_70);
   lv_obj_t* lblClose = lv_label_create(btnClose);
   lv_label_set_text_static(lblClose, "X");
-  lv_obj_set_event_cb(btnClose, event_handler);
-  lv_obj_set_hidden(btnClose, true);
+  lv_obj_add_event_cb(btnClose, event_handler);
+  lv_obj_add_flag(btnClose, LV_OBJ_FLAG_HIDDEN);
 
-  btnNextColor = lv_btn_create(lv_scr_act(), nullptr);
+  btnNextColor = lv_button_create(lv_scr_act());
   btnNextColor->user_data = this;
   lv_obj_set_size(btnNextColor, 60, 60);
-  lv_obj_align(btnNextColor, lv_scr_act(), LV_ALIGN_RIGHT_MID, -15, 0);
+  lv_obj_align(btnNextColor, LV_ALIGN_RIGHT_MID, -15, 0);
   lv_obj_set_style_local_bg_opa(btnNextColor, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_70);
   lv_obj_t* lblNextColor = lv_label_create(btnNextColor);
   lv_label_set_text_static(lblNextColor, ">");
-  lv_obj_set_event_cb(btnNextColor, event_handler);
-  lv_obj_set_hidden(btnNextColor, true);
+  lv_obj_add_event_cb(btnNextColor, event_handler);
+  lv_obj_add_flag(btnNextColor, LV_OBJ_FLAG_HIDDEN);
 
-  btnPrevColor = lv_btn_create(lv_scr_act(), nullptr);
+  btnPrevColor = lv_button_create(lv_scr_act());
   btnPrevColor->user_data = this;
   lv_obj_set_size(btnPrevColor, 60, 60);
-  lv_obj_align(btnPrevColor, lv_scr_act(), LV_ALIGN_LEFT_MID, 15, 0);
+  lv_obj_align(btnPrevColor, LV_ALIGN_LEFT_MID, 15, 0);
   lv_obj_set_style_local_bg_opa(btnPrevColor, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_70);
   lv_obj_t* lblPrevColor = lv_label_create(btnPrevColor);
   lv_label_set_text_static(lblPrevColor, "<");
-  lv_obj_set_event_cb(btnPrevColor, event_handler);
-  lv_obj_set_hidden(btnPrevColor, true);
+  lv_obj_add_event_cb(btnPrevColor, event_handler);
+  lv_obj_add_flag(btnPrevColor, LV_OBJ_FLAG_HIDDEN);
 
-  btnToggleCover = lv_btn_create(lv_scr_act(), nullptr);
+  btnToggleCover = lv_button_create(lv_scr_act());
   btnToggleCover->user_data = this;
   lv_obj_set_size(btnToggleCover, 60, 60);
-  lv_obj_align(btnToggleCover, lv_scr_act(), LV_ALIGN_CENTER, 0, 80);
+  lv_obj_align(btnToggleCover, LV_ALIGN_CENTER, 0, 80);
   lv_obj_set_style_local_bg_opa(btnToggleCover, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_70);
   const char* labelToggle = settingsController.GetInfineatShowSideCover() ? "ON" : "OFF";
   lblToggle = lv_label_create(btnToggleCover);
   lv_label_set_text_static(lblToggle, labelToggle);
-  lv_obj_set_event_cb(btnToggleCover, event_handler);
-  lv_obj_set_hidden(btnToggleCover, true);
+  lv_obj_add_event_cb(btnToggleCover, event_handler);
+  lv_obj_add_flag(btnToggleCover, LV_OBJ_FLAG_HIDDEN);
 
   // Button to access the settings
-  btnSettings = lv_btn_create(lv_scr_act(), nullptr);
+  btnSettings = lv_button_create(lv_scr_act());
   btnSettings->user_data = this;
   lv_obj_set_size(btnSettings, 150, 150);
-  lv_obj_align(btnSettings, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+  lv_obj_align(btnSettings, LV_ALIGN_CENTER, 0, 0);
   lv_obj_set_style_radius(btnSettings, 30, LV_STATE_DEFAULT);
   lv_obj_set_style_local_bg_opa(btnSettings, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_70);
-  lv_obj_set_event_cb(btnSettings, event_handler);
+  lv_obj_add_event_cb(btnSettings, event_handler);
   labelBtnSettings = lv_label_create(btnSettings);
-  lv_obj_set_style_local_text_font(labelBtnSettings, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_sys_48);
+  lv_obj_set_style_text_font(labelBtnSettings, &lv_font_sys_48, LV_STATE_DEFAULT);
   lv_label_set_text_static(labelBtnSettings, Symbols::settings);
-  lv_obj_set_hidden(btnSettings, true);
+  lv_obj_add_flag(btnSettings, LV_OBJ_FLAG_HIDDEN);
 
-  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);  Refresh();
+  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DEF_REFR_PERIOD, this);
+  Refresh();
 }
 
 WatchFaceInfineat::~WatchFaceInfineat() {
-  lv_task_del(taskRefresh);
+  lv_timer_del(taskRefresh);
 
   if (font_bebas != nullptr) {
     lv_font_free(font_bebas);
@@ -315,7 +316,9 @@ WatchFaceInfineat::~WatchFaceInfineat() {
 
 bool WatchFaceInfineat::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
   if ((event == Pinetime::Applications::TouchEvents::LongTap) && lv_obj_get_hidden(btnSettings)) {
-    lv_obj_set_hidden(btnSettings, false);
+    if (lv_obj_has_flag(btnSettings, LV_OBJ_FLAG_HIDDEN)) {
+      lv_obj_remove_flag(btnSettings, LV_OBJ_FLAG_HIDDEN);
+    };
     savedTick = lv_tick_get();
     return true;
   }
@@ -328,10 +331,10 @@ bool WatchFaceInfineat::OnTouchEvent(Pinetime::Applications::TouchEvents event) 
 
 void WatchFaceInfineat::CloseMenu() {
   settingsController.SaveSettings();
-  lv_obj_set_hidden(btnClose, true);
-  lv_obj_set_hidden(btnNextColor, true);
-  lv_obj_set_hidden(btnPrevColor, true);
-  lv_obj_set_hidden(btnToggleCover, true);
+  lv_obj_add_flag(btnClose, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(btnNextColor, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(btnPrevColor, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(btnToggleCover, LV_OBJ_FLAG_HIDDEN);
 }
 
 bool WatchFaceInfineat::OnButtonPushed() {
@@ -348,11 +351,15 @@ void WatchFaceInfineat::UpdateSelected(lv_obj_t* object, lv_event_t event) {
     int colorIndex = settingsController.GetInfineatColorIndex();
 
     if (object == btnSettings) {
-      lv_obj_set_hidden(btnSettings, true);
-      lv_obj_set_hidden(btnClose, false);
+      lv_obj_add_flag(btnSettings, LV_OBJ_FLAG_HIDDEN);
+      if (lv_obj_has_flag(btnClose, LV_OBJ_FLAG_HIDDEN)) {
+        lv_obj_remove_flag(btnClose, LV_OBJ_FLAG_HIDDEN);
+      };
       lv_obj_set_hidden(btnNextColor, !showSideCover);
       lv_obj_set_hidden(btnPrevColor, !showSideCover);
-      lv_obj_set_hidden(btnToggleCover, false);
+      if (lv_obj_has_flag(btnToggleCover, LV_OBJ_FLAG_HIDDEN)) {
+        lv_obj_remove_flag(btnToggleCover, LV_OBJ_FLAG_HIDDEN);
+      };
     }
     if (object == btnClose) {
       CloseMenu();
@@ -394,7 +401,7 @@ void WatchFaceInfineat::Refresh() {
   notificationState = notificationManager.AreNewNotificationsAvailable();
   if (notificationState.IsUpdated()) {
     lv_obj_set_hidden(notificationIcon, !notificationState.Get());
-    lv_obj_align(notificationIcon, lv_scr_act(), LV_ALIGN_TOP_RIGHT, 0, 0);
+    lv_obj_align(notificationIcon, LV_ALIGN_TOP_RIGHT, 0, 0);
   }
 
   currentDateTime = std::chrono::time_point_cast<std::chrono::minutes>(dateTimeController.CurrentDateTime());
@@ -418,9 +425,9 @@ void WatchFaceInfineat::Refresh() {
     lv_label_set_text_fmt(labelMinutes, "%02d", minute);
 
     if (settingsController.GetClockType() == Controllers::Settings::ClockType::H12) {
-      lv_obj_align(labelTimeAmPm, timeContainer, LV_ALIGN_OUT_RIGHT_TOP, 0, 10);
-      lv_obj_align(labelHour, timeContainer, LV_ALIGN_TOP_MID, 0, 5);
-      lv_obj_align(labelMinutes, timeContainer, LV_ALIGN_BOTTOM_MID, 0, 0);
+      lv_obj_align(labelTimeAmPm, LV_ALIGN_OUT_RIGHT_TOP, 0, 10);
+      lv_obj_align(labelHour, LV_ALIGN_TOP_MID, 0, 5);
+      lv_obj_align(labelMinutes, LV_ALIGN_BOTTOM_MID, 0, 0);
     }
 
     currentDate = std::chrono::time_point_cast<std::chrono::days>(currentDateTime.Get());
@@ -428,7 +435,6 @@ void WatchFaceInfineat::Refresh() {
       uint8_t day = dateTimeController.Day();
       Controllers::DateTime::Days dayOfWeek = dateTimeController.DayOfWeek();
       lv_label_set_text_fmt(labelDate, "%s %02d", dateTimeController.DayOfWeekShortToStringLow(dayOfWeek), day);
-
     }
   }
 
@@ -449,19 +455,19 @@ void WatchFaceInfineat::Refresh() {
   bleRadioEnabled = bleController.IsRadioEnabled();
   if (bleState.IsUpdated()) {
     lv_label_set_text_static(bleIcon, BleIcon::GetIcon(bleState.Get()));
-    lv_obj_align(bleIcon, dateContainer, LV_ALIGN_OUT_BOTTOM_MID, 0, 3);
+    lv_obj_align(bleIcon, LV_ALIGN_OUT_BOTTOM_MID, 0, 3);
   }
 
   stepCount = motionController.NbSteps();
   if (stepCount.IsUpdated()) {
     lv_label_set_text_fmt(stepValue, "%lu", stepCount.Get());
-    lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 10, 0);
-    lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+    lv_obj_align(stepValue, LV_ALIGN_BOTTOM_MID, 10, 0);
+    lv_obj_align(stepIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
   }
 
   if (!lv_obj_get_hidden(btnSettings)) {
     if ((savedTick > 0) && (lv_tick_get() - savedTick > 3000)) {
-      lv_obj_set_hidden(btnSettings, true);
+      lv_obj_add_flag(btnSettings, LV_OBJ_FLAG_HIDDEN);
       savedTick = 0;
     }
   }

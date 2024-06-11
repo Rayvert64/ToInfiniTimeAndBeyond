@@ -18,6 +18,7 @@
 #include "displayapp/screens/Navigation.h"
 #include <cstdint>
 #include "displayapp/DisplayApp.h"
+#include "displayapp/Colors.h"
 #include "components/ble/NavigationService.h"
 #include "displayapp/InfiniTimeTheme.h"
 #include "lvgl/src/core/lv_obj.h"
@@ -194,46 +195,45 @@ namespace {
 Navigation::Navigation(Pinetime::Controllers::NavigationService& nav) : navService(nav) {
   const auto& image = GetIcon("flag");
   imgFlag = lv_img_create(lv_scr_act());
-  lv_img_set_auto_size(imgFlag, false);
   lv_obj_set_size(imgFlag, 80, 80);
   lv_img_set_src(imgFlag, image.fileName);
   lv_img_set_offset_x(imgFlag, 0);
   lv_img_set_offset_y(imgFlag, image.offset);
   lv_obj_set_style_bg_image_recolor_opa(imgFlag, LV_OPA_COVER, LV_STATE_DEFAULT);
   lv_obj_set_style_bg_image_recolor(imgFlag, PINETIME_COLOR_CYAN, LV_STATE_DEFAULT);
-  lv_obj_align(imgFlag, nullptr, LV_ALIGN_CENTER, 0, -60);
+  lv_obj_align(imgFlag, LV_ALIGN_CENTER, 0, -60);
 
   txtNarrative = lv_label_create(lv_scr_act());
   lv_label_set_long_mode(txtNarrative, LV_LABEL_LONG_DOT);
   lv_obj_set_width(txtNarrative, LV_HOR_RES);
   lv_obj_set_height(txtNarrative, 80);
   lv_label_set_text_static(txtNarrative, "Navigation");
-  lv_label_set_align(txtNarrative, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(txtNarrative, nullptr, LV_ALIGN_CENTER, 0, 30);
+  lv_obj_set_align(txtNarrative, LV_ALIGN_CENTER);
+  lv_obj_align(txtNarrative, LV_ALIGN_CENTER, 0, 30);
 
   txtManDist = lv_label_create(lv_scr_act());
-  lv_label_set_long_mode(txtManDist, LV_LABEL_LONG_BREAK);
-  lv_obj_set_style_local_text_color(txtManDist, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, PINETIME_COLOR_GREEN);
-  lv_obj_set_style_local_text_font(txtManDist, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
+  lv_label_set_long_mode(txtManDist, LV_LABEL_LONG_WRAP);
+  lv_obj_set_style_text_color(txtManDist, PINETIME_COLOR_GREEN, LV_STATE_DEFAULT);
+  lv_obj_set_style_text_font(txtManDist, &jetbrains_mono_42, LV_STATE_DEFAULT);
   lv_obj_set_width(txtManDist, LV_HOR_RES);
   lv_label_set_text_static(txtManDist, "--M");
-  lv_label_set_align(txtManDist, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(txtManDist, nullptr, LV_ALIGN_CENTER, 0, 90);
+  lv_obj_set_align(txtManDist, LV_ALIGN_CENTER);
+  lv_obj_align(txtManDist, LV_ALIGN_CENTER, 0, 90);
 
   // Route Progress
-  barProgress = lv_bar_create(lv_scr_act(), nullptr);
+  barProgress = lv_bar_create(lv_scr_act());
   lv_obj_set_size(barProgress, 200, 20);
-  lv_obj_align(barProgress, nullptr, LV_ALIGN_BOTTOM_MID, 0, -10);
-  lv_obj_set_style_bg_color(barProgress, lv_color_hex(0x222222), LV_BAR_PART_BG);
-  lv_obj_set_style_bg_color(barProgress, PINETIME_COLOR_ORANGE, LV_BAR_PART_INDIC);
-  lv_bar_set_anim_time(barProgress, 500);
+  lv_obj_align(barProgress, LV_ALIGN_BOTTOM_MID, 0, -10);
+  lv_obj_set_style_bg_color(barProgress, lv_color_hex(0x222222), LV_STATE_DEFAULT);
+  lv_obj_set_style_bg_color(barProgress, PINETIME_COLOR_ORANGE, (uint32_t) LV_PART_INDICATOR | (uint32_t) LV_STATE_PRESSED);
   lv_bar_set_range(barProgress, 0, 100);
-  lv_bar_set_value(barProgress, 0, LV_ANIM_OFF);
+  lv_bar_set_value(barProgress, 0, LV_ANIM_ON);
 
-  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);}
+  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DEF_REFR_PERIOD, this);
+}
 
 Navigation::~Navigation() {
-  lv_task_del(taskRefresh);
+  lv_timer_del(taskRefresh);
   lv_obj_clean(lv_scr_act());
 }
 
@@ -261,9 +261,9 @@ void Navigation::Refresh() {
     progress = navService.getProgress();
     lv_bar_set_value(barProgress, progress, LV_ANIM_OFF);
     if (progress > 90) {
-      lv_obj_set_style_bg_color(barProgress, PINETIME_COLOR_RED, LV_BAR_PART_INDIC);
+      lv_obj_set_style_bg_color(barProgress, PINETIME_COLOR_RED, (uint32_t) LV_PART_INDICATOR | (uint32_t) LV_STATE_PRESSED);
     } else {
-      lv_obj_set_style_bg_color(barProgress, Colors::orange, LV_BAR_PART_INDIC);
+      lv_obj_set_style_bg_color(barProgress, Colors::orange, (uint32_t) LV_PART_INDICATOR | (uint32_t) LV_STATE_PRESSED);
     }
   }
 }

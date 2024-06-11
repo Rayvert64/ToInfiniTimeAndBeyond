@@ -62,18 +62,26 @@ void Counter::SetValue(int newValue) {
 }
 
 void Counter::HideControls() {
-  lv_obj_set_hidden(upBtn, true);
-  lv_obj_set_hidden(downBtn, true);
-  lv_obj_set_hidden(upperLine, true);
-  lv_obj_set_hidden(lowerLine, true);
+  lv_obj_add_flag(upBtn, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(downBtn, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(upperLine, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(lowerLine, LV_OBJ_FLAG_HIDDEN);
   lv_obj_set_style_local_bg_opa(counterContainer, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
 }
 
 void Counter::ShowControls() {
-  lv_obj_set_hidden(upBtn, false);
-  lv_obj_set_hidden(downBtn, false);
-  lv_obj_set_hidden(upperLine, false);
-  lv_obj_set_hidden(lowerLine, false);
+  if (lv_obj_has_flag(upBtn)) {
+    lv_obj_remove_flag(upBtn, LV_OBJ_FLAG_HIDDEN);
+  };
+  if (lv_obj_has_flag(downBtn)) {
+    lv_obj_remove_flag(downBtn, LV_OBJ_FLAG_HIDDEN);
+  };
+  if (lv_obj_has_flag(upperLine)) {
+    lv_obj_remove_flag(upperLine, LV_OBJ_FLAG_HIDDEN);
+  };
+  if (lv_obj_has_flag(lowerLine)) {
+    lv_obj_remove_flag(lowerLine, LV_OBJ_FLAG_HIDDEN);
+  };
   lv_obj_set_style_local_bg_opa(counterContainer, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER);
 }
 
@@ -121,12 +129,12 @@ void Counter::SetValueChangedEventCallback(void* userData, void (*handler)(void*
 }
 
 void Counter::Create() {
-  counterContainer = lv_obj_create(lv_scr_act());;
+  counterContainer = lv_obj_create(lv_scr_act());
   lv_obj_set_style_bg_color(counterContainer, Colors::bgAlt, LV_PART_MAIN);
 
   number = lv_label_create(counterContainer);
-  lv_obj_set_style_local_text_font(number, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &font);
-  lv_obj_align(number, nullptr, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_set_style_text_font(number, &font, LV_STATE_DEFAULT);
+  lv_obj_align(number, LV_ALIGN_CENTER, 0, 0);
   lv_obj_set_auto_realign(number, true);
   if (monthMode) {
     lv_label_set_text_static(number, "Jan");
@@ -143,29 +151,29 @@ void Counter::Create() {
 
   UpdateLabel();
 
-  upBtn = lv_btn_create(counterContainer, nullptr);
+  upBtn = lv_button_create(counterContainer);
   lv_obj_set_style_bg_color(upBtn, Colors::bgAlt, LV_PART_MAIN);
   lv_obj_set_size(upBtn, width, btnHeight);
-  lv_obj_align(upBtn, nullptr, LV_ALIGN_TOP_MID, 0, 0);
+  lv_obj_align(upBtn, LV_ALIGN_TOP_MID, 0, 0);
   upBtn->user_data = this;
-  lv_obj_set_event_cb(upBtn, upBtnEventHandler);
+  lv_obj_add_event_cb(upBtn, upBtnEventHandler);
 
   lv_obj_t* upLabel = lv_label_create(upBtn);
-  lv_obj_set_style_local_text_font(upLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
+  lv_obj_set_style_text_font(upLabel, &jetbrains_mono_42, LV_STATE_DEFAULT);
   lv_label_set_text_static(upLabel, "+");
-  lv_obj_align(upLabel, nullptr, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_align(upLabel, LV_ALIGN_CENTER, 0, 0);
 
-  downBtn = lv_btn_create(counterContainer, nullptr);
+  downBtn = lv_button_create(counterContainer);
   lv_obj_set_style_bg_color(downBtn, Colors::bgAlt, LV_PART_MAIN);
   lv_obj_set_size(downBtn, width, btnHeight);
-  lv_obj_align(downBtn, nullptr, LV_ALIGN_BOTTOM_MID, 0, 0);
+  lv_obj_align(downBtn, LV_ALIGN_BOTTOM_MID, 0, 0);
   downBtn->user_data = this;
-  lv_obj_set_event_cb(downBtn, downBtnEventHandler);
+  lv_obj_add_event_cb(downBtn, downBtnEventHandler);
 
   lv_obj_t* downLabel = lv_label_create(downBtn);
-  lv_obj_set_style_local_text_font(downLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
+  lv_obj_set_style_text_font(downLabel, &jetbrains_mono_42, LV_STATE_DEFAULT);
   lv_label_set_text_static(downLabel, "-");
-  lv_obj_align(downLabel, nullptr, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_align(downLabel, LV_ALIGN_CENTER, 0, 0);
 
   linePoints[0] = {0, 0};
   linePoints[1] = {width, 0};
@@ -180,8 +188,8 @@ void Counter::Create() {
   };
 
   upperLine = LineCreate();
-  lv_obj_align(upperLine, upBtn, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
+  lv_obj_align(upperLine, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
 
   lowerLine = LineCreate();
-  lv_obj_align(lowerLine, downBtn, LV_ALIGN_OUT_TOP_MID, 0, -1);
+  lv_obj_align(lowerLine, LV_ALIGN_OUT_TOP_MID, 0, -1);
 }

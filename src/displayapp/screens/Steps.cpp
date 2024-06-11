@@ -23,7 +23,7 @@ Steps::Steps(Controllers::MotionController& motionController, Controllers::Setti
   lv_arc_set_end_angle(stepsArc, 200);
   lv_obj_set_size(stepsArc, 240, 240);
   lv_arc_set_range(stepsArc, 0, 500);
-  lv_obj_align(stepsArc, nullptr, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_align(stepsArc, LV_ALIGN_CENTER, 0, 0);
 
   stepsCount = motionController.NbSteps();
   currentTripSteps = stepsCount - motionController.GetTripSteps();
@@ -31,43 +31,44 @@ Steps::Steps(Controllers::MotionController& motionController, Controllers::Setti
   lv_arc_set_value(stepsArc, int16_t(500 * stepsCount / settingsController.GetStepsGoal()));
 
   lSteps = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(lSteps, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, PINETIME_COLOR_LIME);
-  lv_obj_set_style_local_text_font(lSteps, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
+  lv_obj_set_style_text_color(lSteps, PINETIME_COLOR_LIME, LV_STATE_DEFAULT);
+  lv_obj_set_style_text_font(lSteps, &jetbrains_mono_42, LV_STATE_DEFAULT);
   lv_label_set_text_fmt(lSteps, "%li", stepsCount);
-  lv_obj_align(lSteps, nullptr, LV_ALIGN_CENTER, 0, -40);
+  lv_obj_align(lSteps, LV_ALIGN_CENTER, 0, -40);
 
   lv_obj_t* lstepsL = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(lstepsL, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
+  lv_obj_set_style_text_color(lstepsL, Colors::lightGray, LV_STATE_DEFAULT);
   lv_label_set_text_static(lstepsL, "Steps");
-  lv_obj_align(lstepsL, lSteps, LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
+  lv_obj_align(lstepsL, LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
 
   lv_obj_t* lstepsGoal = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(lstepsGoal, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, PINETIME_COLOR_CYAN);
+  lv_obj_set_style_text_color(lstepsGoal, PINETIME_COLOR_CYAN, LV_STATE_DEFAULT);
   lv_label_set_text_fmt(lstepsGoal, "Goal: %5lu", settingsController.GetStepsGoal());
-  lv_label_set_align(lstepsGoal, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(lstepsGoal, lSteps, LV_ALIGN_OUT_BOTTOM_MID, 0, 40);
+  lv_obj_set_align(lstepsGoal, LV_ALIGN_CENTER);
+  lv_obj_align(lstepsGoal, LV_ALIGN_OUT_BOTTOM_MID, 0, 40);
 
-  resetBtn = lv_btn_create(lv_scr_act(), nullptr);
+  resetBtn = lv_button_create(lv_scr_act());
   resetBtn->user_data = this;
-  lv_obj_set_event_cb(resetBtn, lap_event_handler);
+  lv_obj_add_event_cb(resetBtn, lap_event_handler);
   lv_obj_set_size(resetBtn, 120, 50);
   lv_obj_set_style_radius(resetBtn, LV_RADIUS_CIRCLE, LV_STATE_DEFAULT);
   lv_obj_set_style_bg_color(resetBtn, Colors::bgAlt, LV_PART_MAIN);
-  lv_obj_align(resetBtn, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, 0);
+  lv_obj_align(resetBtn, LV_ALIGN_BOTTOM_MID, 0, 0);
   resetButtonLabel = lv_label_create(resetBtn);
   lv_label_set_text_static(resetButtonLabel, "Reset");
 
   currentTripSteps = motionController.GetTripSteps();
 
   tripLabel = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(tripLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, PINETIME_COLOR_YELLOW);
+  lv_obj_set_style_text_color(tripLabel, PINETIME_COLOR_YELLOW, LV_STATE_DEFAULT);
   lv_label_set_text_fmt(tripLabel, "Trip: %5li", currentTripSteps);
-  lv_obj_align(tripLabel, lstepsGoal, LV_ALIGN_LEFT_MID, 0, 20);
+  lv_obj_align(tripLabel, LV_ALIGN_LEFT_MID, 0, 20);
 
-  taskRefresh = lv_timer_create(RefreshTaskCallback, 100, this);}
+  taskRefresh = lv_timer_create(RefreshTaskCallback, 100, this);
+}
 
 Steps::~Steps() {
-  lv_task_del(taskRefresh);
+  lv_timer_del(taskRefresh);
   lv_obj_clean(lv_scr_act());
 }
 
@@ -76,7 +77,7 @@ void Steps::Refresh() {
   currentTripSteps = motionController.GetTripSteps();
 
   lv_label_set_text_fmt(lSteps, "%li", stepsCount);
-  lv_obj_align(lSteps, nullptr, LV_ALIGN_CENTER, 0, -40);
+  lv_obj_align(lSteps, LV_ALIGN_CENTER, 0, -40);
 
   if (currentTripSteps < 100000) {
     lv_label_set_text_fmt(tripLabel, "Trip: %5li", currentTripSteps);

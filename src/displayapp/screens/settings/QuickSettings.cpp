@@ -48,8 +48,8 @@ QuickSettings::QuickSettings(Pinetime::Applications::DisplayApp* app,
 
   // Time
   label_time = lv_label_create(lv_scr_act());
-  lv_label_set_align(label_time, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_TOP_LEFT, 0, 0);
+  lv_obj_set_align(label_time, LV_ALIGN_CENTER);
+  lv_obj_align(label_time, LV_ALIGN_TOP_LEFT, 0, 0);
 
   static constexpr uint8_t barHeight = 20 + innerDistance;
   static constexpr uint8_t buttonHeight = (LV_VER_RES - barHeight - innerDistance) / 2;
@@ -58,44 +58,44 @@ QuickSettings::QuickSettings(Pinetime::Applications::DisplayApp* app,
   static constexpr uint8_t buttonXOffset = (LV_HOR_RES - buttonWidth * 2 - innerDistance) / 2;
 
   lv_style_init(&btn_style);
-  lv_style_set_radius(&btn_style, LV_STATE_DEFAULT, buttonHeight / 4);
-  lv_style_set_bg_color(&btn_style, LV_STATE_DEFAULT, Colors::bgAlt);
+  lv_style_set_radius(&btn_style, buttonHeight / 4);
+  lv_style_set_bg_color(&btn_style, Colors::bgAlt);
 
-  btn1 = lv_btn_create(lv_scr_act(), nullptr);
+  btn1 = lv_button_create(lv_scr_act());
   btn1->user_data = this;
-  lv_obj_set_event_cb(btn1, ButtonEventHandler);
+  lv_obj_add_event_cb(btn1, ButtonEventHandler);
   lv_obj_add_style(btn1, LV_PART_MAIN, &btn_style);
   lv_obj_set_size(btn1, buttonWidth, buttonHeight);
-  lv_obj_align(btn1, nullptr, LV_ALIGN_TOP_LEFT, buttonXOffset, barHeight);
+  lv_obj_align(btn1, LV_ALIGN_TOP_LEFT, buttonXOffset, barHeight);
 
   btn1_lvl = lv_label_create(btn1);
-  lv_obj_set_style_local_text_font(btn1_lvl, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_sys_48);
+  lv_obj_set_style_text_font(btn1_lvl, &lv_font_sys_48, LV_STATE_DEFAULT);
   lv_label_set_text_static(btn1_lvl, brightness.GetIcon());
 
-  btn2 = lv_btn_create(lv_scr_act(), nullptr);
+  btn2 = lv_button_create(lv_scr_act());
   btn2->user_data = this;
-  lv_obj_set_event_cb(btn2, ButtonEventHandler);
+  lv_obj_add_event_cb(btn2, ButtonEventHandler);
   lv_obj_add_style(btn2, LV_PART_MAIN, &btn_style);
   lv_obj_set_size(btn2, buttonWidth, buttonHeight);
-  lv_obj_align(btn2, nullptr, LV_ALIGN_TOP_RIGHT, -buttonXOffset, barHeight);
+  lv_obj_align(btn2, LV_ALIGN_TOP_RIGHT, -buttonXOffset, barHeight);
 
   lv_obj_t* lbl_btn;
   lbl_btn = lv_label_create(btn2);
-  lv_obj_set_style_local_text_font(lbl_btn, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_sys_48);
+  lv_obj_set_style_text_font(lbl_btn, &lv_font_sys_48, LV_STATE_DEFAULT);
   lv_label_set_text_static(lbl_btn, Symbols::flashlight);
 
-  btn3 = lv_btn_create(lv_scr_act(), nullptr);
+  btn3 = lv_button_create(lv_scr_act());
   btn3->user_data = this;
-  lv_obj_set_event_cb(btn3, ButtonEventHandler);
+  lv_obj_add_event_cb(btn3, ButtonEventHandler);
   lv_obj_add_style(btn3, LV_PART_MAIN, &btn_style);
   lv_obj_set_style_bg_color(btn3, PINETIME_COLOR_RED, LV_PART_MAIN);
   static constexpr lv_color_t violet = LV_COLOR_MAKE(0x60, 0x00, 0xff);
   lv_obj_set_style_bg_color(btn3, violet, LV_PART_MAIN);
   lv_obj_set_size(btn3, buttonWidth, buttonHeight);
-  lv_obj_align(btn3, nullptr, LV_ALIGN_BOTTOM_LEFT, buttonXOffset, 0);
+  lv_obj_align(btn3, LV_ALIGN_BOTTOM_LEFT, buttonXOffset, 0);
 
   btn3_lvl = lv_label_create(btn3);
-  lv_obj_set_style_local_text_font(btn3_lvl, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_sys_48);
+  lv_obj_set_style_text_font(btn3_lvl, &lv_font_sys_48, LV_STATE_DEFAULT);
 
   if (settingsController.GetNotificationStatus() == Controllers::Settings::Notification::On) {
     lv_label_set_text_static(btn3_lvl, Symbols::notificationsOn);
@@ -107,15 +107,15 @@ QuickSettings::QuickSettings(Pinetime::Applications::DisplayApp* app,
     lv_obj_set_state(btn3, static_cast<lv_state_t>(ButtonState::Sleep));
   }
 
-  btn4 = lv_btn_create(lv_scr_act(), nullptr);
+  btn4 = lv_button_create(lv_scr_act());
   btn4->user_data = this;
-  lv_obj_set_event_cb(btn4, ButtonEventHandler);
+  lv_obj_add_event_cb(btn4, ButtonEventHandler);
   lv_obj_add_style(btn4, LV_PART_MAIN, &btn_style);
   lv_obj_set_size(btn4, buttonWidth, buttonHeight);
-  lv_obj_align(btn4, nullptr, LV_ALIGN_BOTTOM_RIGHT, -buttonXOffset, 0);
+  lv_obj_align(btn4, LV_ALIGN_BOTTOM_RIGHT, -buttonXOffset, 0);
 
   lbl_btn = lv_label_create(btn4);
-  lv_obj_set_style_local_text_font(lbl_btn, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_sys_48);
+  lv_obj_set_style_text_font(lbl_btn, &lv_font_sys_48, LV_STATE_DEFAULT);
   lv_label_set_text_static(lbl_btn, Symbols::settings);
 
   taskUpdate = lv_timer_create(lv_update_task, 5000, this);
@@ -124,7 +124,7 @@ QuickSettings::QuickSettings(Pinetime::Applications::DisplayApp* app,
 
 QuickSettings::~QuickSettings() {
   lv_style_reset(&btn_style);
-  lv_task_del(taskUpdate);
+  lv_timer_del(taskUpdate);
   lv_obj_clean(lv_scr_act());
   settingsController.SaveSettings();
 }

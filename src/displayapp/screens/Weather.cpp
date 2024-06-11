@@ -1,4 +1,5 @@
 #include "displayapp/screens/Weather.h"
+#include "displayapp/Colors.h"
 #include <lvgl/lvgl.h>
 #include "components/ble/SimpleWeatherService.h"
 #include "components/datetime/DateTimeController.h"
@@ -41,76 +42,77 @@ Weather::Weather(Controllers::Settings& settingsController, Controllers::SimpleW
   : settingsController {settingsController}, weatherService {weatherService} {
 
   temperature = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(temperature, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_white());
-  lv_obj_set_style_local_text_font(temperature, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
+  lv_obj_set_style_text_color(temperature, lv_color_white(), LV_STATE_DEFAULT);
+  lv_obj_set_style_text_font(temperature, &jetbrains_mono_42, LV_STATE_DEFAULT);
   lv_label_set_text(temperature, "---");
-  lv_obj_align(temperature, nullptr, LV_ALIGN_CENTER, 0, -30);
+  lv_obj_align(temperature, LV_ALIGN_CENTER, 0, -30);
   lv_obj_set_auto_realign(temperature, true);
 
   minTemperature = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(minTemperature, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::bg);
+  lv_obj_set_style_text_color(minTemperature, Colors::bg, LV_STATE_DEFAULT);
   lv_label_set_text(minTemperature, "");
-  lv_obj_align(minTemperature, temperature, LV_ALIGN_OUT_LEFT_MID, -10, 0);
+  lv_obj_align(minTemperature, LV_ALIGN_OUT_LEFT_MID, -10, 0);
   lv_obj_set_auto_realign(minTemperature, true);
 
   maxTemperature = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(maxTemperature, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::bg);
+  lv_obj_set_style_text_color(maxTemperature, Colors::bg, LV_STATE_DEFAULT);
   lv_label_set_text(maxTemperature, "");
-  lv_obj_align(maxTemperature, temperature, LV_ALIGN_OUT_RIGHT_MID, 10, 0);
+  lv_obj_align(maxTemperature, LV_ALIGN_OUT_RIGHT_MID, 10, 0);
   lv_obj_set_auto_realign(maxTemperature, true);
 
   condition = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(condition, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
+  lv_obj_set_style_text_color(condition, Colors::lightGray, LV_STATE_DEFAULT);
   lv_label_set_text(condition, "");
-  lv_obj_align(condition, temperature, LV_ALIGN_OUT_TOP_MID, 0, -10);
+  lv_obj_align(condition, LV_ALIGN_OUT_TOP_MID, 0, -10);
   lv_obj_set_auto_realign(condition, true);
 
   icon = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(icon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_white());
-  lv_obj_set_style_local_text_font(icon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &fontawesome_weathericons);
+  lv_obj_set_style_text_color(icon, lv_color_white(), LV_STATE_DEFAULT);
+  lv_obj_set_style_text_font(icon, &fontawesome_weathericons, LV_STATE_DEFAULT);
   lv_label_set_text(icon, "");
-  lv_obj_align(icon, condition, LV_ALIGN_OUT_TOP_MID, 0, 0);
+  lv_obj_align(icon, LV_ALIGN_OUT_TOP_MID, 0, 0);
   lv_obj_set_auto_realign(icon, true);
 
-  forecast = lv_table_create(lv_scr_act(), nullptr);
+  forecast = lv_table_create(lv_scr_act());
   lv_table_set_col_cnt(forecast, Controllers::SimpleWeatherService::MaxNbForecastDays);
   lv_table_set_row_cnt(forecast, 4);
   // LV_TABLE_PART_CELL1: Default table style
   lv_obj_set_style_border_color(forecast, lv_color_black(), LV_TABLE_PART_CELL1);
-  lv_obj_set_style_local_text_color(forecast, LV_TABLE_PART_CELL1, LV_STATE_DEFAULT, Colors::lightGray);
+  lv_obj_set_style_text_color(forecast, Colors::lightGray, LV_STATE_DEFAULT);
   // LV_TABLE_PART_CELL2: Condition icon
   lv_obj_set_style_border_color(forecast, lv_color_black(), LV_TABLE_PART_CELL2);
-  lv_obj_set_style_local_text_color(forecast, LV_TABLE_PART_CELL2, LV_STATE_DEFAULT, lv_color_white());
-  lv_obj_set_style_local_text_font(forecast, LV_TABLE_PART_CELL2, LV_STATE_DEFAULT, &fontawesome_weathericons);
+  lv_obj_set_style_text_color(forecast, lv_color_white(), LV_STATE_DEFAULT);
+  lv_obj_set_style_text_font(forecast, &fontawesome_weathericons, LV_STATE_DEFAULT);
   // LV_TABLE_PART_CELL3: Freezing
   lv_obj_set_style_border_color(forecast, lv_color_black(), LV_TABLE_PART_CELL3);
-  lv_obj_set_style_local_text_color(forecast, LV_TABLE_PART_CELL3, LV_STATE_DEFAULT, Colors::blue);
+  lv_obj_set_style_text_color(forecast, Colors::blue, LV_STATE_DEFAULT);
   // LV_TABLE_PART_CELL4: Ice
   lv_obj_set_style_border_color(forecast, lv_color_black(), LV_TABLE_PART_CELL4);
-  lv_obj_set_style_local_text_color(forecast, LV_TABLE_PART_CELL4, LV_STATE_DEFAULT, PINETIME_COLOR_CYAN);
+  lv_obj_set_style_text_color(forecast, PINETIME_COLOR_CYAN, LV_STATE_DEFAULT);
   // LV_TABLE_PART_CELL5: Normal
   lv_obj_set_style_border_color(forecast, lv_color_black(), LV_TABLE_PART_CELL5);
-  lv_obj_set_style_local_text_color(forecast, LV_TABLE_PART_CELL5, LV_STATE_DEFAULT, Colors::orange);
+  lv_obj_set_style_text_color(forecast, Colors::orange, LV_STATE_DEFAULT);
   // LV_TABLE_PART_CELL6: Hot
   lv_obj_set_style_border_color(forecast, lv_color_black(), LV_TABLE_PART_CELL6);
-  lv_obj_set_style_local_text_color(forecast, LV_TABLE_PART_CELL6, LV_STATE_DEFAULT, Colors::deepOrange);
+  lv_obj_set_style_text_color(forecast, Colors::deepOrange, LV_STATE_DEFAULT);
 
-  lv_obj_align(forecast, nullptr, LV_ALIGN_BOTTOM_LEFT, 0, 0);
+  lv_obj_align(forecast, LV_ALIGN_BOTTOM_LEFT, 0, 0);
 
   for (int i = 0; i < Controllers::SimpleWeatherService::MaxNbForecastDays; i++) {
     lv_table_set_col_width(forecast, i, 48);
     lv_table_set_cell_type(forecast, 1, i, LV_TABLE_PART_CELL2);
-    lv_table_set_cell_align(forecast, 0, i, LV_LABEL_ALIGN_CENTER);
-    lv_table_set_cell_align(forecast, 1, i, LV_LABEL_ALIGN_CENTER);
-    lv_table_set_cell_align(forecast, 2, i, LV_LABEL_ALIGN_CENTER);
-    lv_table_set_cell_align(forecast, 3, i, LV_LABEL_ALIGN_CENTER);
+    lv_table_set_cell_align(forecast, 0, i, LV_ALIGN_CENTER);
+    lv_table_set_cell_align(forecast, 1, i, LV_ALIGN_CENTER);
+    lv_table_set_cell_align(forecast, 2, i, LV_ALIGN_CENTER);
+    lv_table_set_cell_align(forecast, 3, i, LV_ALIGN_CENTER);
   }
 
-  taskRefresh = lv_timer_create(RefreshTaskCallback, 1000, this);  Refresh();
+  taskRefresh = lv_timer_create(RefreshTaskCallback, 1000, this);
+  Refresh();
 }
 
 Weather::~Weather() {
-  lv_task_del(taskRefresh);
+  lv_timer_del(taskRefresh);
   lv_obj_clean(lv_scr_act());
 }
 
@@ -122,7 +124,7 @@ void Weather::Refresh() {
       int16_t temp = optCurrentWeather->temperature;
       int16_t minTemp = optCurrentWeather->minTemperature;
       int16_t maxTemp = optCurrentWeather->maxTemperature;
-      lv_obj_set_style_local_text_color(temperature, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, TemperatureColor(temp));
+      lv_obj_set_style_text_color(temperature, TemperatureColor(temp), LV_STATE_DEFAULT);
       char tempUnit = 'C';
       if (settingsController.GetWeatherFormat() == Controllers::Settings::WeatherFormat::Imperial) {
         temp = Controllers::SimpleWeatherService::CelsiusToFahrenheit(temp);
@@ -139,7 +141,7 @@ void Weather::Refresh() {
       lv_label_set_text(icon, "");
       lv_label_set_text(condition, "");
       lv_label_set_text(temperature, "---");
-      lv_obj_set_style_local_text_color(temperature, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_white());
+      lv_obj_set_style_text_color(temperature, lv_color_white(), LV_STATE_DEFAULT);
       lv_label_set_text(minTemperature, "");
       lv_label_set_text(maxTemperature, "");
     }

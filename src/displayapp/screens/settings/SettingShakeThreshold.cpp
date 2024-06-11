@@ -21,19 +21,19 @@ SettingShakeThreshold::SettingShakeThreshold(Controllers::Settings& settingsCont
 
   lv_obj_t* title = lv_label_create(lv_scr_act());
   lv_label_set_text_static(title, "Wake Sensitivity");
-  lv_label_set_align(title, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(title, lv_scr_act(), LV_ALIGN_TOP_MID, 0, 0);
+  lv_obj_set_align(title, LV_ALIGN_CENTER);
+  lv_obj_align(title, LV_ALIGN_TOP_MID, 0, 0);
 
   positionArc = lv_arc_create(lv_scr_act(), nullptr);
   positionArc->user_data = this;
 
-  lv_obj_set_event_cb(positionArc, event_handler);
+  lv_obj_add_event_cb(positionArc, event_handler);
   lv_arc_set_bg_angles(positionArc, 180, 360);
   lv_arc_set_range(positionArc, 0, 4095);
   lv_arc_set_adjustable(positionArc, true);
   lv_obj_set_width(positionArc, lv_obj_get_width(lv_scr_act()) - 10);
   lv_obj_set_height(positionArc, 240);
-  lv_obj_align(positionArc, title, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
+  lv_obj_align(positionArc, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
 
   animArc = lv_arc_create(positionArc, positionArc);
   lv_arc_set_adjustable(animArc, false);
@@ -49,12 +49,12 @@ SettingShakeThreshold::SettingShakeThreshold(Controllers::Settings& settingsCont
   animArc->user_data = this;
   lv_obj_set_click(animArc, false);
 
-  calButton = lv_btn_create(lv_scr_act(), nullptr);
+  calButton = lv_button_create(lv_scr_act());
   calButton->user_data = this;
-  lv_obj_set_event_cb(calButton, event_handler);
+  lv_obj_add_event_cb(calButton, event_handler);
   lv_obj_set_height(calButton, 80);
   lv_obj_set_width(calButton, 200);
-  lv_obj_align(calButton, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, 0);
+  lv_obj_align(calButton, LV_ALIGN_BOTTOM_MID, 0, 0);
   lv_btn_set_checkable(calButton, true);
   calLabel = lv_label_create(calButton);
   lv_label_set_text_static(calLabel, "Calibrate");
@@ -68,7 +68,8 @@ SettingShakeThreshold::SettingShakeThreshold(Controllers::Settings& settingsCont
     EnableForCal = true;
     settingsController.setWakeUpMode(Pinetime::Controllers::Settings::WakeUpMode::Shake, true);
   }
-  refreshTask = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);}
+  refreshTask = lv_timer_create(RefreshTaskCallback, LV_DEF_REFR_PERIOD, this);
+}
 
 SettingShakeThreshold::~SettingShakeThreshold() {
   settingsController.SetShakeThreshold(lv_arc_get_value(positionArc));
@@ -77,7 +78,7 @@ SettingShakeThreshold::~SettingShakeThreshold() {
     settingsController.setWakeUpMode(Pinetime::Controllers::Settings::WakeUpMode::Shake, false);
     EnableForCal = false;
   }
-  lv_task_del(refreshTask);
+  lv_timer_del(refreshTask);
   settingsController.SaveSettings();
   lv_obj_clean(lv_scr_act());
 }

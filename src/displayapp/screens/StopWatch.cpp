@@ -37,47 +37,48 @@ namespace {
 StopWatch::StopWatch(System::SystemTask& systemTask) : systemTask {systemTask} {
   static constexpr uint8_t btnWidth = 115;
   static constexpr uint8_t btnHeight = 80;
-  btnPlayPause = lv_btn_create(lv_scr_act(), nullptr);
+  btnPlayPause = lv_button_create(lv_scr_act());
   btnPlayPause->user_data = this;
-  lv_obj_set_event_cb(btnPlayPause, play_pause_event_handler);
+  lv_obj_add_event_cb(btnPlayPause, play_pause_event_handler);
   lv_obj_set_size(btnPlayPause, btnWidth, btnHeight);
-  lv_obj_align(btnPlayPause, lv_scr_act(), LV_ALIGN_BOTTOM_RIGHT, 0, 0);
+  lv_obj_align(btnPlayPause, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
   txtPlayPause = lv_label_create(btnPlayPause);
 
-  btnStopLap = lv_btn_create(lv_scr_act(), nullptr);
+  btnStopLap = lv_button_create(lv_scr_act());
   btnStopLap->user_data = this;
-  lv_obj_set_event_cb(btnStopLap, stop_lap_event_handler);
+  lv_obj_add_event_cb(btnStopLap, stop_lap_event_handler);
   lv_obj_set_size(btnStopLap, btnWidth, btnHeight);
-  lv_obj_align(btnStopLap, lv_scr_act(), LV_ALIGN_BOTTOM_LEFT, 0, 0);
+  lv_obj_align(btnStopLap, LV_ALIGN_BOTTOM_LEFT, 0, 0);
   txtStopLap = lv_label_create(btnStopLap);
   lv_obj_set_state(btnStopLap, LV_STATE_DISABLED);
   lv_obj_set_state(txtStopLap, LV_STATE_DISABLED);
 
   lapText = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(lapText, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::lightGray);
+  lv_obj_set_style_text_color(lapText, Colors::lightGray, LV_STATE_DEFAULT);
   lv_label_set_text_static(lapText, "\n");
-  lv_label_set_long_mode(lapText, LV_LABEL_LONG_BREAK);
-  lv_label_set_align(lapText, LV_LABEL_ALIGN_CENTER);
+  lv_label_set_long_mode(lapText, LV_LABEL_LONG_WRAP);
+  lv_obj_set_align(lapText, LV_ALIGN_CENTER);
   lv_obj_set_width(lapText, LV_HOR_RES);
-  lv_obj_align(lapText, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, -btnHeight);
+  lv_obj_align(lapText, LV_ALIGN_BOTTOM_MID, 0, -btnHeight);
 
   msecTime = lv_label_create(lv_scr_act());
   lv_label_set_text_static(msecTime, "00");
-  lv_obj_set_style_local_text_color(msecTime, LV_LABEL_PART_MAIN, LV_STATE_DISABLED, Colors::lightGray);
-  lv_obj_align(msecTime, lapText, LV_ALIGN_OUT_TOP_MID, 0, 0);
+  lv_obj_set_style_text_color(msecTime, Colors::lightGray, LV_STATE_DISABLED);
+  lv_obj_align(msecTime, LV_ALIGN_OUT_TOP_MID, 0, 0);
 
   time = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_font(time, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_76);
+  lv_obj_set_style_text_font(time, &jetbrains_mono_76, LV_STATE_DEFAULT);
   lv_label_set_text_static(time, "00:00");
-  lv_obj_set_style_local_text_color(time, LV_LABEL_PART_MAIN, LV_STATE_DISABLED, Colors::lightGray);
-  lv_obj_align(time, msecTime, LV_ALIGN_OUT_TOP_MID, 0, 0);
+  lv_obj_set_style_text_color(time, Colors::lightGray, LV_STATE_DISABLED);
+  lv_obj_align(time, LV_ALIGN_OUT_TOP_MID, 0, 0);
 
   SetInterfaceStopped();
 
-  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);}
+  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DEF_REFR_PERIOD, this);
+}
 
 StopWatch::~StopWatch() {
-  lv_task_del(taskRefresh);
+  lv_timer_del(taskRefresh);
   systemTask.PushMessage(Pinetime::System::Messages::EnableSleeping);
   lv_obj_clean(lv_scr_act());
 }
@@ -111,7 +112,7 @@ void StopWatch::SetInterfaceStopped() {
   lv_label_set_text_static(msecTime, "00");
 
   if (isHoursLabelUpdated) {
-    lv_obj_set_style_local_text_font(time, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_76);
+    lv_obj_set_style_text_font(time, &jetbrains_mono_76, LV_STATE_DEFAULT);
 
     isHoursLabelUpdated = false;
   }
@@ -157,7 +158,7 @@ void StopWatch::Refresh() {
     } else {
       lv_label_set_text_fmt(time, "%02d:%02d:%02d", currentTimeSeparated.hours, currentTimeSeparated.mins, currentTimeSeparated.secs);
       if (!isHoursLabelUpdated) {
-        lv_obj_set_style_local_text_font(time, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &jetbrains_mono_42);
+        lv_obj_set_style_text_font(time, &jetbrains_mono_42, LV_STATE_DEFAULT);
 
         isHoursLabelUpdated = true;
       }
@@ -167,7 +168,7 @@ void StopWatch::Refresh() {
     const TickType_t currentTime = xTaskGetTickCount();
     if (currentTime > blinkTime) {
       blinkTime = currentTime + blinkInterval;
-      if (lv_obj_get_state(time, LV_LABEL_PART_MAIN) == LV_STATE_DEFAULT) {
+      if (lv_obj_get_state(time, LV_PART_MAIN) == LV_STATE_DEFAULT) {
         lv_obj_set_state(time, LV_STATE_DISABLED);
         lv_obj_set_state(msecTime, LV_STATE_DISABLED);
       } else {

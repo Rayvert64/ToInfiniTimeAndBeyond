@@ -17,12 +17,13 @@ void DotIndicator::Create() {
   lv_obj_set_style_local_bg_opa(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
 
   for (int i = 0; i < nScreens; i++) {
-    dotIndicator[i] = lv_obj_create(container);;
+    dotIndicator[i] = lv_obj_create(container);
+    ;
     lv_obj_set_size(dotIndicator[i], dotSize, dotSize);
     lv_obj_set_style_bg_color(dotIndicator[i], PINETIME_COLOR_GRAY, LV_PART_MAIN);
   }
 
   lv_obj_set_style_bg_color(dotIndicator[nCurrentScreen], lv_color_white(), LV_PART_MAIN);
 
-  lv_obj_align(container, nullptr, LV_ALIGN_RIGHT_MID, 0, 0);
+  lv_obj_align(container, LV_ALIGN_RIGHT_MID, 0, 0);
 }

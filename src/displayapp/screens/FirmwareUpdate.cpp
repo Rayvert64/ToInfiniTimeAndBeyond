@@ -9,24 +9,23 @@ FirmwareUpdate::FirmwareUpdate(const Pinetime::Controllers::Ble& bleController) 
 
   titleLabel = lv_label_create(lv_scr_act());
   lv_label_set_text_static(titleLabel, "Firmware update");
-  lv_obj_align(titleLabel, nullptr, LV_ALIGN_TOP_MID, 0, 50);
+  lv_obj_align(titleLabel, LV_ALIGN_TOP_MID, 0, 50);
 
-  bar1 = lv_bar_create(lv_scr_act(), nullptr);
+  bar1 = lv_bar_create(lv_scr_act());
   lv_obj_set_size(bar1, 200, 30);
-  lv_obj_align(bar1, nullptr, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_align(bar1, LV_ALIGN_CENTER, 0, 0);
   lv_bar_set_range(bar1, 0, 1000);
   lv_bar_set_value(bar1, 0, LV_ANIM_OFF);
 
   percentLabel = lv_label_create(lv_scr_act());
   lv_label_set_text_static(percentLabel, "Waiting...");
-  lv_label_set_recolor(percentLabel, true);
-  lv_obj_set_auto_realign(percentLabel, true);
-  lv_obj_align(percentLabel, bar1, LV_ALIGN_OUT_TOP_MID, 0, 60);
-  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DISP_DEF_REFR_PERIOD, this);  startTime = xTaskGetTickCount();
+  lv_obj_align(percentLabel, LV_ALIGN_OUT_TOP_MID, 0, 60);
+  taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DEF_REFR_PERIOD, this);
+  startTime = xTaskGetTickCount();
 }
 
 FirmwareUpdate::~FirmwareUpdate() {
-  lv_task_del(taskRefresh);
+  lv_timer_del(taskRefresh);
   lv_obj_clean(lv_scr_act());
 }
 
@@ -72,11 +71,11 @@ void FirmwareUpdate::Refresh() {
 void FirmwareUpdate::DisplayProgression() const {
   const uint32_t current = bleController.FirmwareUpdateCurrentBytes();
   const uint32_t total = bleController.FirmwareUpdateTotalBytes();
-  const int16_t permille = current / (total / 1000);
+  const uint32_t permille = current / (total / 1000);
 
-  lv_label_set_text_fmt(percentLabel, "%d %%", permille / 10);
+  lv_label_set_text_fmt(percentLabel, "%" PRIu32 " %%", permille / 10);
 
-  lv_bar_set_value(bar1, permille, LV_ANIM_OFF);
+  lv_bar_set_value(bar1, static_cast<int32_t>(permille), LV_ANIM_OFF);
 }
 
 void FirmwareUpdate::UpdateValidated() {

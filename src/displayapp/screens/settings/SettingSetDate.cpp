@@ -51,40 +51,40 @@ SettingSetDate::SettingSetDate(Pinetime::Controllers::DateTime& dateTimeControll
 
   lv_obj_t* title = lv_label_create(lv_scr_act());
   lv_label_set_text_static(title, "Set current date");
-  lv_label_set_align(title, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(title, lv_scr_act(), LV_ALIGN_TOP_MID, 15, 15);
+  lv_obj_set_align(title, LV_ALIGN_CENTER);
+  lv_obj_align(title, LV_ALIGN_TOP_MID, 15, 15);
 
   lv_obj_t* icon = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(icon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, PINETIME_COLOR_ORANGE);
+  lv_obj_set_style_text_color(icon, PINETIME_COLOR_ORANGE, LV_STATE_DEFAULT);
 
   lv_label_set_text_static(icon, Symbols::clock);
-  lv_label_set_align(icon, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(icon, title, LV_ALIGN_OUT_LEFT_MID, -10, 0);
+  lv_obj_set_align(icon, LV_ALIGN_CENTER);
+  lv_obj_align(icon, LV_ALIGN_OUT_LEFT_MID, -10, 0);
 
   dayCounter.SetValueChangedEventCallback(this, ValueChangedHandler);
   dayCounter.Create();
-  dayCounter.SetValue(dateTimeController.Day());
-  lv_obj_align(dayCounter.GetObject(), nullptr, LV_ALIGN_CENTER, POS_X_DAY, POS_Y_TEXT);
+  lv_roller_set_selected(dayCounter.get(), dateTimeController.Day(), LV_ANIM_ON);
+  lv_obj_align(dayCounter.GetObject(), LV_ALIGN_CENTER, POS_X_DAY, POS_Y_TEXT);
 
   monthCounter.EnableMonthMode();
   monthCounter.SetValueChangedEventCallback(this, ValueChangedHandler);
   monthCounter.Create();
-  monthCounter.SetValue(static_cast<int>(dateTimeController.Month()));
-  lv_obj_align(monthCounter.GetObject(), nullptr, LV_ALIGN_CENTER, POS_X_MONTH, POS_Y_TEXT);
+  lv_roller_set_selected(monthCounter.get(), static_cast<int>(dateTimeController.Month()), LV_ANIM_ON);
+  lv_obj_align(monthCounter.GetObject(), LV_ALIGN_CENTER, POS_X_MONTH, POS_Y_TEXT);
 
   yearCounter.SetValueChangedEventCallback(this, ValueChangedHandler);
   yearCounter.Create();
-  yearCounter.SetValue(dateTimeController.Year());
-  lv_obj_align(yearCounter.GetObject(), nullptr, LV_ALIGN_CENTER, POS_X_YEAR, POS_Y_TEXT);
+  lv_roller_set_selected(yearCounter.get(), dateTimeController.Year(), LV_ANIM_ON);
+  lv_obj_align(yearCounter.GetObject(), LV_ALIGN_CENTER, POS_X_YEAR, POS_Y_TEXT);
 
-  btnSetTime = lv_btn_create(lv_scr_act(), nullptr);
+  btnSetTime = lv_button_create(lv_scr_act());
   btnSetTime->user_data = this;
   lv_obj_set_size(btnSetTime, 120, 48);
-  lv_obj_align(btnSetTime, lv_scr_act(), LV_ALIGN_BOTTOM_MID, 0, 0);
+  lv_obj_align(btnSetTime, LV_ALIGN_BOTTOM_MID, 0, 0);
   lv_obj_set_style_bg_color(btnSetTime, LV_PART_MAIN, LV_STATE_DEFAULT, 0x38), LV_COLOR_MAKE(0x38);
   lblSetTime = lv_label_create(btnSetTime);
   lv_label_set_text_static(lblSetTime, "Set");
-  lv_obj_set_event_cb(btnSetTime, event_handler);
+  lv_obj_add_event_cb(btnSetTime, event_handler);
 }
 
 SettingSetDate::~SettingSetDate() {
@@ -92,9 +92,9 @@ SettingSetDate::~SettingSetDate() {
 }
 
 void SettingSetDate::HandleButtonPress() {
-  const uint16_t yearValue = yearCounter.GetValue();
-  const uint8_t monthValue = monthCounter.GetValue();
-  const uint8_t dayValue = dayCounter.GetValue();
+  const uint16_t yearValue = lv_roller_get_selected(yearCounter.get());
+  const uint8_t monthValue = lv_roller_get_selected(monthCounter.get());
+  const uint8_t dayValue = lv_roller_get_selected(dayCounter.get());
   NRF_LOG_INFO("Setting date (manually) to %04d-%02d-%02d", yearValue, monthValue, dayValue);
   dateTimeController
     .SetTime(yearValue, monthValue, dayValue, dateTimeController.Hours(), dateTimeController.Minutes(), dateTimeController.Seconds());
@@ -102,6 +102,6 @@ void SettingSetDate::HandleButtonPress() {
 }
 
 void SettingSetDate::CheckDay() {
-  const int maxDay = MaximumDayOfMonth(monthCounter.GetValue(), yearCounter.GetValue());
+  const int maxDay = MaximumDayOfMonth(lv_roller_get_selected(monthCounter.get()), lv_roller_get_selected(yearCounter.get()));
   dayCounter.SetMax(maxDay);
 }

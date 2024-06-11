@@ -1,5 +1,6 @@
 #include <FreeRTOS.h>
 #include <algorithm>
+#include <lvgl/src/widgets/table/lv_table.h>
 #include <task.h>
 #include "displayapp/screens/SystemInfo.h"
 #include <lvgl/lvgl.h>
@@ -77,10 +78,10 @@ bool SystemInfo::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
 
 std::unique_ptr<Screen> SystemInfo::CreateScreen1() {
   lv_obj_t* label = lv_label_create(lv_scr_act());
-  lv_label_set_recolor(label, true);
+
   lv_label_set_text_fmt(label,
                         "#FFFF00 InfiniTime#\n\n"
-                        "#808080 Version# %ld.%ld.%ld\n"
+                        "#808080 Version# %" PRIi32 ".%" PRIi32 ".%" PRIi32 "\n"
                         "#808080 Short Ref# %s\n"
                         "#808080 Build date#\n"
                         "%s\n"
@@ -93,8 +94,8 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen1() {
                         __DATE__,
                         __TIME__,
                         BootloaderVersion::VersionString());
-  lv_label_set_align(label, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(label, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+  lv_obj_set_align(label, LV_ALIGN_CENTER);
+  lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
   return std::make_unique<Screens::Label>(0, 5, label);
 }
 
@@ -143,11 +144,11 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen2() {
 #endif
 
   lv_obj_t* label = lv_label_create(lv_scr_act());
-  lv_label_set_recolor(label, true);
+
   lv_label_set_text_fmt(label,
                         "#808080 Date# %04d-%02d-%02d\n"
                         "#808080 Time# %02d:%02d:%02d\n"
-                        "#808080 Uptime#\n %02lud %02lu:%02lu:%02lu\n"
+                        "#808080 Uptime#\n %02ud %02u:%02" PRIu32 ":%02u\n"
                         "#808080 Battery# %d%%/%03imV\n"
                         "#808080 Backlight# %s\n"
                         "#808080 Last reset# %s\n"
@@ -173,18 +174,19 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen2() {
                         touchPanel.GetVendorId(),
                         touchPanel.GetFwVersion(),
                         TARGET_DEVICE_NAME);
-  lv_obj_align(label, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+  lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
   return std::make_unique<Screens::Label>(1, 5, label);
 }
 
 extern int mallocFailedCount;
 extern int stackOverflowCount;
+
 std::unique_ptr<Screen> SystemInfo::CreateScreen3() {
   lv_mem_monitor_t mon;
   lv_mem_monitor(&mon);
 
   lv_obj_t* label = lv_label_create(lv_scr_act());
-  lv_label_set_recolor(label, true);
+
   const auto& bleAddr = bleController.Address();
   lv_label_set_text_fmt(label,
                         "#808080 BLE MAC#\n"
@@ -206,7 +208,7 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen3() {
                         xPortGetMinimumEverFreeHeapSize(),
                         mallocFailedCount,
                         stackOverflowCount);
-  lv_obj_align(label, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+  lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
   return std::make_unique<Screens::Label>(2, 5, label);
 }
 
@@ -218,11 +220,11 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen4() {
   static constexpr uint8_t maxTaskCount = 9;
   TaskStatus_t tasksStatus[maxTaskCount];
 
-  lv_obj_t* infoTask = lv_table_create(lv_scr_act(), nullptr);
+  lv_obj_t* infoTask = lv_table_create(lv_scr_act());
   lv_table_set_col_cnt(infoTask, 4);
   lv_table_set_row_cnt(infoTask, maxTaskCount + 1);
-  lv_obj_set_style_local_pad_all(infoTask, LV_TABLE_PART_CELL1, LV_STATE_DEFAULT, 0);
-  lv_obj_set_style_border_color(infoTask, Colors::lightGray, LV_TABLE_PART_CELL1);
+  lv_obj_set_style_pad_all(infoTask, 0, LV_STATE_DEFAULT);
+  lv_obj_set_style_border_color(infoTask, Colors::lightGray, LV_TABLE_CELL_CTRL_CUSTOM_1);
 
   lv_table_set_cell_value(infoTask, 0, 0, "#");
   lv_table_set_col_width(infoTask, 0, 30);
@@ -238,7 +240,7 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen4() {
   for (uint8_t i = 0; i < nb && i < maxTaskCount; i++) {
     char buffer[11] = {0};
 
-    snprintf(buffer, sizeof(buffer), "%lu", tasksStatus[i].xTaskNumber);
+    (void) snprintf(buffer, sizeof(buffer), "%ul", tasksStatus[i].xTaskNumber);
     lv_table_set_cell_value(infoTask, i + 1, 0, buffer);
     switch (tasksStatus[i].eCurrentState) {
       case eReady:
@@ -273,7 +275,7 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen4() {
 
 std::unique_ptr<Screen> SystemInfo::CreateScreen5() {
   lv_obj_t* label = lv_label_create(lv_scr_act());
-  lv_label_set_recolor(label, true);
+
   lv_label_set_text_static(label,
                            "Software Licensed\n"
                            "under the terms of\n"
@@ -283,7 +285,7 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen5() {
                            "#FFFF00 https://github.com/#\n"
                            "#FFFF00 InfiniTimeOrg/#\n"
                            "#FFFF00 InfiniTime#");
-  lv_label_set_align(label, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(label, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+  lv_obj_set_align(label, LV_ALIGN_CENTER);
+  lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
   return std::make_unique<Screens::Label>(4, 5, label);
 }

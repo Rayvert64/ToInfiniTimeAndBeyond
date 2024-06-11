@@ -34,14 +34,14 @@ SettingDisplay::SettingDisplay(Pinetime::Applications::DisplayApp* app, Pinetime
 
   lv_obj_t* title = lv_label_create(lv_scr_act());
   lv_label_set_text_static(title, "Display timeout");
-  lv_label_set_align(title, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(title, lv_scr_act(), LV_ALIGN_TOP_MID, 10, 15);
+  lv_obj_set_align(title, LV_ALIGN_CENTER);
+  lv_obj_align(title, LV_ALIGN_TOP_MID, 10, 15);
 
   lv_obj_t* icon = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_color(icon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, PINETIME_COLOR_ORANGE);
+  lv_obj_set_style_text_color(icon, PINETIME_COLOR_ORANGE, LV_STATE_DEFAULT);
   lv_label_set_text_static(icon, Symbols::sun);
-  lv_label_set_align(icon, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(icon, title, LV_ALIGN_OUT_LEFT_MID, -10, 0);
+  lv_obj_set_align(icon, LV_ALIGN_CENTER);
+  lv_obj_align(icon, LV_ALIGN_OUT_LEFT_MID, -10, 0);
 
   char buffer[4];
   for (unsigned int i = 0; i < options.size(); i++) {
@@ -49,7 +49,7 @@ SettingDisplay::SettingDisplay(Pinetime::Applications::DisplayApp* app, Pinetime
     snprintf(buffer, sizeof(buffer), "%2" PRIu16 "s", options[i] / 1000);
     lv_checkbox_set_text(cbOption[i], buffer);
     cbOption[i]->user_data = this;
-    lv_obj_set_event_cb(cbOption[i], event_handler);
+    lv_obj_add_event_cb(cbOption[i], event_handler);
     SetRadioButtonStyle(cbOption[i]);
 
     if (settingsController.GetScreenTimeOut() == options[i]) {

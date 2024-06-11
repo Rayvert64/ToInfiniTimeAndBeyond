@@ -20,19 +20,20 @@ FlashLight::FlashLight(System::SystemTask& systemTask, Controllers::BrightnessCo
   brightnessController.Set(Controllers::BrightnessController::Levels::Low);
 
   flashLight = lv_label_create(lv_scr_act());
-  lv_obj_set_style_local_text_font(flashLight, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_sys_48);
+  lv_obj_set_style_text_font(flashLight, &lv_font_sys_48, LV_STATE_DEFAULT);
   lv_label_set_text_static(flashLight, Symbols::flashlight);
-  lv_obj_align(flashLight, nullptr, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_align(flashLight, LV_ALIGN_CENTER, 0, 0);
 
   for (auto& indicator : indicators) {
-    indicator = lv_obj_create(lv_scr_act());;
+    indicator = lv_obj_create(lv_scr_act());
+    ;
     lv_obj_set_size(indicator, 15, 10);
     lv_obj_set_style_border_width(indicator, 2, LV_PART_MAIN);
   }
 
-  lv_obj_align(indicators[1], flashLight, LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
-  lv_obj_align(indicators[0], indicators[1], LV_ALIGN_OUT_LEFT_MID, -8, 0);
-  lv_obj_align(indicators[2], indicators[1], LV_ALIGN_OUT_RIGHT_MID, 8, 0);
+  lv_obj_align(indicators[1], LV_ALIGN_OUT_BOTTOM_MID, 0, 5);
+  lv_obj_align(indicators[0], LV_ALIGN_OUT_LEFT_MID, -8, 0);
+  lv_obj_align(indicators[2], LV_ALIGN_OUT_RIGHT_MID, 8, 0);
 
   SetIndicators();
   SetColors();
@@ -44,7 +45,7 @@ FlashLight::FlashLight(System::SystemTask& systemTask, Controllers::BrightnessCo
   lv_label_set_text_static(backgroundAction, "");
   lv_obj_set_click(backgroundAction, true);
   backgroundAction->user_data = this;
-  lv_obj_set_event_cb(backgroundAction, EventHandler);
+  lv_obj_add_event_cb(backgroundAction, EventHandler);
 
   systemTask.PushMessage(Pinetime::System::Messages::DisableSleeping);
 }
@@ -60,7 +61,7 @@ void FlashLight::SetColors() {
   lv_color_t fgColor = isOn ? Colors::lightGray : lv_color_white();
 
   lv_obj_set_style_bg_color(lv_scr_act(), bgColor, LV_PART_MAIN);
-  lv_obj_set_style_local_text_color(flashLight, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, fgColor);
+  lv_obj_set_style_text_color(flashLight, fgColor, LV_STATE_DEFAULT);
   for (auto& indicator : indicators) {
     lv_obj_set_style_bg_color(indicator, fgColor, LV_PART_MAIN);
     lv_obj_set_style_bg_color(indicator, bgColor, LV_PART_MAIN);

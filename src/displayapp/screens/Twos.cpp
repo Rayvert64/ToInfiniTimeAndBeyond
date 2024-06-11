@@ -2,6 +2,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <lvgl/lvgl.h>
+#include <lvgl/src/core/lv_obj.h>
+#include <lvgl/src/misc/lv_style_gen.h>
 
 using namespace Pinetime::Applications::Screens;
 
@@ -13,26 +15,27 @@ Twos::Twos() {
   };
 
   static constexpr colorPair colors[nColors] = {
-    {LV_COLOR_MAKE(0xcd, 0xc0, 0xb4), lv_color_black()},
-    {LV_COLOR_MAKE(0xef, 0xdf, 0xc6), lv_color_black()},
-    {LV_COLOR_MAKE(0xef, 0x92, 0x63), lv_color_white()},
-    {LV_COLOR_MAKE(0xf7, 0x61, 0x42), lv_color_white()},
-    {LV_COLOR_MAKE(0x00, 0x7d, 0xc5), lv_color_white()},
+    {LV_COLOR_MAKE(0xcd, 0xc0, 0xb4), LV_COLOR_MAKE(0, 0, 0)},
+    {LV_COLOR_MAKE(0xef, 0xdf, 0xc6), LV_COLOR_MAKE(0, 0, 0)},
+    {LV_COLOR_MAKE(0xef, 0x92, 0x63), LV_COLOR_MAKE(0xff, 0xff, 0xff)},
+    {LV_COLOR_MAKE(0xf7, 0x61, 0x42), LV_COLOR_MAKE(0xff, 0xff, 0xff)},
+    {LV_COLOR_MAKE(0x00, 0x7d, 0xc5), LV_COLOR_MAKE(0xff, 0xff, 0xff)},
   };
 
-  gridDisplay = lv_table_create(lv_scr_act(), nullptr);
+  gridDisplay = lv_table_create(lv_scr_act());
 
   for (size_t i = 0; i < nColors; i++) {
     lv_style_init(&cellStyles[i]);
 
-    lv_style_set_border_color(&cellStyles[i], LV_STATE_DEFAULT, lv_color_hex(0xbbada0));
-    lv_style_set_border_width(&cellStyles[i], LV_STATE_DEFAULT, 3);
-    lv_style_set_bg_opa(&cellStyles[i], LV_STATE_DEFAULT, LV_OPA_COVER);
-    lv_style_set_bg_color(&cellStyles[i], LV_STATE_DEFAULT, colors[i].bg);
-    lv_style_set_pad_top(&cellStyles[i], LV_STATE_DEFAULT, 29);
-    lv_style_set_text_color(&cellStyles[i], LV_STATE_DEFAULT, colors[i].fg);
+    lv_style_set_border_color(&cellStyles[i], lv_color_hex(0xbbada0));
+    lv_style_set_border_opa(&cellStyles[i], 3);
+    lv_style_set_bg_opa(&cellStyles[i], LV_OPA_COVER);
+    lv_style_set_bg_color(&cellStyles[i], colors[i].bg);
+    lv_style_set_pad_top(&cellStyles[i], 29);
+    lv_style_set_text_color(&cellStyles[i], colors[i].fg);
 
-    lv_obj_add_style(gridDisplay, LV_TABLE_PART_CELL1 + i, &cellStyles[i]);
+    // TODO: This is a hack to make the text color work
+    lv_obj_add_style(gridDisplay, &cellStyles[i], LV_PART_ITEMS + i);
   }
 
   lv_table_set_col_cnt(gridDisplay, nCols);
@@ -43,11 +46,11 @@ Twos::Twos() {
     for (int row = 0; row < nRows; row++) {
       grid[row][col].value = 0;
       lv_table_set_cell_type(gridDisplay, row, col, 1);
-      lv_table_set_cell_align(gridDisplay, row, col, LV_LABEL_ALIGN_CENTER);
+      lv_table_set_cell_align(gridDisplay, row, col, LV_ALIGN_CENTER);
     }
   }
   // Move one pixel down to remove a gap
-  lv_obj_align(gridDisplay, nullptr, LV_ALIGN_BOTTOM_MID, 0, 1);
+  lv_obj_align(gridDisplay, LV_ALIGN_BOTTOM_MID, 0, 1);
 
   lv_obj_clean_style_list(gridDisplay, LV_TABLE_PART_BG);
 
@@ -57,9 +60,9 @@ Twos::Twos() {
   // format score text
   scoreText = lv_label_create(lv_scr_act());
   lv_obj_set_width(scoreText, LV_HOR_RES);
-  lv_label_set_align(scoreText, LV_ALIGN_LEFT_MID);
-  lv_obj_align(scoreText, nullptr, LV_ALIGN_TOP_LEFT, 0, 0);
-  lv_label_set_recolor(scoreText, true);
+  lv_obj_set_align(scoreText, LV_ALIGN_LEFT_MID);
+  lv_obj_align(scoreText, LV_ALIGN_TOP_LEFT, 0, 0);
+
   lv_label_set_text_fmt(scoreText, "Score #FFFF00 %i#", score);
 }
 

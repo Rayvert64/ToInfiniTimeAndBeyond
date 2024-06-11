@@ -36,12 +36,12 @@ Tile::Tile(uint8_t screenID,
   settingsController.SetAppMenu(screenID);
 
   statusIcons.Create();
-  lv_obj_align(statusIcons.GetObject(), lv_scr_act(), LV_ALIGN_TOP_RIGHT, -8, 0);
+  lv_obj_align(statusIcons.GetObject(), LV_ALIGN_TOP_RIGHT, -8, 0);
 
   // Time
   label_time = lv_label_create(lv_scr_act());
-  lv_label_set_align(label_time, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(label_time, nullptr, LV_ALIGN_TOP_LEFT, 0, 0);
+  lv_obj_set_align(label_time, LV_ALIGN_CENTER);
+  lv_obj_align(label_time, LV_ALIGN_TOP_LEFT, 0, 0);
 
   pageIndicator.Create();
 
@@ -63,11 +63,11 @@ Tile::Tile(uint8_t screenID,
   btnm1 = lv_btnmatrix_create(lv_scr_act(), nullptr);
   lv_btnmatrix_set_map(btnm1, btnmMap);
   lv_obj_set_size(btnm1, LV_HOR_RES - 16, LV_VER_RES - 60);
-  lv_obj_align(btnm1, nullptr, LV_ALIGN_CENTER, 0, 10);
+  lv_obj_align(btnm1, LV_ALIGN_CENTER, 0, 10);
 
   lv_obj_set_style_radius(btnm1, 20, LV_STATE_DEFAULT);
   lv_obj_set_style_local_bg_opa(btnm1, LV_BTNMATRIX_PART_BTN, LV_STATE_DEFAULT, LV_OPA_50);
-  lv_obj_set_style_bg_color(btnm1, LV_COLOR_AQUA, LV_BTNMATRIX_PART_BTN);
+  lv_obj_set_style_bg_color(btnm1, PINETIME_COLOR_CYAN, LV_BTNMATRIX_PART_BTN);
   lv_obj_set_style_local_bg_opa(btnm1, LV_BTNMATRIX_PART_BTN, LV_STATE_DISABLED, LV_OPA_50);
   lv_obj_set_style_bg_color(btnm1, Colors::bgDark, LV_BTNMATRIX_PART_BTN);
   lv_obj_set_style_local_pad_all(btnm1, LV_BTNMATRIX_PART_BG, LV_STATE_DEFAULT, 0);
@@ -81,14 +81,14 @@ Tile::Tile(uint8_t screenID,
   }
 
   btnm1->user_data = this;
-  lv_obj_set_event_cb(btnm1, event_handler);
+  lv_obj_add_event_cb(btnm1, event_handler);
 
   taskUpdate = lv_timer_create(lv_update_task, 5000, this);
   UpdateScreen();
 }
 
 Tile::~Tile() {
-  lv_task_del(taskUpdate);
+  lv_timer_del(taskUpdate);
   lv_obj_clean(lv_scr_act());
 }
 
