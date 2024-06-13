@@ -2,7 +2,6 @@
 
 #include <lvgl/lvgl.h>
 #include <cstdint>
-#include <memory>
 #include "displayapp/screens/Screen.h"
 #include "displayapp/apps/Apps.h"
 #include "components/datetime/DateTimeController.h"
@@ -34,7 +33,7 @@ namespace Pinetime {
         ~Tile() override;
 
         void UpdateScreen();
-        void OnValueChangedEvent(lv_obj_t* obj, uint32_t buttonId);
+        void OnValueChangedEvent(uint32_t buttonId);
 
       private:
         DisplayApp* app;

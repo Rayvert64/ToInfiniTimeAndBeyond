@@ -7,17 +7,17 @@ using namespace Pinetime::Applications::Screens;
 
 FirmwareUpdate::FirmwareUpdate(const Pinetime::Controllers::Ble& bleController) : bleController {bleController} {
 
-  titleLabel = lv_label_create(lv_scr_act());
+  titleLabel = lv_label_create(lv_screen_active());
   lv_label_set_text_static(titleLabel, "Firmware update");
   lv_obj_align(titleLabel, LV_ALIGN_TOP_MID, 0, 50);
 
-  bar1 = lv_bar_create(lv_scr_act());
+  bar1 = lv_bar_create(lv_screen_active());
   lv_obj_set_size(bar1, 200, 30);
   lv_obj_align(bar1, LV_ALIGN_CENTER, 0, 0);
   lv_bar_set_range(bar1, 0, 1000);
   lv_bar_set_value(bar1, 0, LV_ANIM_OFF);
 
-  percentLabel = lv_label_create(lv_scr_act());
+  percentLabel = lv_label_create(lv_screen_active());
   lv_label_set_text_static(percentLabel, "Waiting...");
   lv_obj_align(percentLabel, LV_ALIGN_OUT_TOP_MID, 0, 60);
   taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DEF_REFR_PERIOD, this);
@@ -26,7 +26,7 @@ FirmwareUpdate::FirmwareUpdate(const Pinetime::Controllers::Ble& bleController) 
 
 FirmwareUpdate::~FirmwareUpdate() {
   lv_timer_del(taskRefresh);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 void FirmwareUpdate::Refresh() {

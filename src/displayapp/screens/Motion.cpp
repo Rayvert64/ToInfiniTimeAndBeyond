@@ -8,7 +8,7 @@
 using namespace Pinetime::Applications::Screens;
 
 Motion::Motion(Controllers::MotionController& motionController) : motionController {motionController} {
-  chart = lv_chart_create(lv_scr_act());
+  chart = lv_chart_create(lv_screen_active());
   lv_obj_set_size(chart, 240, 240);
   lv_obj_align(chart, LV_ALIGN_TOP_MID, 0, 0);
   lv_chart_set_type(chart, LV_CHART_TYPE_LINE); /*Show lines and points too*/
@@ -26,12 +26,12 @@ Motion::Motion(Controllers::MotionController& motionController) : motionControll
 
   lv_chart_refresh(chart); /*Required after direct set*/
 
-  label = lv_label_create(lv_scr_act());
+  label = lv_label_create(lv_screen_active());
   lv_label_set_text_fmt(label, "X #FF0000 %d# Y #00B000 %d# Z #FFFF00 %d#", 0, 0, 0);
   lv_obj_set_align(label, LV_ALIGN_CENTER);
   lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 10);
 
-  labelStep = lv_label_create(lv_scr_act());
+  labelStep = lv_label_create(lv_screen_active());
   lv_obj_align(labelStep, LV_ALIGN_BOTTOM_LEFT, 0, 0);
   lv_label_set_text_static(labelStep, "Steps ---");
 
@@ -40,7 +40,7 @@ Motion::Motion(Controllers::MotionController& motionController) : motionControll
 
 Motion::~Motion() {
   lv_timer_del(taskRefresh);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 void Motion::Refresh() {

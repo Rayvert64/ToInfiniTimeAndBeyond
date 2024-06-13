@@ -13,7 +13,7 @@ InfiniPaint::InfiniPaint(Pinetime::Components::LittleVgl& lvgl, Pinetime::Contro
 }
 
 InfiniPaint::~InfiniPaint() {
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 bool InfiniPaint::OnTouchEvent(Pinetime::Applications::TouchEvents event) {

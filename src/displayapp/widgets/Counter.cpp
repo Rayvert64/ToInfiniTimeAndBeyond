@@ -1,22 +1,19 @@
 #include "displayapp/widgets/Counter.h"
 #include "components/datetime/DateTimeController.h"
 #include "displayapp/InfiniTimeTheme.h"
+#include <lvgl/src/misc/lv_event.h>
 
 using namespace Pinetime::Applications::Widgets;
 
 namespace {
-  void upBtnEventHandler(lv_obj_t* obj, lv_event_t event) {
-    auto* widget = static_cast<Counter*>(obj->user_data);
-    if (event == LV_EVENT_SHORT_CLICKED || event == LV_EVENT_LONG_PRESSED_REPEAT) {
-      widget->UpBtnPressed();
-    }
+  void upBtnEventHandler(lv_event_t* event) {
+    auto* widget = static_cast<Counter*>(event->user_data);
+    widget->UpBtnPressed();
   }
 
-  void downBtnEventHandler(lv_obj_t* obj, lv_event_t event) {
-    auto* widget = static_cast<Counter*>(obj->user_data);
-    if (event == LV_EVENT_SHORT_CLICKED || event == LV_EVENT_LONG_PRESSED_REPEAT) {
-      widget->DownBtnPressed();
-    }
+  void downBtnEventHandler(lv_event_t* event) {
+    auto* widget = static_cast<Counter*>(event->user_data);
+    widget->DownBtnPressed();
   }
 
   constexpr int digitCount(int number) {
@@ -29,7 +26,8 @@ namespace {
   }
 }
 
-Counter::Counter(int min, int max, lv_font_t& font) : min {min}, max {max}, value {min}, leadingZeroCount {digitCount(max)}, font {font} {
+Counter::Counter(int min, int max, const lv_font_t& font)
+  : min {min}, max {max}, value {min}, leadingZeroCount {digitCount(max)}, font {font} {
 }
 
 void Counter::UpBtnPressed() {
@@ -66,23 +64,23 @@ void Counter::HideControls() {
   lv_obj_add_flag(downBtn, LV_OBJ_FLAG_HIDDEN);
   lv_obj_add_flag(upperLine, LV_OBJ_FLAG_HIDDEN);
   lv_obj_add_flag(lowerLine, LV_OBJ_FLAG_HIDDEN);
-  lv_obj_set_style_local_bg_opa(counterContainer, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
+  lv_obj_set_style_bg_opa(counterContainer, LV_OPA_TRANSP, LV_STATE_DEFAULT);
 }
 
 void Counter::ShowControls() {
-  if (lv_obj_has_flag(upBtn)) {
+  if (lv_obj_has_flag(upBtn, LV_OBJ_FLAG_HIDDEN)) {
     lv_obj_remove_flag(upBtn, LV_OBJ_FLAG_HIDDEN);
   };
-  if (lv_obj_has_flag(downBtn)) {
+  if (lv_obj_has_flag(downBtn, LV_OBJ_FLAG_HIDDEN)) {
     lv_obj_remove_flag(downBtn, LV_OBJ_FLAG_HIDDEN);
   };
-  if (lv_obj_has_flag(upperLine)) {
+  if (lv_obj_has_flag(upperLine, LV_OBJ_FLAG_HIDDEN)) {
     lv_obj_remove_flag(upperLine, LV_OBJ_FLAG_HIDDEN);
   };
-  if (lv_obj_has_flag(lowerLine)) {
+  if (lv_obj_has_flag(lowerLine, LV_OBJ_FLAG_HIDDEN)) {
     lv_obj_remove_flag(lowerLine, LV_OBJ_FLAG_HIDDEN);
   };
-  lv_obj_set_style_local_bg_opa(counterContainer, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER);
+  lv_obj_set_style_bg_opa(counterContainer, LV_OPA_COVER, LV_STATE_DEFAULT);
 }
 
 void Counter::UpdateLabel() {
@@ -129,13 +127,12 @@ void Counter::SetValueChangedEventCallback(void* userData, void (*handler)(void*
 }
 
 void Counter::Create() {
-  counterContainer = lv_obj_create(lv_scr_act());
+  counterContainer = lv_obj_create(lv_screen_active());
   lv_obj_set_style_bg_color(counterContainer, Colors::bgAlt, LV_PART_MAIN);
 
   number = lv_label_create(counterContainer);
   lv_obj_set_style_text_font(number, &font, LV_STATE_DEFAULT);
   lv_obj_align(number, LV_ALIGN_CENTER, 0, 0);
-  lv_obj_set_auto_realign(number, true);
   if (monthMode) {
     lv_label_set_text_static(number, "Jan");
   } else {
@@ -143,7 +140,7 @@ void Counter::Create() {
   }
 
   static constexpr uint8_t padding = 5;
-  const uint8_t width = std::max(lv_obj_get_width(number) + padding * 2, 58);
+  const uint8_t width = std::max(lv_obj_get_width(number) + padding * 2, static_cast<int32_t>(58));
   static constexpr uint8_t btnHeight = 50;
   const uint8_t containerHeight = btnHeight * 2 + lv_obj_get_height(number) + padding * 2;
 
@@ -156,7 +153,8 @@ void Counter::Create() {
   lv_obj_set_size(upBtn, width, btnHeight);
   lv_obj_align(upBtn, LV_ALIGN_TOP_MID, 0, 0);
   upBtn->user_data = this;
-  lv_obj_add_event_cb(upBtn, upBtnEventHandler);
+  lv_obj_add_event_cb(upBtn, upBtnEventHandler, LV_EVENT_CLICKED, this);
+  lv_obj_add_event_cb(upBtn, upBtnEventHandler, LV_EVENT_PRESSED, this);
 
   lv_obj_t* upLabel = lv_label_create(upBtn);
   lv_obj_set_style_text_font(upLabel, &jetbrains_mono_42, LV_STATE_DEFAULT);
@@ -168,7 +166,8 @@ void Counter::Create() {
   lv_obj_set_size(downBtn, width, btnHeight);
   lv_obj_align(downBtn, LV_ALIGN_BOTTOM_MID, 0, 0);
   downBtn->user_data = this;
-  lv_obj_add_event_cb(downBtn, downBtnEventHandler);
+  lv_obj_add_event_cb(downBtn, downBtnEventHandler, LV_EVENT_CLICKED, this);
+  lv_obj_add_event_cb(downBtn, downBtnEventHandler, LV_EVENT_PRESSED, this);
 
   lv_obj_t* downLabel = lv_label_create(downBtn);
   lv_obj_set_style_text_font(downLabel, &jetbrains_mono_42, LV_STATE_DEFAULT);
@@ -179,11 +178,11 @@ void Counter::Create() {
   linePoints[1] = {width, 0};
 
   auto LineCreate = [&]() {
-    lv_obj_t* line = lv_line_create(counterContainer, nullptr);
+    lv_obj_t* line = lv_line_create(counterContainer);
     lv_line_set_points(line, linePoints, 2);
-    lv_obj_set_style_local_line_width(line, LV_LINE_PART_MAIN, LV_STATE_DEFAULT, 1);
-    lv_obj_set_style_local_line_color(line, LV_LINE_PART_MAIN, LV_STATE_DEFAULT, lv_color_white());
-    lv_obj_set_style_local_line_opa(line, LV_LINE_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_20);
+    lv_obj_set_style_line_width(line, 1, LV_STATE_DEFAULT);
+    lv_obj_set_style_line_color(line, lv_color_white(), LV_STATE_DEFAULT);
+    lv_obj_set_style_line_opa(line, LV_OPA_20, LV_STATE_DEFAULT);
     return line;
   };
 

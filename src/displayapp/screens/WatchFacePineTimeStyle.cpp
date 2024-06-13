@@ -39,8 +39,8 @@
 using namespace Pinetime::Applications::Screens;
 
 namespace {
-  void event_handler(lv_obj_t* obj, lv_event_t event) {
-    auto* screen = static_cast<WatchFacePineTimeStyle*>(obj->user_data);
+  void event_handler(lv_event_t* event) {
+    auto* screen = static_cast<WatchFacePineTimeStyle*>(event->user_data);
     screen->UpdateSelected(obj, event);
   }
 }
@@ -63,33 +63,33 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
     weatherService {weatherService} {
 
   // Create a 200px wide background rectangle
-  timebar = lv_obj_create(lv_scr_act());
+  timebar = lv_obj_create(lv_screen_active());
   lv_obj_set_style_bg_color(timebar, Convert(settingsController.GetPTSColorBG()), LV_PART_MAIN);
   lv_obj_set_style_radius(timebar, 0, LV_STATE_DEFAULT);
   lv_obj_set_size(timebar, 200, 240);
   lv_obj_align(timebar, LV_ALIGN_TOP_LEFT, 0, 0);
 
   // Display the time
-  timeDD1 = lv_label_create(lv_scr_act());
+  timeDD1 = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_font(timeDD1, &open_sans_light, LV_STATE_DEFAULT);
   lv_obj_set_style_text_color(timeDD1, Convert(settingsController.GetPTSColorTime()), LV_STATE_DEFAULT);
   lv_label_set_text_static(timeDD1, "00");
   lv_obj_align(timeDD1, LV_ALIGN_TOP_MID, 5, 5);
 
-  timeDD2 = lv_label_create(lv_scr_act());
+  timeDD2 = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_font(timeDD2, &open_sans_light, LV_STATE_DEFAULT);
   lv_obj_set_style_text_color(timeDD2, Convert(settingsController.GetPTSColorTime()), LV_STATE_DEFAULT);
   lv_label_set_text_static(timeDD2, "00");
   lv_obj_align(timeDD2, LV_ALIGN_BOTTOM_MID, 5, -5);
 
-  timeAMPM = lv_label_create(lv_scr_act());
+  timeAMPM = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(timeAMPM, Convert(settingsController.GetPTSColorTime()), LV_STATE_DEFAULT);
   lv_obj_set_style_local_text_line_space(timeAMPM, LV_PART_MAIN, LV_STATE_DEFAULT, -3);
   lv_label_set_text_static(timeAMPM, "");
   lv_obj_align(timeAMPM, LV_ALIGN_BOTTOM_LEFT, 2, -20);
 
   // Create a 40px wide bar down the right side of the screen
-  sidebar = lv_obj_create(lv_scr_act());
+  sidebar = lv_obj_create(lv_screen_active());
   lv_obj_set_style_bg_color(sidebar, Convert(settingsController.GetPTSColorBar()), LV_PART_MAIN);
   lv_obj_set_style_radius(sidebar, 0, LV_STATE_DEFAULT);
   lv_obj_set_size(sidebar, 40, 240);
@@ -100,20 +100,20 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
   batteryIcon.SetColor(lv_color_black());
   lv_obj_align(batteryIcon.GetObject(), LV_ALIGN_TOP_MID, 10, 2);
 
-  plugIcon = lv_label_create(lv_scr_act());
+  plugIcon = lv_label_create(lv_screen_active());
   lv_label_set_text_static(plugIcon, Symbols::plug);
   lv_obj_set_style_text_color(plugIcon, lv_color_black(), LV_STATE_DEFAULT);
   lv_obj_align(plugIcon, LV_ALIGN_TOP_MID, 10, 2);
 
-  bleIcon = lv_label_create(lv_scr_act());
+  bleIcon = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(bleIcon, lv_color_black(), LV_STATE_DEFAULT);
   lv_obj_align(bleIcon, LV_ALIGN_TOP_MID, -10, 2);
 
-  notificationIcon = lv_label_create(lv_scr_act());
+  notificationIcon = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(notificationIcon, Convert(settingsController.GetPTSColorTime()), LV_STATE_DEFAULT);
   lv_obj_align(notificationIcon, LV_ALIGN_TOP_LEFT, 5, 5);
 
-  weatherIcon = lv_label_create(lv_scr_act());
+  weatherIcon = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(weatherIcon, lv_color_black(), LV_STATE_DEFAULT);
   lv_obj_set_style_text_font(weatherIcon, &fontawesome_weathericons, LV_STATE_DEFAULT);
   lv_label_set_text(weatherIcon, Symbols::ban);
@@ -128,7 +128,7 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
     ;
   }
 
-  temperature = lv_label_create(lv_scr_act());
+  temperature = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(temperature, lv_color_black(), LV_STATE_DEFAULT);
   lv_label_set_text(temperature, "--");
   lv_obj_align(temperature, LV_ALIGN_TOP_MID, 0, 65);
@@ -142,7 +142,7 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
   }
 
   // Calendar icon
-  calendarOuter = lv_obj_create(lv_scr_act());
+  calendarOuter = lv_obj_create(lv_screen_active());
   lv_obj_set_style_bg_color(calendarOuter, lv_color_black(), LV_PART_MAIN);
   lv_obj_set_style_radius(calendarOuter, 0, LV_STATE_DEFAULT);
   lv_obj_set_size(calendarOuter, 34, 34);
@@ -152,48 +152,48 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
     lv_obj_align(calendarOuter, LV_ALIGN_CENTER, 0, 0);
   }
 
-  calendarInner = lv_obj_create(lv_scr_act());
+  calendarInner = lv_obj_create(lv_screen_active());
   lv_obj_set_style_bg_color(calendarInner, lv_color_white(), LV_PART_MAIN);
   lv_obj_set_style_radius(calendarInner, 0, LV_STATE_DEFAULT);
   lv_obj_set_size(calendarInner, 27, 27);
   lv_obj_align(calendarInner, LV_ALIGN_CENTER, 0, 0);
 
-  calendarBar1 = lv_obj_create(lv_scr_act());
+  calendarBar1 = lv_obj_create(lv_screen_active());
   lv_obj_set_style_bg_color(calendarBar1, lv_color_black(), LV_PART_MAIN);
   lv_obj_set_style_radius(calendarBar1, 0, LV_STATE_DEFAULT);
   lv_obj_set_size(calendarBar1, 3, 12);
   lv_obj_align(calendarBar1, LV_ALIGN_TOP_MID, -6, -3);
 
-  calendarBar2 = lv_obj_create(lv_scr_act());
+  calendarBar2 = lv_obj_create(lv_screen_active());
   lv_obj_set_style_bg_color(calendarBar2, lv_color_black(), LV_PART_MAIN);
   lv_obj_set_style_radius(calendarBar2, 0, LV_STATE_DEFAULT);
   lv_obj_set_size(calendarBar2, 3, 12);
   lv_obj_align(calendarBar2, LV_ALIGN_TOP_MID, 6, -3);
 
-  calendarCrossBar1 = lv_obj_create(lv_scr_act());
+  calendarCrossBar1 = lv_obj_create(lv_screen_active());
   lv_obj_set_style_bg_color(calendarCrossBar1, lv_color_black(), LV_PART_MAIN);
   lv_obj_set_style_radius(calendarCrossBar1, 0, LV_STATE_DEFAULT);
   lv_obj_set_size(calendarCrossBar1, 8, 3);
   lv_obj_align(calendarCrossBar1, LV_ALIGN_BOTTOM_MID, 0, 0);
 
-  calendarCrossBar2 = lv_obj_create(lv_scr_act());
+  calendarCrossBar2 = lv_obj_create(lv_screen_active());
   lv_obj_set_style_bg_color(calendarCrossBar2, lv_color_black(), LV_PART_MAIN);
   lv_obj_set_style_radius(calendarCrossBar2, 0, LV_STATE_DEFAULT);
   lv_obj_set_size(calendarCrossBar2, 8, 3);
   lv_obj_align(calendarCrossBar2, LV_ALIGN_BOTTOM_MID, 0, 0);
 
   // Display date
-  dateDayOfWeek = lv_label_create(lv_scr_act());
+  dateDayOfWeek = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(dateDayOfWeek, lv_color_black(), LV_STATE_DEFAULT);
   lv_label_set_text_static(dateDayOfWeek, "THU");
   lv_obj_align(dateDayOfWeek, LV_ALIGN_CENTER, 0, -32);
 
-  dateDay = lv_label_create(lv_scr_act());
+  dateDay = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(dateDay, lv_color_black(), LV_STATE_DEFAULT);
   lv_label_set_text_static(dateDay, "25");
   lv_obj_align(dateDay, LV_ALIGN_CENTER, 0, 3);
 
-  dateMonth = lv_label_create(lv_scr_act());
+  dateMonth = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(dateMonth, lv_color_black(), LV_STATE_DEFAULT);
   lv_label_set_text_static(dateMonth, "MAR");
   lv_obj_align(dateMonth, LV_ALIGN_CENTER, 0, 32);
@@ -204,7 +204,7 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
   } else {
     needle_colors[0] = lv_color_white();
   }
-  stepGauge = lv_gauge_create(lv_scr_act(), nullptr);
+  stepGauge = lv_gauge_create(lv_screen_active());
   lv_gauge_set_needle_count(stepGauge, 1, needle_colors);
   lv_gauge_set_range(stepGauge, 0, 100);
   lv_gauge_set_value(stepGauge, 0, 0);
@@ -228,15 +228,17 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
   lv_obj_set_style_local_pad_right(stepGauge, LV_GAUGE_PART_MAIN, LV_STATE_DEFAULT, 3);
   lv_obj_set_style_local_pad_left(stepGauge, LV_GAUGE_PART_MAIN, LV_STATE_DEFAULT, 3);
   lv_obj_set_style_local_pad_bottom(stepGauge, LV_GAUGE_PART_MAIN, LV_STATE_DEFAULT, 3);
-  lv_obj_set_style_local_line_opa(stepGauge, LV_GAUGE_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER);
+  lv_obj_set_style_line_opa(stepGauge, LV_OPA_COVER, LV_STATE_DEFAULT);
+  ;
   lv_obj_set_style_local_scale_width(stepGauge, LV_GAUGE_PART_MAIN, LV_STATE_DEFAULT, 4);
-  lv_obj_set_style_local_line_width(stepGauge, LV_GAUGE_PART_MAIN, LV_STATE_DEFAULT, 4);
-  lv_obj_set_style_local_line_color(stepGauge, LV_GAUGE_PART_MAIN, LV_STATE_DEFAULT, lv_color_black());
-  lv_obj_set_style_local_line_opa(stepGauge, LV_GAUGE_PART_NEEDLE, LV_STATE_DEFAULT, LV_OPA_COVER);
-  lv_obj_set_style_local_line_width(stepGauge, LV_GAUGE_PART_NEEDLE, LV_STATE_DEFAULT, 3);
-  lv_obj_set_style_local_pad_inner(stepGauge, LV_GAUGE_PART_NEEDLE, LV_STATE_DEFAULT, 4);
+  lv_obj_set_style_line_width(stepGauge, 4, LV_STATE_DEFAULT);
+  lv_obj_set_style_line_color(stepGauge, lv_color_black(), LV_STATE_DEFAULT);
+  lv_obj_set_style_line_opa(stepGauge, LV_OPA_COVER, LV_STATE_DEFAULT);
+  ;
+  lv_obj_set_style_line_width(stepGauge, 3, LV_STATE_DEFAULT);
+  lv_obj_set_style_text_align(stepGauge, LV_ALIGN_CENTER, LV_STATE_DEFAULT);
 
-  stepValue = lv_label_create(lv_scr_act());
+  stepValue = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(stepValue, lv_color_black(), LV_STATE_DEFAULT);
   lv_label_set_text_static(stepValue, "0");
   lv_obj_align(stepValue, LV_ALIGN_BOTTOM_MID, 0, 0);
@@ -249,7 +251,7 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
     ;
   }
 
-  stepIcon = lv_label_create(lv_scr_act());
+  stepIcon = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(stepIcon, lv_color_black(), LV_STATE_DEFAULT);
   lv_label_set_text_static(stepIcon, Symbols::shoe);
   lv_obj_align(stepIcon, LV_ALIGN_OUT_TOP_MID, 0, 0);
@@ -263,7 +265,7 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
   }
 
   // Display seconds
-  timeDD3 = lv_label_create(lv_scr_act());
+  timeDD3 = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(timeDD3, lv_color_black(), LV_STATE_DEFAULT);
   lv_label_set_text_static(timeDD3, ":00");
   lv_obj_align(timeDD3, LV_ALIGN_BOTTOM_MID, 0, 0);
@@ -276,134 +278,134 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
     ;
   }
 
-  btnNextTime = lv_button_create(lv_scr_act());
+  btnNextTime = lv_button_create(lv_screen_active());
   btnNextTime->user_data = this;
   lv_obj_set_size(btnNextTime, 60, 60);
   lv_obj_align(btnNextTime, LV_ALIGN_RIGHT_MID, -15, -80);
-  lv_obj_set_style_local_bg_opa(btnNextTime, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
+  lv_obj_set_style_bg_opa(btnNextTime, LV_OPA_50, LV_STATE_DEFAULT);
   lv_obj_t* lblNextTime = lv_label_create(btnNextTime);
   lv_label_set_text_static(lblNextTime, ">");
   lv_obj_add_event_cb(btnNextTime, event_handler);
   lv_obj_add_flag(btnNextTime, LV_OBJ_FLAG_HIDDEN);
 
-  btnPrevTime = lv_button_create(lv_scr_act());
+  btnPrevTime = lv_button_create(lv_screen_active());
   btnPrevTime->user_data = this;
   lv_obj_set_size(btnPrevTime, 60, 60);
   lv_obj_align(btnPrevTime, LV_ALIGN_LEFT_MID, 15, -80);
-  lv_obj_set_style_local_bg_opa(btnPrevTime, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
+  lv_obj_set_style_bg_opa(btnPrevTime, LV_OPA_50, LV_STATE_DEFAULT);
   lv_obj_t* lblPrevTime = lv_label_create(btnPrevTime);
   lv_label_set_text_static(lblPrevTime, "<");
   lv_obj_add_event_cb(btnPrevTime, event_handler);
   lv_obj_add_flag(btnPrevTime, LV_OBJ_FLAG_HIDDEN);
 
-  btnNextBar = lv_button_create(lv_scr_act());
+  btnNextBar = lv_button_create(lv_screen_active());
   btnNextBar->user_data = this;
   lv_obj_set_size(btnNextBar, 60, 60);
   lv_obj_align(btnNextBar, LV_ALIGN_RIGHT_MID, -15, 0);
-  lv_obj_set_style_local_bg_opa(btnNextBar, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
+  lv_obj_set_style_bg_opa(btnNextBar, LV_OPA_50, LV_STATE_DEFAULT);
   lv_obj_t* lblNextBar = lv_label_create(btnNextBar);
   lv_label_set_text_static(lblNextBar, ">");
   lv_obj_add_event_cb(btnNextBar, event_handler);
   lv_obj_add_flag(btnNextBar, LV_OBJ_FLAG_HIDDEN);
 
-  btnPrevBar = lv_button_create(lv_scr_act());
+  btnPrevBar = lv_button_create(lv_screen_active());
   btnPrevBar->user_data = this;
   lv_obj_set_size(btnPrevBar, 60, 60);
   lv_obj_align(btnPrevBar, LV_ALIGN_LEFT_MID, 15, 0);
-  lv_obj_set_style_local_bg_opa(btnPrevBar, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
+  lv_obj_set_style_bg_opa(btnPrevBar, LV_OPA_50, LV_STATE_DEFAULT);
   lv_obj_t* lblPrevBar = lv_label_create(btnPrevBar);
   lv_label_set_text_static(lblPrevBar, "<");
   lv_obj_add_event_cb(btnPrevBar, event_handler);
   lv_obj_add_flag(btnPrevBar, LV_OBJ_FLAG_HIDDEN);
 
-  btnNextBG = lv_button_create(lv_scr_act());
+  btnNextBG = lv_button_create(lv_screen_active());
   btnNextBG->user_data = this;
   lv_obj_set_size(btnNextBG, 60, 60);
   lv_obj_align(btnNextBG, LV_ALIGN_RIGHT_MID, -15, 80);
-  lv_obj_set_style_local_bg_opa(btnNextBG, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
+  lv_obj_set_style_bg_opa(btnNextBG, LV_OPA_50, LV_STATE_DEFAULT);
   lv_obj_t* lblNextBG = lv_label_create(btnNextBG);
   lv_label_set_text_static(lblNextBG, ">");
   lv_obj_add_event_cb(btnNextBG, event_handler);
   lv_obj_add_flag(btnNextBG, LV_OBJ_FLAG_HIDDEN);
 
-  btnPrevBG = lv_button_create(lv_scr_act());
+  btnPrevBG = lv_button_create(lv_screen_active());
   btnPrevBG->user_data = this;
   lv_obj_set_size(btnPrevBG, 60, 60);
   lv_obj_align(btnPrevBG, LV_ALIGN_LEFT_MID, 15, 80);
-  lv_obj_set_style_local_bg_opa(btnPrevBG, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
+  lv_obj_set_style_bg_opa(btnPrevBG, LV_OPA_50, LV_STATE_DEFAULT);
   lv_obj_t* lblPrevBG = lv_label_create(btnPrevBG);
   lv_label_set_text_static(lblPrevBG, "<");
   lv_obj_add_event_cb(btnPrevBG, event_handler);
   lv_obj_add_flag(btnPrevBG, LV_OBJ_FLAG_HIDDEN);
 
-  btnReset = lv_button_create(lv_scr_act());
+  btnReset = lv_button_create(lv_screen_active());
   btnReset->user_data = this;
   lv_obj_set_size(btnReset, 60, 60);
   lv_obj_align(btnReset, LV_ALIGN_CENTER, 0, 80);
-  lv_obj_set_style_local_bg_opa(btnReset, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
+  lv_obj_set_style_bg_opa(btnReset, LV_OPA_50, LV_STATE_DEFAULT);
   lv_obj_t* lblReset = lv_label_create(btnReset);
   lv_label_set_text_static(lblReset, "Rst");
   lv_obj_add_event_cb(btnReset, event_handler);
   lv_obj_add_flag(btnReset, LV_OBJ_FLAG_HIDDEN);
 
-  btnRandom = lv_button_create(lv_scr_act());
+  btnRandom = lv_button_create(lv_screen_active());
   btnRandom->user_data = this;
   lv_obj_set_size(btnRandom, 60, 60);
   lv_obj_align(btnRandom, LV_ALIGN_CENTER, 0, 0);
-  lv_obj_set_style_local_bg_opa(btnRandom, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
+  lv_obj_set_style_bg_opa(btnRandom, LV_OPA_50, LV_STATE_DEFAULT);
   lv_obj_t* lblRandom = lv_label_create(btnRandom);
   lv_label_set_text_static(lblRandom, "Rnd");
   lv_obj_add_event_cb(btnRandom, event_handler);
   lv_obj_add_flag(btnRandom, LV_OBJ_FLAG_HIDDEN);
 
-  btnClose = lv_button_create(lv_scr_act());
+  btnClose = lv_button_create(lv_screen_active());
   btnClose->user_data = this;
   lv_obj_set_size(btnClose, 60, 60);
   lv_obj_align(btnClose, LV_ALIGN_CENTER, 0, -80);
-  lv_obj_set_style_local_bg_opa(btnClose, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
+  lv_obj_set_style_bg_opa(btnClose, LV_OPA_50, LV_STATE_DEFAULT);
   lv_obj_t* lblClose = lv_label_create(btnClose);
   lv_label_set_text_static(lblClose, "X");
   lv_obj_add_event_cb(btnClose, event_handler);
   lv_obj_add_flag(btnClose, LV_OBJ_FLAG_HIDDEN);
 
-  btnSteps = lv_button_create(lv_scr_act());
+  btnSteps = lv_button_create(lv_screen_active());
   btnSteps->user_data = this;
   lv_obj_set_size(btnSteps, 160, 60);
   lv_obj_align(btnSteps, LV_ALIGN_CENTER, 0, -10);
-  lv_obj_set_style_local_bg_opa(btnSteps, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
+  lv_obj_set_style_bg_opa(btnSteps, LV_OPA_50, LV_STATE_DEFAULT);
   lv_obj_t* lblSteps = lv_label_create(btnSteps);
   lv_label_set_text_static(lblSteps, "Steps style");
   lv_obj_add_event_cb(btnSteps, event_handler);
   lv_obj_add_flag(btnSteps, LV_OBJ_FLAG_HIDDEN);
 
-  btnWeather = lv_button_create(lv_scr_act());
+  btnWeather = lv_button_create(lv_screen_active());
   btnWeather->user_data = this;
   lv_obj_set_size(btnWeather, 160, 60);
   lv_obj_align(btnWeather, LV_ALIGN_CENTER, 0, 60);
-  lv_obj_set_style_local_bg_opa(btnWeather, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
+  lv_obj_set_style_bg_opa(btnWeather, LV_OPA_50, LV_STATE_DEFAULT);
   lv_obj_t* lblWeather = lv_label_create(btnWeather);
   lv_label_set_text_static(lblWeather, "Weather");
   lv_obj_add_event_cb(btnWeather, event_handler);
   lv_obj_add_flag(btnWeather, LV_OBJ_FLAG_HIDDEN);
 
-  btnSetColor = lv_button_create(lv_scr_act());
+  btnSetColor = lv_button_create(lv_screen_active());
   btnSetColor->user_data = this;
   lv_obj_set_size(btnSetColor, 150, 60);
   lv_obj_align(btnSetColor, LV_ALIGN_CENTER, 0, -40);
   lv_obj_set_style_radius(btnSetColor, 20, LV_STATE_DEFAULT);
-  lv_obj_set_style_local_bg_opa(btnSetColor, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
+  lv_obj_set_style_bg_opa(btnSetColor, LV_OPA_50, LV_STATE_DEFAULT);
   lv_obj_add_event_cb(btnSetColor, event_handler);
   lv_obj_t* lblSetColor = lv_label_create(btnSetColor);
   lv_obj_set_style_text_font(lblSetColor, &lv_font_sys_48, LV_STATE_DEFAULT);
   lv_label_set_text_static(lblSetColor, Symbols::paintbrushLg);
   lv_obj_add_flag(btnSetColor, LV_OBJ_FLAG_HIDDEN);
 
-  btnSetOpts = lv_button_create(lv_scr_act());
+  btnSetOpts = lv_button_create(lv_screen_active());
   btnSetOpts->user_data = this;
   lv_obj_set_size(btnSetOpts, 150, 60);
   lv_obj_align(btnSetOpts, LV_ALIGN_CENTER, 0, 40);
   lv_obj_set_style_radius(btnSetOpts, 20, LV_STATE_DEFAULT);
-  lv_obj_set_style_local_bg_opa(btnSetOpts, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
+  lv_obj_set_style_bg_opa(btnSetOpts, LV_OPA_50, LV_STATE_DEFAULT);
   lv_obj_add_event_cb(btnSetOpts, event_handler);
   lv_obj_t* lblSetOpts = lv_label_create(btnSetOpts);
   lv_obj_set_style_text_font(lblSetOpts, &lv_font_sys_48, LV_STATE_DEFAULT);
@@ -416,7 +418,7 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
 
 WatchFacePineTimeStyle::~WatchFacePineTimeStyle() {
   lv_timer_del(taskRefresh);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 bool WatchFacePineTimeStyle::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
@@ -557,7 +559,7 @@ void WatchFacePineTimeStyle::Refresh() {
     lv_label_set_text_fmt(stepValue, "%luK", (stepCount.Get() / 1000));
 
     if (stepCount.Get() > settingsController.GetStepsGoal()) {
-      lv_obj_set_style_local_line_color(stepGauge, LV_GAUGE_PART_MAIN, LV_STATE_DEFAULT, lv_color_white());
+      lv_obj_set_style_line_color(stepGauge, lv_color_white(), LV_STATE_DEFAULT);
       lv_obj_set_style_local_scale_grad_color(stepGauge, LV_GAUGE_PART_MAIN, LV_STATE_DEFAULT, lv_color_white());
     }
   }

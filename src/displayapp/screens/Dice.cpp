@@ -27,7 +27,7 @@ namespace {
                       lv_align_t alignment,
                       int8_t x,
                       int8_t y) {
-    lv_obj_t* label = lv_label_create(lv_scr_act());
+    lv_obj_t* label = lv_label_create(lv_screen_active());
     lv_obj_set_style_text_font(label, font, LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(label, color, LV_STATE_DEFAULT);
     lv_label_set_long_mode(label, longMode);
@@ -56,11 +56,11 @@ Dice::Dice(Controllers::MotionController& motionController,
                       static_cast<uint32_t>(motionController.Z())};
   gen.seed(sseq);
 
-  nCounter = std::make_shared<lv_obj_t>(lv_roller_create(lv_scr_act()));
-  dCounter = std::make_shared<lv_obj_t>(lv_roller_create(lv_scr_act()));
+  nCounter = lv_roller_create(lv_screen_active());
+  dCounter = lv_roller_create(lv_screen_active());
 
-  lv_roller_set_options(nCounter.get(), NCOUNTER_VALUES, LV_ROLLER_MODE_INFINITE);
-  lv_roller_set_options(dCounter.get(), DCOUNTER_VALUES, LV_ROLLER_MODE_INFINITE);
+  lv_roller_set_options(nCounter, NCOUNTER_VALUES, LV_ROLLER_MODE_INFINITE);
+  lv_roller_set_options(dCounter, DCOUNTER_VALUES, LV_ROLLER_MODE_INFINITE);
 
   lv_obj_t* nCounterLabel = MakeLabel(&jetbrains_mono_bold_20,
                                       lv_color_white(),
@@ -68,7 +68,7 @@ Dice::Dice(Controllers::MotionController& motionController,
                                       0,
                                       LV_ALIGN_CENTER,
                                       "count",
-                                      lv_scr_act(),
+                                      lv_screen_active(),
                                       LV_ALIGN_TOP_LEFT,
                                       0,
                                       0);
@@ -84,11 +84,11 @@ Dice::Dice(Controllers::MotionController& motionController,
                                       20,
                                       0);
 
-  lv_obj_align_to(nCounter.get(), nCounterLabel, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-  lv_roller_set_selected(nCounter.get(), 1, LV_ANIM_ON);
+  lv_obj_align_to(nCounter, nCounterLabel, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
+  lv_roller_set_selected(nCounter, 1, LV_ANIM_ON);
 
-  lv_obj_align_to(dCounter.get(), dCounterLabel, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-  lv_roller_set_selected(dCounter.get(), 6, LV_ANIM_ON);
+  lv_obj_align_to(dCounter, dCounterLabel, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
+  lv_roller_set_selected(dCounter, 6, LV_ANIM_ON);
 
   std::uniform_int_distribution<> distrib(0, static_cast<uint8_t>(resultColors.size()) - 1);
   currentColorIndex = distrib(gen);
@@ -99,7 +99,7 @@ Dice::Dice(Controllers::MotionController& motionController,
                                120,
                                LV_ALIGN_CENTER,
                                "",
-                               lv_scr_act(),
+                               lv_screen_active(),
                                LV_ALIGN_TOP_RIGHT,
                                11,
                                38);
@@ -117,7 +117,7 @@ Dice::Dice(Controllers::MotionController& motionController,
   Roll();
   openingRoll = false;
 
-  btnRoll = lv_button_create(lv_scr_act());
+  btnRoll = lv_button_create(lv_screen_active());
   btnRoll->user_data = this;
   lv_obj_add_event_cb(btnRoll, btnRollEventHandler, LV_EVENT_CLICKED, this);
   lv_obj_set_size(btnRoll, 240, 50);
@@ -149,7 +149,7 @@ Dice::~Dice() {
     enableShakeForDice = false;
   }
   lv_timer_del(refreshTask);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 void Dice::Refresh() {
@@ -169,13 +169,13 @@ void Dice::Refresh() {
 void Dice::Roll() {
   uint8_t resultIndividual = 0;
   uint16_t resultTotal = 0;
-  std::uniform_int_distribution<int32_t> distrib(1, static_cast<int32_t>((lv_roller_get_selected(dCounter.get()))));
+  std::uniform_int_distribution<int32_t> distrib(1, static_cast<int32_t>((lv_roller_get_selected(dCounter))));
 
   lv_label_set_text(resultIndividualLabel, "");
 
-  if (lv_roller_get_selected(nCounter.get()) == 1) {
+  if (lv_roller_get_selected(nCounter) == 1) {
     resultTotal = distrib(gen);
-    if (lv_roller_get_selected(dCounter.get()) == 2) {
+    if (lv_roller_get_selected(dCounter) == 2) {
       switch (resultTotal) {
         case 1:
           lv_label_set_text(resultIndividualLabel, "HEADS");
@@ -188,11 +188,11 @@ void Dice::Roll() {
       }
     }
   } else {
-    for (uint32_t i = 0; i < lv_roller_get_selected(nCounter.get()); i++) {
+    for (uint32_t i = 0; i < lv_roller_get_selected(nCounter); i++) {
       resultIndividual = distrib(gen);
       resultTotal += resultIndividual;
       lv_label_ins_text(resultIndividualLabel, LV_LABEL_POS_LAST, std::to_string(resultIndividual).c_str());
-      if (i < (lv_roller_get_selected(nCounter.get()) - 1)) {
+      if (i < (lv_roller_get_selected(nCounter) - 1)) {
         lv_label_ins_text(resultIndividualLabel, LV_LABEL_POS_LAST, "+");
       }
     }

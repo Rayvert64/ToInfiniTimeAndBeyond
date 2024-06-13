@@ -2,17 +2,18 @@
 #include "displayapp/DisplayApp.h"
 #include "displayapp/screens/Symbols.h"
 #include "displayapp/screens/BatteryIcon.h"
+#include "displayapp/Colors.h"
 #include "components/ble/BleController.h"
 #include "displayapp/InfiniTimeTheme.h"
+#include <lvgl/src/misc/lv_event.h>
+#include <lvgl/src/misc/lv_types.h>
 
 using namespace Pinetime::Applications::Screens;
 
 namespace {
-  void ButtonEventHandler(lv_obj_t* obj, lv_event_t event) {
-    auto* screen = static_cast<QuickSettings*>(obj->user_data);
-    if (event == LV_EVENT_CLICKED) {
-      screen->OnButtonEvent(obj);
-    }
+  void ButtonEventHandler(lv_event_t* event) {
+    auto* screen = static_cast<QuickSettings*>(event->user_data);
+    screen->OnButtonEvent(event);
   }
 
   void lv_update_task(struct _lv_timer_t* task) {
@@ -47,7 +48,7 @@ QuickSettings::QuickSettings(Pinetime::Applications::DisplayApp* app,
   static constexpr uint8_t innerDistance = 10;
 
   // Time
-  label_time = lv_label_create(lv_scr_act());
+  label_time = lv_label_create(lv_screen_active());
   lv_obj_set_align(label_time, LV_ALIGN_CENTER);
   lv_obj_align(label_time, LV_ALIGN_TOP_LEFT, 0, 0);
 
@@ -61,10 +62,10 @@ QuickSettings::QuickSettings(Pinetime::Applications::DisplayApp* app,
   lv_style_set_radius(&btn_style, buttonHeight / 4);
   lv_style_set_bg_color(&btn_style, Colors::bgAlt);
 
-  btn1 = lv_button_create(lv_scr_act());
+  btn1 = lv_button_create(lv_screen_active());
   btn1->user_data = this;
-  lv_obj_add_event_cb(btn1, ButtonEventHandler);
-  lv_obj_add_style(btn1, LV_PART_MAIN, &btn_style);
+  lv_obj_add_event_cb(btn1, ButtonEventHandler, LV_EVENT_CLICKED, this);
+  lv_obj_add_style(btn1, &btn_style, LV_PART_MAIN);
   lv_obj_set_size(btn1, buttonWidth, buttonHeight);
   lv_obj_align(btn1, LV_ALIGN_TOP_LEFT, buttonXOffset, barHeight);
 
@@ -72,22 +73,21 @@ QuickSettings::QuickSettings(Pinetime::Applications::DisplayApp* app,
   lv_obj_set_style_text_font(btn1_lvl, &lv_font_sys_48, LV_STATE_DEFAULT);
   lv_label_set_text_static(btn1_lvl, brightness.GetIcon());
 
-  btn2 = lv_button_create(lv_scr_act());
+  btn2 = lv_button_create(lv_screen_active());
   btn2->user_data = this;
-  lv_obj_add_event_cb(btn2, ButtonEventHandler);
-  lv_obj_add_style(btn2, LV_PART_MAIN, &btn_style);
+  lv_obj_add_event_cb(btn2, ButtonEventHandler, LV_EVENT_CLICKED, this);
+  lv_obj_add_style(btn2, &btn_style, LV_PART_MAIN);
   lv_obj_set_size(btn2, buttonWidth, buttonHeight);
   lv_obj_align(btn2, LV_ALIGN_TOP_RIGHT, -buttonXOffset, barHeight);
 
-  lv_obj_t* lbl_btn;
-  lbl_btn = lv_label_create(btn2);
+  lv_obj_t* lbl_btn = lv_label_create(btn2);
   lv_obj_set_style_text_font(lbl_btn, &lv_font_sys_48, LV_STATE_DEFAULT);
   lv_label_set_text_static(lbl_btn, Symbols::flashlight);
 
-  btn3 = lv_button_create(lv_scr_act());
+  btn3 = lv_button_create(lv_screen_active());
   btn3->user_data = this;
-  lv_obj_add_event_cb(btn3, ButtonEventHandler);
-  lv_obj_add_style(btn3, LV_PART_MAIN, &btn_style);
+  lv_obj_add_event_cb(btn3, ButtonEventHandler, LV_EVENT_CLICKED, this);
+  lv_obj_add_style(btn3, &btn_style, LV_PART_MAIN);
   lv_obj_set_style_bg_color(btn3, PINETIME_COLOR_RED, LV_PART_MAIN);
   static constexpr lv_color_t violet = LV_COLOR_MAKE(0x60, 0x00, 0xff);
   lv_obj_set_style_bg_color(btn3, violet, LV_PART_MAIN);
@@ -99,18 +99,18 @@ QuickSettings::QuickSettings(Pinetime::Applications::DisplayApp* app,
 
   if (settingsController.GetNotificationStatus() == Controllers::Settings::Notification::On) {
     lv_label_set_text_static(btn3_lvl, Symbols::notificationsOn);
-    lv_obj_set_state(btn3, static_cast<lv_state_t>(ButtonState::NotificationsOn));
+    lv_obj_set_state(btn3, static_cast<lv_state_t>(ButtonState::NotificationsOn), true);
   } else if (settingsController.GetNotificationStatus() == Controllers::Settings::Notification::Off) {
     lv_label_set_text_static(btn3_lvl, Symbols::notificationsOff);
   } else {
     lv_label_set_text_static(btn3_lvl, Symbols::sleep);
-    lv_obj_set_state(btn3, static_cast<lv_state_t>(ButtonState::Sleep));
+    lv_obj_set_state(btn3, static_cast<lv_state_t>(ButtonState::Sleep), true);
   }
 
-  btn4 = lv_button_create(lv_scr_act());
+  btn4 = lv_button_create(lv_screen_active());
   btn4->user_data = this;
-  lv_obj_add_event_cb(btn4, ButtonEventHandler);
-  lv_obj_add_style(btn4, LV_PART_MAIN, &btn_style);
+  lv_obj_add_event_cb(btn4, ButtonEventHandler, LV_EVENT_CLICKED, this);
+  lv_obj_add_style(btn4, &btn_style, LV_PART_MAIN);
   lv_obj_set_size(btn4, buttonWidth, buttonHeight);
   lv_obj_align(btn4, LV_ALIGN_BOTTOM_RIGHT, -buttonXOffset, 0);
 
@@ -125,7 +125,7 @@ QuickSettings::QuickSettings(Pinetime::Applications::DisplayApp* app,
 QuickSettings::~QuickSettings() {
   lv_style_reset(&btn_style);
   lv_timer_del(taskUpdate);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
   settingsController.SaveSettings();
 }
 
@@ -134,7 +134,8 @@ void QuickSettings::UpdateScreen() {
   statusIcons.Update();
 }
 
-void QuickSettings::OnButtonEvent(lv_obj_t* object) {
+void QuickSettings::OnButtonEvent(lv_event_t* event) {
+  auto* object = lv_event_get_target_obj(event);
   if (object == btn2) {
     app->StartApp(Apps::FlashLight, DisplayApp::FullRefreshDirections::Up);
   } else if (object == btn1) {
@@ -148,15 +149,15 @@ void QuickSettings::OnButtonEvent(lv_obj_t* object) {
     if (settingsController.GetNotificationStatus() == Controllers::Settings::Notification::On) {
       settingsController.SetNotificationStatus(Controllers::Settings::Notification::Off);
       lv_label_set_text_static(btn3_lvl, Symbols::notificationsOff);
-      lv_obj_set_state(btn3, static_cast<lv_state_t>(ButtonState::NotificationsOff));
+      lv_obj_set_state(btn3, static_cast<lv_state_t>(ButtonState::NotificationsOff), true);
     } else if (settingsController.GetNotificationStatus() == Controllers::Settings::Notification::Off) {
       settingsController.SetNotificationStatus(Controllers::Settings::Notification::Sleep);
       lv_label_set_text_static(btn3_lvl, Symbols::sleep);
-      lv_obj_set_state(btn3, static_cast<lv_state_t>(ButtonState::Sleep));
+      lv_obj_set_state(btn3, static_cast<lv_state_t>(ButtonState::Sleep), true);
     } else {
       settingsController.SetNotificationStatus(Controllers::Settings::Notification::On);
       lv_label_set_text_static(btn3_lvl, Symbols::notificationsOn);
-      lv_obj_set_state(btn3, static_cast<lv_state_t>(ButtonState::NotificationsOn));
+      lv_obj_set_state(btn3, static_cast<lv_state_t>(ButtonState::NotificationsOn), true);
       motorController.RunForDuration(35);
     }
 

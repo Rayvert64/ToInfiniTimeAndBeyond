@@ -194,7 +194,7 @@ namespace {
  */
 Navigation::Navigation(Pinetime::Controllers::NavigationService& nav) : navService(nav) {
   const auto& image = GetIcon("flag");
-  imgFlag = lv_img_create(lv_scr_act());
+  imgFlag = lv_img_create(lv_screen_active());
   lv_obj_set_size(imgFlag, 80, 80);
   lv_img_set_src(imgFlag, image.fileName);
   lv_img_set_offset_x(imgFlag, 0);
@@ -203,7 +203,7 @@ Navigation::Navigation(Pinetime::Controllers::NavigationService& nav) : navServi
   lv_obj_set_style_bg_image_recolor(imgFlag, PINETIME_COLOR_CYAN, LV_STATE_DEFAULT);
   lv_obj_align(imgFlag, LV_ALIGN_CENTER, 0, -60);
 
-  txtNarrative = lv_label_create(lv_scr_act());
+  txtNarrative = lv_label_create(lv_screen_active());
   lv_label_set_long_mode(txtNarrative, LV_LABEL_LONG_DOT);
   lv_obj_set_width(txtNarrative, LV_HOR_RES);
   lv_obj_set_height(txtNarrative, 80);
@@ -211,7 +211,7 @@ Navigation::Navigation(Pinetime::Controllers::NavigationService& nav) : navServi
   lv_obj_set_align(txtNarrative, LV_ALIGN_CENTER);
   lv_obj_align(txtNarrative, LV_ALIGN_CENTER, 0, 30);
 
-  txtManDist = lv_label_create(lv_scr_act());
+  txtManDist = lv_label_create(lv_screen_active());
   lv_label_set_long_mode(txtManDist, LV_LABEL_LONG_WRAP);
   lv_obj_set_style_text_color(txtManDist, PINETIME_COLOR_GREEN, LV_STATE_DEFAULT);
   lv_obj_set_style_text_font(txtManDist, &jetbrains_mono_42, LV_STATE_DEFAULT);
@@ -221,7 +221,7 @@ Navigation::Navigation(Pinetime::Controllers::NavigationService& nav) : navServi
   lv_obj_align(txtManDist, LV_ALIGN_CENTER, 0, 90);
 
   // Route Progress
-  barProgress = lv_bar_create(lv_scr_act());
+  barProgress = lv_bar_create(lv_screen_active());
   lv_obj_set_size(barProgress, 200, 20);
   lv_obj_align(barProgress, LV_ALIGN_BOTTOM_MID, 0, -10);
   lv_obj_set_style_bg_color(barProgress, lv_color_hex(0x222222), LV_STATE_DEFAULT);
@@ -234,7 +234,7 @@ Navigation::Navigation(Pinetime::Controllers::NavigationService& nav) : navServi
 
 Navigation::~Navigation() {
   lv_timer_del(taskRefresh);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 void Navigation::Refresh() {

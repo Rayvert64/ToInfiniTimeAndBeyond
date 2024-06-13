@@ -33,19 +33,19 @@ namespace Pinetime::Applications {
 
       enum btnStates { BTN_STATE_IDLE, BTN_STATE_SHORT_PRESS, BTN_STATE_HELD, NUMBER_BTN_STATES };
 
-      std::shared_ptr<lv_obj_t> btnPlayPause;
-      std::shared_ptr<lv_obj_t> txtPlayPause;
+      lv_obj_t* btnPlayPause;
+      lv_obj_t* txtPlayPause;
       lv_style_t styles_btn[NUMBER_BTN_STATES];
 
       lv_style_prop_t btnTransitionElements[2] = {
         LV_STYLE_BG_OPA,
         (lv_style_prop_t) 0, /*End marker*/
       };
-      std::shared_ptr<lv_style_transition_dsc_t> btnTransitionDescription;
+      lv_style_transition_dsc_t* btnTransitionDescription;
 
-      std::shared_ptr<lv_timer_t> taskRefresh;
-      std::shared_ptr<lv_obj_t> minuteCounter;
-      std::shared_ptr<lv_obj_t> secondCounter;
+      lv_timer_t* taskRefresh;
+      lv_obj_t* minuteCounter;
+      lv_obj_t* secondCounter;
 
       bool buttonPressing = false;
       lv_coord_t maskPosition = 0;

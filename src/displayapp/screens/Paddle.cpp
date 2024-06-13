@@ -7,7 +7,7 @@
 using namespace Pinetime::Applications::Screens;
 
 Paddle::Paddle(Pinetime::Components::LittleVgl& lvgl) : lvgl {lvgl} {
-  background = lv_obj_create(lv_scr_act());
+  background = lv_obj_create(lv_screen_active());
   lv_obj_set_size(background, LV_HOR_RES + 1, LV_VER_RES);
   lv_obj_set_pos(background, -1, 0);
   lv_obj_set_style_radius(background, 0, LV_STATE_DEFAULT);
@@ -15,17 +15,17 @@ Paddle::Paddle(Pinetime::Components::LittleVgl& lvgl) : lvgl {lvgl} {
   lv_obj_set_style_border_color(background, lv_color_white(), LV_PART_MAIN);
   lv_obj_set_style_border_width(background, 1, LV_PART_MAIN);
 
-  points = lv_label_create(lv_scr_act());
+  points = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_font(points, &jetbrains_mono_42, LV_STATE_DEFAULT);
   lv_label_set_text_static(points, "0000");
   lv_obj_align(points, LV_ALIGN_TOP_MID, 0, 10);
 
-  paddle = lv_obj_create(lv_scr_act());
+  paddle = lv_obj_create(lv_screen_active());
   lv_obj_set_style_bg_color(paddle, lv_color_white(), LV_PART_MAIN);
   lv_obj_set_style_radius(paddle, 0, LV_STATE_DEFAULT);
   lv_obj_set_size(paddle, 4, 60);
 
-  ball = lv_obj_create(lv_scr_act());
+  ball = lv_obj_create(lv_screen_active());
   lv_obj_set_style_bg_color(ball, lv_color_white(), LV_PART_MAIN);
   lv_obj_set_style_radius(ball, LV_RADIUS_CIRCLE, LV_STATE_DEFAULT);
   lv_obj_set_size(ball, ballSize, ballSize);
@@ -35,7 +35,7 @@ Paddle::Paddle(Pinetime::Components::LittleVgl& lvgl) : lvgl {lvgl} {
 
 Paddle::~Paddle() {
   lv_timer_del(taskRefresh);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 void Paddle::Refresh() {

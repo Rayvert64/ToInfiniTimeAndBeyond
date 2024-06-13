@@ -35,7 +35,7 @@ namespace {
   }
 
   lv_obj_t* createLabel(const char* name, lv_obj_t* reference, lv_align_t align, const lv_font_t* font, uint8_t x, uint8_t y) {
-    lv_obj_t* label = lv_label_create(lv_scr_act());
+    lv_obj_t* label = lv_label_create(lv_screen_active());
     lv_obj_set_style_text_font(label, font, LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(label, Colors::lightGray, LV_STATE_DEFAULT);
     lv_label_set_text(label, name);
@@ -48,7 +48,7 @@ namespace {
 Metronome::Metronome(Controllers::MotorController& motorController, System::SystemTask& systemTask)
   : motorController {motorController}, systemTask {systemTask} {
 
-  bpmArc = lv_arc_create(lv_scr_act());
+  bpmArc = lv_arc_create(lv_screen_active());
   bpmArc->user_data = this;
   lv_obj_add_event_cb(bpmArc, EventOnBpmValueChangeArc, LV_EVENT_VALUE_CHANGED, this);
   lv_arc_set_bg_angles(bpmArc, 0, 270);
@@ -61,7 +61,7 @@ Metronome::Metronome(Controllers::MotorController& motorController, System::Syst
   bpmValue = createLabel("120", bpmArc, LV_ALIGN_TOP_MID, &jetbrains_mono_76, 0, 55);
   createLabel("bpm", bpmValue, LV_ALIGN_OUT_BOTTOM_MID, &jetbrains_mono_bold_20, 0, 0);
 
-  bpmTap = lv_button_create(lv_scr_act());
+  bpmTap = lv_button_create(lv_screen_active());
   bpmTap->user_data = this;
   lv_obj_add_event_cb(bpmTap, EventOnScreenTap, LV_EVENT_PRESSED, this);
   lv_obj_add_event_cb(bpmTap, EventOnScreenTapRelease, LV_EVENT_PRESS_LOST, this);
@@ -70,7 +70,7 @@ Metronome::Metronome(Controllers::MotorController& motorController, System::Syst
   lv_obj_set_height(bpmTap, 80);
   lv_obj_align(bpmTap, LV_ALIGN_TOP_MID, 0, 0);
 
-  bpbDropdown = lv_dropdown_create(lv_scr_act());
+  bpbDropdown = lv_dropdown_create(lv_screen_active());
   bpbDropdown->user_data = this;
   lv_obj_add_event_cb(bpbDropdown, EventOnBpmValueChangeDropDown, LV_EVENT_VALUE_CHANGED, this);
   lv_obj_set_size(bpbDropdown, 115, 50);
@@ -83,7 +83,7 @@ Metronome::Metronome(Controllers::MotorController& motorController, System::Syst
   lv_label_set_text_fmt(currentBpbText, "%d bpb", bpb);
   lv_obj_align(currentBpbText, LV_ALIGN_CENTER, 0, 0);
 
-  playPause = lv_button_create(lv_scr_act());
+  playPause = lv_button_create(lv_screen_active());
   playPause->user_data = this;
   lv_obj_add_event_cb(playPause, EventOnPlayPausePress, LV_EVENT_SHORT_CLICKED, this);
   lv_obj_set_size(playPause, 115, 50);
@@ -97,7 +97,7 @@ Metronome::Metronome(Controllers::MotorController& motorController, System::Syst
 Metronome::~Metronome() {
   lv_timer_del(taskRefresh);
   systemTask.PushMessage(System::Messages::EnableSleeping);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 void Metronome::Refresh() {

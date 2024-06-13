@@ -1,5 +1,6 @@
 #include "displayapp/widgets/StatusIcons.h"
 #include "displayapp/screens/Symbols.h"
+#include <lvgl/src/core/lv_obj.h>
 
 using namespace Pinetime::Applications::Widgets;
 
@@ -8,11 +9,10 @@ StatusIcons::StatusIcons(const Controllers::Battery& batteryController, const Co
 }
 
 void StatusIcons::Create() {
-  container = lv_cont_create(lv_scr_act(), nullptr);
-  lv_cont_set_layout(container, LV_LAYOUT_ROW_TOP);
-  lv_cont_set_fit(container, LV_FIT_TIGHT);
-  lv_obj_set_style_local_pad_inner(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 5);
-  lv_obj_set_style_local_bg_opa(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
+  container = lv_obj_create(lv_screen_active());
+  lv_obj_set_style_text_align(container, LV_ALIGN_TOP_LEFT, LV_STATE_ANY);
+  lv_obj_set_style_text_align(container, LV_ALIGN_CENTER, LV_STATE_DEFAULT);
+  lv_obj_set_style_bg_opa(container, LV_OPA_TRANSP, LV_STATE_DEFAULT);
 
   bleIcon = lv_label_create(container);
   lv_label_set_text_static(bleIcon, Screens::Symbols::bluetooth);
@@ -28,7 +28,11 @@ void StatusIcons::Create() {
 void StatusIcons::Update() {
   powerPresent = batteryController.IsPowerPresent();
   if (powerPresent.IsUpdated()) {
-    lv_obj_set_hidden(batteryPlug, !powerPresent.Get());
+    if (powerPresent.Get()) {
+      lv_obj_add_flag(batteryPlug, LV_OBJ_FLAG_HIDDEN);
+    } else {
+      lv_obj_remove_flag(batteryPlug, LV_OBJ_FLAG_HIDDEN);
+    }
   }
 
   batteryPercentRemaining = batteryController.PercentRemaining();
@@ -40,6 +44,10 @@ void StatusIcons::Update() {
   bleState = bleController.IsConnected();
   bleRadioEnabled = bleController.IsRadioEnabled();
   if (bleState.IsUpdated() || bleRadioEnabled.IsUpdated()) {
-    lv_obj_set_hidden(bleIcon, !bleState.Get());
+    if (bleState.Get()) {
+      lv_obj_add_flag(bleIcon, LV_OBJ_FLAG_HIDDEN);
+    } else {
+      lv_obj_remove_flag(bleIcon, LV_OBJ_FLAG_HIDDEN);
+    }
   }
 }

@@ -49,7 +49,7 @@ The update procedure is based on the [BLE FS API](BLEFS.md). The companion app s
 Load a picture from the external resources:
 
 ```
-lv_obj_t* logo = lv_img_create(lv_scr_act());
+lv_obj_t* logo = lv_img_create(lv_screen_active());
 lv_img_set_src(logo, "F:/images/logo.bin");
 ```
 

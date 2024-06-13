@@ -14,8 +14,8 @@
 using namespace Pinetime::Applications::Screens;
 
 namespace {
-  void event_handler(lv_obj_t* obj, lv_event_t event) {
-    auto* screen = static_cast<WatchFaceInfineat*>(obj->user_data);
+  void event_handler(lv_event_t* event) {
+    auto* screen = static_cast<WatchFaceInfineat*>(event->user_data);
     screen->UpdateSelected(obj, event);
   }
 
@@ -146,41 +146,42 @@ WatchFaceInfineat::WatchFaceInfineat(Controllers::DateTime& dateTimeController,
   }
 
   // Side Cover
-  static constexpr lv_point_t linePoints[nLines][2] = {{{30, 25}, {68, -8}},
-                                                       {{26, 167}, {43, 216}},
-                                                       {{27, 40}, {27, 196}},
-                                                       {{12, 182}, {65, 249}},
-                                                       {{17, 99}, {17, 144}},
-                                                       {{14, 81}, {40, 127}},
-                                                       {{14, 163}, {40, 118}},
-                                                       {{-20, 124}, {25, -11}},
-                                                       {{-29, 89}, {27, 254}}};
+  static constexpr lv_point_precise_t linePoints[nLines][2] = {{{30, 25}, {68, -8}},
+                                                               {{26, 167}, {43, 216}},
+                                                               {{27, 40}, {27, 196}},
+                                                               {{12, 182}, {65, 249}},
+                                                               {{17, 99}, {17, 144}},
+                                                               {{14, 81}, {40, 127}},
+                                                               {{14, 163}, {40, 118}},
+                                                               {{-20, 124}, {25, -11}},
+                                                               {{-29, 89}, {27, 254}}};
 
   static constexpr lv_style_int_t lineWidths[nLines] = {18, 15, 14, 22, 20, 18, 18, 52, 48};
 
   const std::array<lv_color_t, nLines>* colors = returnColor(static_cast<enum colors>(settingsController.GetInfineatColorIndex()));
   for (int i = 0; i < nLines; i++) {
-    lines[i] = lv_line_create(lv_scr_act(), nullptr);
-    lv_obj_set_style_local_line_width(lines[i], LV_LINE_PART_MAIN, LV_STATE_DEFAULT, lineWidths[i]);
+    lines[i] = lv_line_create(lv_screen_active());
+    lv_obj_set_style_line_width(lines[i], lineWidths[i], LV_STATE_DEFAULT);
     lv_color_t color = (*colors)[i];
-    lv_obj_set_style_local_line_color(lines[i], LV_LINE_PART_MAIN, LV_STATE_DEFAULT, color);
+    lv_obj_set_style_line_color(lines[i], color, LV_STATE_DEFAULT);
     lv_line_set_points(lines[i], linePoints[i], 2);
   }
 
-  logoPine = lv_img_create(lv_scr_act());
+  logoPine = lv_img_create(lv_screen_active());
   lv_img_set_src(logoPine, "F:/images/pine_small.bin");
   lv_obj_set_pos(logoPine, 15, 106);
 
-  lineBattery = lv_line_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_line_width(lineBattery, LV_LINE_PART_MAIN, LV_STATE_DEFAULT, 24);
-  lv_obj_set_style_local_line_color(lineBattery, LV_LINE_PART_MAIN, LV_STATE_DEFAULT, (*colors)[4]);
-  lv_obj_set_style_local_line_opa(lineBattery, LV_LINE_PART_MAIN, LV_STATE_DEFAULT, 190);
+  lineBattery = lv_line_create(lv_screen_active());
+  lv_obj_set_style_line_width(lineBattery, 24, LV_STATE_DEFAULT);
+  lv_obj_set_style_line_color(lineBattery, (*colors)[4], LV_STATE_DEFAULT);
+  lv_obj_set_style_line_opa(lineBattery, 190, LV_STATE_DEFAULT);
+  ;
   lineBatteryPoints[0] = {27, 105};
   lineBatteryPoints[1] = {27, 106};
   lv_line_set_points(lineBattery, lineBatteryPoints, 2);
   lv_obj_move_foreground(lineBattery);
 
-  notificationIcon = lv_obj_create(lv_scr_act());
+  notificationIcon = lv_obj_create(lv_screen_active());
   lv_obj_set_style_bg_color(notificationIcon, (*colors)[7], LV_PART_MAIN);
   lv_obj_set_style_radius(notificationIcon, LV_RADIUS_CIRCLE, LV_STATE_DEFAULT);
   lv_obj_set_size(notificationIcon, 13, 13);
@@ -193,91 +194,91 @@ WatchFaceInfineat::WatchFaceInfineat(Controllers::DateTime& dateTimeController,
     }
   }
 
-  timeContainer = lv_obj_create(lv_scr_act());
-  lv_obj_set_style_local_bg_opa(timeContainer, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
+  timeContainer = lv_obj_create(lv_screen_active());
+  lv_obj_set_style_bg_opa(timeContainer, LV_OPA_TRANSP, LV_STATE_DEFAULT);
   lv_obj_set_size(timeContainer, 185, 185);
   lv_obj_align(timeContainer, LV_ALIGN_CENTER, 0, -10);
 
-  labelHour = lv_label_create(lv_scr_act());
+  labelHour = lv_label_create(lv_screen_active());
   lv_label_set_text_static(labelHour, "01");
   lv_obj_set_style_text_font(labelHour, font_bebas, LV_STATE_DEFAULT);
   lv_obj_align(labelHour, LV_ALIGN_TOP_MID, 0, 0);
 
-  labelMinutes = lv_label_create(lv_scr_act());
+  labelMinutes = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_font(labelMinutes, font_bebas, LV_STATE_DEFAULT);
   lv_label_set_text_static(labelMinutes, "00");
   lv_obj_align(labelMinutes, LV_ALIGN_BOTTOM_MID, 0, 0);
 
-  labelTimeAmPm = lv_label_create(lv_scr_act());
+  labelTimeAmPm = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_font(labelTimeAmPm, font_teko, LV_STATE_DEFAULT);
 
   lv_label_set_text_static(labelTimeAmPm, "");
   lv_obj_align(labelTimeAmPm, LV_ALIGN_OUT_RIGHT_TOP, 0, 15);
 
-  dateContainer = lv_obj_create(lv_scr_act());
-  lv_obj_set_style_local_bg_opa(dateContainer, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
+  dateContainer = lv_obj_create(lv_screen_active());
+  lv_obj_set_style_bg_opa(dateContainer, LV_OPA_TRANSP, LV_STATE_DEFAULT);
   lv_obj_set_size(dateContainer, 60, 30);
   lv_obj_align(dateContainer, LV_ALIGN_RIGHT_MID, 0, 5);
 
   static constexpr lv_color_t grayColor = LV_COLOR_MAKE(0x99, 0x99, 0x99);
-  labelDate = lv_label_create(lv_scr_act());
+  labelDate = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(labelDate, grayColor, LV_STATE_DEFAULT);
   lv_obj_set_style_text_font(labelDate, font_teko, LV_STATE_DEFAULT);
   lv_obj_align(labelDate, LV_ALIGN_TOP_MID, 0, 0);
   lv_label_set_text_static(labelDate, "Mon 01");
 
-  bleIcon = lv_label_create(lv_scr_act());
+  bleIcon = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(bleIcon, grayColor, LV_STATE_DEFAULT);
   lv_label_set_text_static(bleIcon, Symbols::bluetooth);
   lv_obj_align(bleIcon, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
 
-  stepValue = lv_label_create(lv_scr_act());
+  stepValue = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(stepValue, grayColor, LV_STATE_DEFAULT);
   lv_obj_set_style_text_font(stepValue, font_teko, LV_STATE_DEFAULT);
   lv_obj_align(stepValue, LV_ALIGN_BOTTOM_RIGHT, 10, 0);
   lv_label_set_text_static(stepValue, "0");
 
-  stepIcon = lv_label_create(lv_scr_act());
+  stepIcon = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(stepIcon, grayColor, LV_STATE_DEFAULT);
   lv_label_set_text_static(stepIcon, Symbols::shoe);
   lv_obj_align(stepIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 
   // Setting buttons
-  btnClose = lv_button_create(lv_scr_act());
+  btnClose = lv_button_create(lv_screen_active());
   btnClose->user_data = this;
   lv_obj_set_size(btnClose, 60, 60);
   lv_obj_align(btnClose, LV_ALIGN_CENTER, 0, -80);
-  lv_obj_set_style_local_bg_opa(btnClose, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_70);
+  lv_obj_set_style_bg_opa(btnClose, LV_OPA_70, LV_STATE_DEFAULT);
   lv_obj_t* lblClose = lv_label_create(btnClose);
   lv_label_set_text_static(lblClose, "X");
   lv_obj_add_event_cb(btnClose, event_handler);
   lv_obj_add_flag(btnClose, LV_OBJ_FLAG_HIDDEN);
 
-  btnNextColor = lv_button_create(lv_scr_act());
+  btnNextColor = lv_button_create(lv_screen_active());
   btnNextColor->user_data = this;
   lv_obj_set_size(btnNextColor, 60, 60);
   lv_obj_align(btnNextColor, LV_ALIGN_RIGHT_MID, -15, 0);
-  lv_obj_set_style_local_bg_opa(btnNextColor, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_70);
+  lv_obj_set_style_bg_opa(btnNextColor, LV_OPA_70, LV_STATE_DEFAULT);
   lv_obj_t* lblNextColor = lv_label_create(btnNextColor);
   lv_label_set_text_static(lblNextColor, ">");
   lv_obj_add_event_cb(btnNextColor, event_handler);
   lv_obj_add_flag(btnNextColor, LV_OBJ_FLAG_HIDDEN);
 
-  btnPrevColor = lv_button_create(lv_scr_act());
+  btnPrevColor = lv_button_create(lv_screen_active());
   btnPrevColor->user_data = this;
   lv_obj_set_size(btnPrevColor, 60, 60);
   lv_obj_align(btnPrevColor, LV_ALIGN_LEFT_MID, 15, 0);
-  lv_obj_set_style_local_bg_opa(btnPrevColor, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_70);
+  lv_obj_set_style_bg_opa(btnPrevColor, LV_OPA_70, LV_STATE_DEFAULT);
   lv_obj_t* lblPrevColor = lv_label_create(btnPrevColor);
   lv_label_set_text_static(lblPrevColor, "<");
   lv_obj_add_event_cb(btnPrevColor, event_handler);
   lv_obj_add_flag(btnPrevColor, LV_OBJ_FLAG_HIDDEN);
 
-  btnToggleCover = lv_button_create(lv_scr_act());
+  btnToggleCover = lv_button_create(lv_screen_active());
   btnToggleCover->user_data = this;
   lv_obj_set_size(btnToggleCover, 60, 60);
   lv_obj_align(btnToggleCover, LV_ALIGN_CENTER, 0, 80);
-  lv_obj_set_style_local_bg_opa(btnToggleCover, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_70);
+  lv_obj_set_style_bg_opa(btnToggleCover, LV_OPA_70, LV_STATE_DEFAULT);
   const char* labelToggle = settingsController.GetInfineatShowSideCover() ? "ON" : "OFF";
   lblToggle = lv_label_create(btnToggleCover);
   lv_label_set_text_static(lblToggle, labelToggle);
@@ -285,12 +286,12 @@ WatchFaceInfineat::WatchFaceInfineat(Controllers::DateTime& dateTimeController,
   lv_obj_add_flag(btnToggleCover, LV_OBJ_FLAG_HIDDEN);
 
   // Button to access the settings
-  btnSettings = lv_button_create(lv_scr_act());
+  btnSettings = lv_button_create(lv_screen_active());
   btnSettings->user_data = this;
   lv_obj_set_size(btnSettings, 150, 150);
   lv_obj_align(btnSettings, LV_ALIGN_CENTER, 0, 0);
   lv_obj_set_style_radius(btnSettings, 30, LV_STATE_DEFAULT);
-  lv_obj_set_style_local_bg_opa(btnSettings, LV_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_70);
+  lv_obj_set_style_bg_opa(btnSettings, LV_OPA_70, LV_STATE_DEFAULT);
   lv_obj_add_event_cb(btnSettings, event_handler);
   labelBtnSettings = lv_label_create(btnSettings);
   lv_obj_set_style_text_font(labelBtnSettings, &lv_font_sys_48, LV_STATE_DEFAULT);
@@ -311,7 +312,7 @@ WatchFaceInfineat::~WatchFaceInfineat() {
     lv_font_free(font_teko);
   }
 
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 bool WatchFaceInfineat::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
@@ -389,9 +390,9 @@ void WatchFaceInfineat::UpdateSelected(lv_obj_t* object, lv_event_t event) {
       const std::array<lv_color_t, nLines>* colors = returnColor(static_cast<enum colors>(settingsController.GetInfineatColorIndex()));
       for (int i = 0; i < nLines; i++) {
         lv_color_t color = (*colors)[i];
-        lv_obj_set_style_local_line_color(lines[i], LV_LINE_PART_MAIN, LV_STATE_DEFAULT, color);
+        lv_obj_set_style_line_color(lines[i], color, LV_STATE_DEFAULT);
       }
-      lv_obj_set_style_local_line_color(lineBattery, LV_LINE_PART_MAIN, LV_STATE_DEFAULT, (*colors)[4]);
+      lv_obj_set_style_line_color(lineBattery, (*colors)[4], LV_STATE_DEFAULT);
       lv_obj_set_style_bg_color(notificationIcon, (*colors)[7], LV_PART_MAIN);
     }
   }
@@ -488,7 +489,7 @@ void WatchFaceInfineat::ToggleBatteryIndicatorColor(bool showSideCover) {
   } else {
     lv_obj_set_style_bg_image_recolor_opa(logoPine, LV_OPA_0, LV_STATE_DEFAULT);
     const std::array<lv_color_t, nLines>* colors = returnColor(static_cast<enum colors>(settingsController.GetInfineatColorIndex()));
-    lv_obj_set_style_local_line_color(lineBattery, LV_LINE_PART_MAIN, LV_STATE_DEFAULT, (*colors)[4]);
+    lv_obj_set_style_line_color(lineBattery, (*colors)[4], LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(notificationIcon, (*colors)[7], LV_PART_MAIN);
   }
 }

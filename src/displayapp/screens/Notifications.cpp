@@ -5,10 +5,16 @@
 #include "displayapp/screens/Symbols.h"
 #include <algorithm>
 #include "displayapp/InfiniTimeTheme.h"
+#include "displayapp/Colors.h"
+#include <lvgl/lvgl.h>
+#include <lvgl/src/core/lv_obj.h>
+#include <lvgl/src/core/lv_obj_style_gen.h>
+#include <lvgl/src/misc/lv_area.h>
+#include <lvgl/src/misc/lv_event.h>
+#include <lvgl/src/misc/lv_text.h>
+#include <lvgl/src/widgets/msgbox/lv_msgbox.h>
 
 using namespace Pinetime::Applications::Screens;
-extern lv_font_t jetbrains_mono_extrabold_compressed;
-extern lv_font_t jetbrains_mono_bold_20;
 
 Notifications::Notifications(DisplayApp* app,
                              Pinetime::Controllers::NotificationManager& notificationManager,
@@ -47,11 +53,11 @@ Notifications::Notifications(DisplayApp* app,
       motorController.RunForDuration(35);
     }
 
-    timeoutLine = lv_line_create(lv_scr_act(), nullptr);
+    timeoutLine = lv_line_create(lv_screen_active());
 
-    lv_obj_set_style_local_line_width(timeoutLine, LV_LINE_PART_MAIN, LV_STATE_DEFAULT, 3);
-    lv_obj_set_style_local_line_color(timeoutLine, LV_LINE_PART_MAIN, LV_STATE_DEFAULT, lv_color_white());
-    lv_obj_set_style_local_line_rounded(timeoutLine, LV_LINE_PART_MAIN, LV_STATE_DEFAULT, true);
+    lv_obj_set_style_line_width(timeoutLine, 3, LV_STATE_DEFAULT);
+    lv_obj_set_style_line_color(timeoutLine, lv_color_white(), LV_STATE_DEFAULT);
+    lv_obj_set_style_line_rounded(timeoutLine, true, LV_STATE_DEFAULT);
 
     lv_line_set_points(timeoutLine, timeoutLinePoints, 2);
     timeoutTickCountStart = xTaskGetTickCount();
@@ -66,7 +72,7 @@ Notifications::~Notifications() {
   // make sure we stop any vibrations before exiting
   motorController.StopRinging();
   systemTask.PushMessage(System::Messages::EnableSleeping);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 void Notifications::Refresh() {
@@ -133,7 +139,7 @@ void Notifications::DismissToBlack() {
   currentItem.reset(nullptr);
   app->SetFullRefresh(DisplayApp::FullRefreshDirections::RightAnim);
   // create black transition screen to let the notification dismiss to blackness
-  lv_obj_t* blackBox = lv_obj_create(lv_scr_act());
+  lv_obj_t* blackBox = lv_obj_create(lv_screen_active());
   lv_obj_set_size(blackBox, LV_HOR_RES, LV_VER_RES);
   lv_obj_set_style_bg_color(blackBox, lv_color_black(), LV_PART_MAIN);
   dismissingNotification = true;
@@ -238,9 +244,19 @@ bool Notifications::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
 }
 
 namespace {
-  void CallEventHandler(lv_obj_t* obj, lv_event_t event) {
-    auto* item = static_cast<Notifications::NotificationItem*>(obj->user_data);
-    item->OnCallButtonEvent(obj, event);
+  void EventHandlerAcceptIncomingCall(lv_event_t* event) {
+    auto* item = static_cast<Notifications::NotificationItem*>(event->user_data);
+    item->AcceptIncomingCall();
+  }
+
+  void EventHandlerRejectIncomingCall(lv_event_t* event) {
+    auto* item = static_cast<Notifications::NotificationItem*>(event->user_data);
+    item->RejectIncomingCall();
+  }
+
+  void EventHandlerMuteIncomingCall(lv_event_t* event) {
+    auto* item = static_cast<Notifications::NotificationItem*>(event->user_data);
+    item->MuteIncomingCall();
   }
 }
 
@@ -263,23 +279,22 @@ Notifications::NotificationItem::NotificationItem(const char* title,
                                                   Pinetime::Controllers::AlertNotificationService& alertNotificationService,
                                                   Pinetime::Controllers::MotorController& motorController)
   : alertNotificationService {alertNotificationService}, motorController {motorController} {
-  container = lv_cont_create(lv_scr_act(), nullptr);
+  container = lv_msgbox_create(lv_screen_active());
   lv_obj_set_size(container, LV_HOR_RES, LV_VER_RES);
-  lv_obj_set_style_bg_color(container, lv_color_black(), LV_CONT_PART_MAIN);
-  lv_obj_set_style_local_pad_all(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
-  lv_obj_set_style_local_pad_inner(container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
-  lv_obj_set_style_border_width(container, 0, LV_CONT_PART_MAIN);
+  lv_obj_set_style_bg_color(container, lv_color_black(), LV_PART_MAIN);
+  lv_obj_set_style_pad_all(container, 0, LV_STATE_DEFAULT);
+  lv_obj_set_style_text_align(container, LV_ALIGN_CENTER, LV_STATE_DEFAULT);
+  lv_obj_set_style_border_width(container, 0, LV_PART_MAIN);
 
-  subject_container = lv_cont_create(container, nullptr);
-  lv_obj_set_style_bg_color(subject_container, Colors::bgAlt, LV_CONT_PART_MAIN);
-  lv_obj_set_style_local_pad_all(subject_container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 10);
-  lv_obj_set_style_local_pad_inner(subject_container, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 5);
-  lv_obj_set_style_border_width(subject_container, 0, LV_CONT_PART_MAIN);
+  subject_container = lv_msgbox_create(container);
+  lv_obj_set_style_bg_color(subject_container, Colors::bgAlt, LV_PART_MAIN);
+  lv_obj_set_style_pad_all(subject_container, 10, LV_STATE_DEFAULT);
+  lv_obj_set_style_text_align(subject_container, LV_ALIGN_CENTER, LV_STATE_DEFAULT);
+  lv_obj_set_style_border_width(subject_container, 0, LV_PART_MAIN);
 
   lv_obj_set_pos(subject_container, 0, 50);
   lv_obj_set_size(subject_container, LV_HOR_RES, LV_VER_RES - 50);
-  lv_cont_set_layout(subject_container, LV_LAYOUT_COLUMN_LEFT);
-  lv_cont_set_fit(subject_container, LV_FIT_NONE);
+  lv_obj_set_style_text_align(subject_container, LV_ALIGN_TOP_LEFT, LV_STATE_ANY);
 
   lv_obj_t* alert_count = lv_label_create(container);
   lv_label_set_text_fmt(alert_count, "%i/%i", notifNr, notifNb);
@@ -297,9 +312,9 @@ Notifications::NotificationItem::NotificationItem(const char* title,
       *pchar = ' ';
       pchar = strchr(pchar + 1, '\n');
     }
-    lv_label_refr_text(alert_type);
+    lv_label_set_text_static(alert_type, pchar);
   }
-  lv_label_set_long_mode(alert_type, LV_LABEL_LONG_SROLL_CIRC);
+  lv_label_set_long_mode(alert_type, LV_LABEL_LONG_SCROLL_CIRCULAR);
   lv_obj_set_width(alert_type, 180);
   lv_obj_align(alert_type, LV_ALIGN_TOP_LEFT, 0, 16);
 
@@ -323,7 +338,7 @@ Notifications::NotificationItem::NotificationItem(const char* title,
 
       bt_accept = lv_button_create(container);
       bt_accept->user_data = this;
-      lv_obj_add_event_cb(bt_accept, CallEventHandler);
+      lv_obj_add_event_cb(bt_accept, EventHandlerAcceptIncomingCall, LV_EVENT_SHORT_CLICKED, this);
       lv_obj_set_size(bt_accept, 76, 76);
       lv_obj_align(bt_accept, LV_ALIGN_BOTTOM_LEFT, 0, 0);
       label_accept = lv_label_create(bt_accept);
@@ -332,7 +347,7 @@ Notifications::NotificationItem::NotificationItem(const char* title,
 
       bt_reject = lv_button_create(container);
       bt_reject->user_data = this;
-      lv_obj_add_event_cb(bt_reject, CallEventHandler);
+      lv_obj_add_event_cb(bt_reject, EventHandlerRejectIncomingCall, LV_EVENT_SHORT_CLICKED, this);
       lv_obj_set_size(bt_reject, 76, 76);
       lv_obj_align(bt_reject, LV_ALIGN_BOTTOM_MID, 0, 0);
       label_reject = lv_label_create(bt_reject);
@@ -341,7 +356,7 @@ Notifications::NotificationItem::NotificationItem(const char* title,
 
       bt_mute = lv_button_create(container);
       bt_mute->user_data = this;
-      lv_obj_add_event_cb(bt_mute, CallEventHandler);
+      lv_obj_add_event_cb(bt_mute, EventHandlerMuteIncomingCall, LV_EVENT_SHORT_CLICKED, this);
       lv_obj_set_size(bt_mute, 76, 76);
       lv_obj_align(bt_mute, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
       label_mute = lv_label_create(bt_mute);
@@ -351,24 +366,21 @@ Notifications::NotificationItem::NotificationItem(const char* title,
   }
 }
 
-void Notifications::NotificationItem::OnCallButtonEvent(lv_obj_t* obj, lv_event_t event) {
-  if (event != LV_EVENT_CLICKED) {
-    return;
-  }
+void Notifications::NotificationItem::AcceptIncomingCall() {
+  alertNotificationService.AcceptIncomingCall();
+  running = false;
+}
 
-  motorController.StopRinging();
+void Notifications::NotificationItem::RejectIncomingCall() {
+  alertNotificationService.RejectIncomingCall();
+  running = false;
+}
 
-  if (obj == bt_accept) {
-    alertNotificationService.AcceptIncomingCall();
-  } else if (obj == bt_reject) {
-    alertNotificationService.RejectIncomingCall();
-  } else if (obj == bt_mute) {
-    alertNotificationService.MuteIncomingCall();
-  }
-
+void Notifications::NotificationItem::MuteIncomingCall() {
+  alertNotificationService.MuteIncomingCall();
   running = false;
 }
 
 Notifications::NotificationItem::~NotificationItem() {
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }

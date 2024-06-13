@@ -15,30 +15,30 @@ namespace {
 
 SettingSteps::SettingSteps(Pinetime::Controllers::Settings& settingsController) : settingsController {settingsController} {
 
-  lv_obj_t* container1 = lv_cont_create(lv_scr_act(), nullptr);
+  lv_obj_t* container1 = lv_obj_create(lv_screen_active());
 
-  lv_obj_set_style_local_bg_opa(container1, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
-  lv_obj_set_style_local_pad_all(container1, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 10);
-  lv_obj_set_style_local_pad_inner(container1, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 5);
-  lv_obj_set_style_border_width(container1, 0, LV_CONT_PART_MAIN);
+  lv_obj_set_style_bg_opa(container1, LV_OPA_TRANSP, LV_STATE_DEFAULT);
+  lv_obj_set_style_pad_all(container1, 10, LV_STATE_DEFAULT);
+  lv_obj_set_style_text_align(container1, LV_ALIGN_CENTER, LV_STATE_DEFAULT);
+  lv_obj_set_style_border_width(container1, 0, LV_PART_MAIN);
   lv_obj_set_pos(container1, 30, 60);
   lv_obj_set_width(container1, LV_HOR_RES - 50);
   lv_obj_set_height(container1, LV_VER_RES - 60);
-  lv_cont_set_layout(container1, LV_LAYOUT_COLUMN_LEFT);
+  lv_obj_set_style_text_align(container1, LV_ALIGN_TOP_LEFT, LV_STATE_ANY);
 
-  lv_obj_t* title = lv_label_create(lv_scr_act());
+  lv_obj_t* title = lv_label_create(lv_screen_active());
   lv_label_set_text_static(title, "Daily steps goal");
   lv_obj_set_align(title, LV_ALIGN_CENTER);
   lv_obj_align(title, LV_ALIGN_TOP_MID, 15, 15);
 
-  lv_obj_t* icon = lv_label_create(lv_scr_act());
+  lv_obj_t* icon = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(icon, PINETIME_COLOR_ORANGE, LV_STATE_DEFAULT);
 
   lv_label_set_text_static(icon, Symbols::shoe);
   lv_obj_set_align(icon, LV_ALIGN_CENTER);
   lv_obj_align(icon, LV_ALIGN_OUT_LEFT_MID, -10, 0);
 
-  stepValue = lv_label_create(lv_scr_act());
+  stepValue = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_font(stepValue, &jetbrains_mono_42, LV_STATE_DEFAULT);
   lv_label_set_text_fmt(stepValue, "%lu", settingsController.GetStepsGoal());
   lv_obj_set_align(stepValue, LV_ALIGN_CENTER);
@@ -47,7 +47,7 @@ SettingSteps::SettingSteps(Pinetime::Controllers::Settings& settingsController) 
   static constexpr uint8_t btnWidth = 115;
   static constexpr uint8_t btnHeight = 80;
 
-  btnPlus = lv_button_create(lv_scr_act());
+  btnPlus = lv_button_create(lv_screen_active());
   btnPlus->user_data = this;
   lv_obj_set_size(btnPlus, btnWidth, btnHeight);
   lv_obj_align(btnPlus, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
@@ -57,7 +57,7 @@ SettingSteps::SettingSteps(Pinetime::Controllers::Settings& settingsController) 
   lv_label_set_text_static(lblPlus, "+");
   lv_obj_add_event_cb(btnPlus, event_handler);
 
-  btnMinus = lv_button_create(lv_scr_act());
+  btnMinus = lv_button_create(lv_screen_active());
   btnMinus->user_data = this;
   lv_obj_set_size(btnMinus, btnWidth, btnHeight);
   lv_obj_add_event_cb(btnMinus, event_handler);
@@ -69,7 +69,7 @@ SettingSteps::SettingSteps(Pinetime::Controllers::Settings& settingsController) 
 }
 
 SettingSteps::~SettingSteps() {
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
   settingsController.SaveSettings();
 }
 

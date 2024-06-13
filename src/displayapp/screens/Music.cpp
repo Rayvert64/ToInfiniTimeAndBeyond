@@ -78,7 +78,7 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
   lv_style_set_bg_color(&btn_style, PINETIME_COLOR_CYAN);
   lv_style_set_bg_opa(&btn_style, LV_OPA_50);
 
-  btnVolDown = lv_button_create(lv_scr_act());
+  btnVolDown = lv_button_create(lv_screen_active());
   btnVolDown->user_data = this;
   lv_obj_add_event_cb(btnVolDown, eventHandlerVolDown, LV_EVENT_SHORT_CLICKED, this);
   lv_obj_set_size(btnVolDown, 76, 76);
@@ -88,7 +88,7 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
   lv_label_set_text_static(label, Symbols::volumDown);
   lv_obj_add_flag(btnVolDown, LV_OBJ_FLAG_HIDDEN);
 
-  btnVolUp = lv_button_create(lv_scr_act());
+  btnVolUp = lv_button_create(lv_screen_active());
   btnVolUp->user_data = this;
   lv_obj_add_event_cb(btnVolUp, eventHandlerVolUp, LV_EVENT_SHORT_CLICKED, this);
   lv_obj_set_size(btnVolUp, 76, 76);
@@ -98,7 +98,7 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
   lv_label_set_text_static(label, Symbols::volumUp);
   lv_obj_add_flag(btnVolUp, LV_OBJ_FLAG_HIDDEN);
 
-  btnPrev = lv_button_create(lv_scr_act());
+  btnPrev = lv_button_create(lv_screen_active());
   btnPrev->user_data = this;
   lv_obj_add_event_cb(btnPrev, eventHandlerPrev, LV_EVENT_SHORT_CLICKED, this);
   lv_obj_set_size(btnPrev, 76, 76);
@@ -107,7 +107,7 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
   label = lv_label_create(btnPrev);
   lv_label_set_text_static(label, Symbols::stepBackward);
 
-  btnNext = lv_button_create(lv_scr_act());
+  btnNext = lv_button_create(lv_screen_active());
   btnNext->user_data = this;
   lv_obj_add_event_cb(btnNext, eventHandlerNext, LV_EVENT_SHORT_CLICKED, this);
   lv_obj_set_size(btnNext, 76, 76);
@@ -116,7 +116,7 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
   label = lv_label_create(btnNext);
   lv_label_set_text_static(label, Symbols::stepForward);
 
-  btnPlayPause = lv_button_create(lv_scr_act());
+  btnPlayPause = lv_button_create(lv_screen_active());
   btnPlayPause->user_data = this;
   lv_obj_add_event_cb(btnPlayPause, eventHandlerPlayPause, LV_EVENT_SHORT_CLICKED, this);
   lv_obj_set_size(btnPlayPause, 76, 76);
@@ -125,7 +125,7 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
   txtPlayPause = lv_label_create(btnPlayPause);
   lv_label_set_text_static(txtPlayPause, Symbols::play);
 
-  txtTrackDuration = lv_label_create(lv_scr_act());
+  txtTrackDuration = lv_label_create(lv_screen_active());
   lv_label_set_long_mode(txtTrackDuration, LV_LABEL_LONG_SCROLL);
   lv_obj_align(txtTrackDuration, LV_ALIGN_TOP_LEFT, 12, 20);
   lv_label_set_text_static(txtTrackDuration, "--:--/--:--");
@@ -135,14 +135,14 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
   constexpr uint8_t FONT_HEIGHT = 12;
   constexpr uint8_t LINE_PAD = 15;
   constexpr int8_t MIDDLE_OFFSET = -25;
-  txtArtist = lv_label_create(lv_scr_act());
+  txtArtist = lv_label_create(lv_screen_active());
   lv_label_set_long_mode(txtArtist, LV_LABEL_LONG_SCROLL_CIRCULAR);
   lv_obj_align(txtArtist, LV_ALIGN_LEFT_MID, 12, MIDDLE_OFFSET + 1 * FONT_HEIGHT);
   lv_obj_set_align(txtArtist, LV_ALIGN_LEFT_MID);
   lv_obj_set_width(txtArtist, LV_HOR_RES - 12);
   lv_label_set_text_static(txtArtist, "Artist Name");
 
-  txtTrack = lv_label_create(lv_scr_act());
+  txtTrack = lv_label_create(lv_screen_active());
   lv_label_set_long_mode(txtTrack, LV_LABEL_LONG_SCROLL_CIRCULAR);
   lv_obj_align(txtTrack, LV_ALIGN_LEFT_MID, 12, MIDDLE_OFFSET + 2 * FONT_HEIGHT + LINE_PAD);
 
@@ -151,11 +151,11 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
   lv_label_set_text_static(txtTrack, "This is a very long getTrack name");
 
   /** Init animation */
-  imgDisc = lv_img_create(lv_scr_act());
+  imgDisc = lv_img_create(lv_screen_active());
   lv_img_set_src_arr(imgDisc, &disc);
   lv_obj_align(imgDisc, LV_ALIGN_TOP_RIGHT, -15, 15);
 
-  imgDiscAnim = lv_img_create(lv_scr_act());
+  imgDiscAnim = lv_img_create(lv_screen_active());
   lv_img_set_src_arr(imgDiscAnim, &disc_f_1);
   lv_obj_align(imgDiscAnim, LV_ALIGN_TOP_RIGHT, -15 - 32, 15);
 
@@ -169,7 +169,7 @@ Music::Music(Pinetime::Controllers::MusicService& music) : musicService(music) {
 Music::~Music() {
   lv_timer_del(taskRefresh);
   lv_style_reset(&btn_style);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 void Music::Refresh() {

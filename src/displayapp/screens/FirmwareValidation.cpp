@@ -21,7 +21,7 @@ namespace {
 }
 
 FirmwareValidation::FirmwareValidation(Pinetime::Controllers::FirmwareValidator& validator) : validator {validator} {
-  labelVersion = lv_label_create(lv_scr_act());
+  labelVersion = lv_label_create(lv_screen_active());
   lv_label_set_text_fmt(labelVersion,
                         "Version : %" PRIu32 ".%" PRIu32 ".%" PRIu32 "\n"
                         "ShortRef : %s",
@@ -31,7 +31,7 @@ FirmwareValidation::FirmwareValidation(Pinetime::Controllers::FirmwareValidator&
                         Version::GitCommitHash());
   lv_obj_align(labelVersion, LV_ALIGN_TOP_LEFT, 0, 0);
 
-  labelIsValidated = lv_label_create(lv_scr_act());
+  labelIsValidated = lv_label_create(lv_screen_active());
   lv_obj_align(labelIsValidated, LV_ALIGN_OUT_BOTTOM_LEFT, 0, 0);
 
   lv_label_set_long_mode(labelIsValidated, LV_LABEL_LONG_WRAP);
@@ -43,7 +43,7 @@ FirmwareValidation::FirmwareValidation(Pinetime::Controllers::FirmwareValidator&
     lv_label_set_text_static(labelIsValidated,
                              "Please #00ff00 Validate# this version or\n#ff0000 Reset# to rollback to the previous version.");
 
-    buttonValidate = lv_button_create(lv_scr_act());
+    buttonValidate = lv_button_create(lv_screen_active());
     buttonValidate->user_data = this;
     lv_obj_set_size(buttonValidate, 115, 50);
     lv_obj_align(buttonValidate, LV_ALIGN_BOTTOM_LEFT, 0, 0);
@@ -53,7 +53,7 @@ FirmwareValidation::FirmwareValidation(Pinetime::Controllers::FirmwareValidator&
     labelButtonValidate = lv_label_create(buttonValidate);
     lv_label_set_text_static(labelButtonValidate, "Validate");
 
-    buttonReset = lv_button_create(lv_scr_act());
+    buttonReset = lv_button_create(lv_screen_active());
     buttonReset->user_data = this;
     lv_obj_set_size(buttonReset, 115, 50);
     lv_obj_align(buttonReset, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
@@ -66,7 +66,7 @@ FirmwareValidation::FirmwareValidation(Pinetime::Controllers::FirmwareValidator&
 }
 
 FirmwareValidation::~FirmwareValidation() {
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 void FirmwareValidation::Validate() {

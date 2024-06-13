@@ -27,38 +27,38 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
     settingsController {settingsController},
     heartRateController {heartRateController},
     motionController {motionController} {
-  batteryValue = lv_label_create(lv_scr_act());
+  batteryValue = lv_label_create(lv_screen_active());
 
   lv_obj_align(batteryValue, LV_ALIGN_LEFT_MID, 0, -20);
 
-  connectState = lv_label_create(lv_scr_act());
+  connectState = lv_label_create(lv_screen_active());
 
   lv_obj_align(connectState, LV_ALIGN_LEFT_MID, 0, 40);
 
-  notificationIcon = lv_label_create(lv_scr_act());
+  notificationIcon = lv_label_create(lv_screen_active());
   lv_obj_align(notificationIcon, LV_ALIGN_LEFT_MID, 0, -100);
 
-  label_date = lv_label_create(lv_scr_act());
+  label_date = lv_label_create(lv_screen_active());
 
   lv_obj_align(label_date, LV_ALIGN_LEFT_MID, 0, -40);
 
-  label_prompt_1 = lv_label_create(lv_scr_act());
+  label_prompt_1 = lv_label_create(lv_screen_active());
   lv_obj_align(label_prompt_1, LV_ALIGN_LEFT_MID, 0, -80);
   lv_label_set_text_static(label_prompt_1, "user@watch:~ $ now");
 
-  label_prompt_2 = lv_label_create(lv_scr_act());
+  label_prompt_2 = lv_label_create(lv_screen_active());
   lv_obj_align(label_prompt_2, LV_ALIGN_LEFT_MID, 0, 60);
   lv_label_set_text_static(label_prompt_2, "user@watch:~ $");
 
-  label_time = lv_label_create(lv_scr_act());
+  label_time = lv_label_create(lv_screen_active());
 
   lv_obj_align(label_time, LV_ALIGN_LEFT_MID, 0, -60);
 
-  heartbeatValue = lv_label_create(lv_scr_act());
+  heartbeatValue = lv_label_create(lv_screen_active());
 
   lv_obj_align(heartbeatValue, LV_ALIGN_LEFT_MID, 0, 20);
 
-  stepValue = lv_label_create(lv_scr_act());
+  stepValue = lv_label_create(lv_screen_active());
 
   lv_obj_align(stepValue, LV_ALIGN_LEFT_MID, 0, 0);
 
@@ -68,7 +68,7 @@ WatchFaceTerminal::WatchFaceTerminal(Controllers::DateTime& dateTimeController,
 
 WatchFaceTerminal::~WatchFaceTerminal() {
   lv_timer_del(taskRefresh);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 void WatchFaceTerminal::Refresh() {

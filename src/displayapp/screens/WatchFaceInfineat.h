@@ -60,7 +60,7 @@ namespace Pinetime {
         // Lines making up the side cover
         lv_obj_t* lineBattery;
 
-        lv_point_t lineBatteryPoints[2];
+        lv_point_precise_t lineBatteryPoints[2];
 
         lv_obj_t* logoPine;
 

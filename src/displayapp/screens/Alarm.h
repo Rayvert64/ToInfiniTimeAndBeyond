@@ -62,8 +62,8 @@ namespace Pinetime {
         void SetRecurButtonState();
         void SetSwitchState(bool state);
         void UpdateAlarmTime();
-        std::shared_ptr<lv_obj_t> hourCounter;
-        std::shared_ptr<lv_obj_t> minuteCounter;
+        lv_obj_t* hourCounter;
+        lv_obj_t* minuteCounter;
       };
     }
 

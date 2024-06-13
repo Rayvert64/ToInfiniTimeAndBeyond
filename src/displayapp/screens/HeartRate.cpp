@@ -32,7 +32,7 @@ namespace {
 HeartRate::HeartRate(Controllers::HeartRateController& heartRateController, System::SystemTask& systemTask)
   : heartRateController {heartRateController}, systemTask {systemTask} {
   bool isHrRunning = heartRateController.State() != Controllers::HeartRateController::States::Stopped;
-  label_hr = lv_label_create(lv_scr_act());
+  label_hr = lv_label_create(lv_screen_active());
 
   lv_obj_set_style_text_font(label_hr, &jetbrains_mono_76, LV_STATE_DEFAULT);
 
@@ -45,17 +45,17 @@ HeartRate::HeartRate(Controllers::HeartRateController& heartRateController, Syst
   lv_label_set_text_static(label_hr, "---");
   lv_obj_align(label_hr, LV_ALIGN_CENTER, 0, -40);
 
-  label_bpm = lv_label_create(lv_scr_act());
+  label_bpm = lv_label_create(lv_screen_active());
   lv_label_set_text_static(label_bpm, "Heart rate BPM");
   lv_obj_align(label_bpm, LV_ALIGN_OUT_TOP_MID, 0, -20);
 
-  label_status = lv_label_create(lv_scr_act());
+  label_status = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(label_status, PINETIME_COLOR_GRAY, LV_STATE_DEFAULT);
   lv_label_set_text_static(label_status, ToString(Pinetime::Controllers::HeartRateController::States::NotEnoughData));
 
   lv_obj_align(label_status, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
 
-  btn_startStop = lv_button_create(lv_scr_act());
+  btn_startStop = lv_button_create(lv_screen_active());
   btn_startStop->user_data = this;
   lv_obj_set_height(btn_startStop, 50);
   lv_obj_add_event_cb(btn_startStop, btnStartStopEventHandler, LV_EVENT_SHORT_CLICKED, this);
@@ -72,7 +72,7 @@ HeartRate::HeartRate(Controllers::HeartRateController& heartRateController, Syst
 
 HeartRate::~HeartRate() {
   lv_timer_del(taskRefresh);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
   systemTask.PushMessage(Pinetime::System::Messages::EnableSleeping);
 }
 

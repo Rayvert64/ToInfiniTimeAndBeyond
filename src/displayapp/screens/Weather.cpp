@@ -41,39 +41,39 @@ namespace {
 Weather::Weather(Controllers::Settings& settingsController, Controllers::SimpleWeatherService& weatherService)
   : settingsController {settingsController}, weatherService {weatherService} {
 
-  temperature = lv_label_create(lv_scr_act());
+  temperature = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(temperature, lv_color_white(), LV_STATE_DEFAULT);
   lv_obj_set_style_text_font(temperature, &jetbrains_mono_42, LV_STATE_DEFAULT);
   lv_label_set_text(temperature, "---");
   lv_obj_align(temperature, LV_ALIGN_CENTER, 0, -30);
   lv_obj_set_auto_realign(temperature, true);
 
-  minTemperature = lv_label_create(lv_scr_act());
+  minTemperature = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(minTemperature, Colors::bg, LV_STATE_DEFAULT);
   lv_label_set_text(minTemperature, "");
   lv_obj_align(minTemperature, LV_ALIGN_OUT_LEFT_MID, -10, 0);
   lv_obj_set_auto_realign(minTemperature, true);
 
-  maxTemperature = lv_label_create(lv_scr_act());
+  maxTemperature = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(maxTemperature, Colors::bg, LV_STATE_DEFAULT);
   lv_label_set_text(maxTemperature, "");
   lv_obj_align(maxTemperature, LV_ALIGN_OUT_RIGHT_MID, 10, 0);
   lv_obj_set_auto_realign(maxTemperature, true);
 
-  condition = lv_label_create(lv_scr_act());
+  condition = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(condition, Colors::lightGray, LV_STATE_DEFAULT);
   lv_label_set_text(condition, "");
   lv_obj_align(condition, LV_ALIGN_OUT_TOP_MID, 0, -10);
   lv_obj_set_auto_realign(condition, true);
 
-  icon = lv_label_create(lv_scr_act());
+  icon = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(icon, lv_color_white(), LV_STATE_DEFAULT);
   lv_obj_set_style_text_font(icon, &fontawesome_weathericons, LV_STATE_DEFAULT);
   lv_label_set_text(icon, "");
   lv_obj_align(icon, LV_ALIGN_OUT_TOP_MID, 0, 0);
   lv_obj_set_auto_realign(icon, true);
 
-  forecast = lv_table_create(lv_scr_act());
+  forecast = lv_table_create(lv_screen_active());
   lv_table_set_col_cnt(forecast, Controllers::SimpleWeatherService::MaxNbForecastDays);
   lv_table_set_row_cnt(forecast, 4);
   // LV_TABLE_PART_CELL1: Default table style
@@ -113,7 +113,7 @@ Weather::Weather(Controllers::Settings& settingsController, Controllers::SimpleW
 
 Weather::~Weather() {
   lv_timer_del(taskRefresh);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 void Weather::Refresh() {

@@ -58,11 +58,6 @@ static void btnEventHandlerDisableAlarm(lv_event_t* event) {
   alarm->ToggleRecurrence();
 }
 
-static void StopAlarmTaskCallback(lv_event_t* task) {
-  auto* screen = static_cast<Alarm*>(task->user_data);
-  screen->StopAlerting();
-}
-
 static void switchValueChanged(lv_event_t* event) {
   auto* alarm = static_cast<Alarm*>(event->user_data);
   if (alarm->GetSwitchState()) {
@@ -78,35 +73,35 @@ Alarm::Alarm(Controllers::AlarmController& alarmController,
              Controllers::MotorController& motorController)
   : alarmController {alarmController}, systemTask {systemTask}, motorController {motorController} {
 
-  hourCounter = std::make_shared<lv_obj_t>(lv_roller_create(lv_scr_act()));
-  lv_obj_align(hourCounter.get(), LV_ALIGN_TOP_LEFT, 0, 0);
+  hourCounter = lv_roller_create(lv_screen_active());
+  lv_obj_align(hourCounter, LV_ALIGN_TOP_LEFT, 0, 0);
   if (clockType == Controllers::Settings::ClockType::H12) {
-    lv_roller_set_options(hourCounter.get(), "01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12", LV_ROLLER_MODE_INFINITE);
+    lv_roller_set_options(hourCounter, "01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12", LV_ROLLER_MODE_INFINITE);
 
-    lblampm = lv_label_create(lv_scr_act());
+    lblampm = lv_label_create(lv_screen_active());
     lv_obj_set_style_text_font(lblampm, &jetbrains_mono_bold_20, LV_STATE_DEFAULT);
     lv_label_set_text_static(lblampm, "AM");
     lv_obj_set_align(lblampm, LV_ALIGN_CENTER);
     lv_obj_align(lblampm, LV_ALIGN_CENTER, 0, 30);
   } else {
-    lv_roller_set_options(hourCounter.get(),
+    lv_roller_set_options(hourCounter,
                           "00\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23",
                           LV_ROLLER_MODE_INFINITE);
   }
-  lv_roller_set_selected(hourCounter.get(), alarmController.Hours(), LV_ANIM_ON);
-  lv_obj_add_event_cb(hourCounter.get(), ValueChangedHandler, LV_EVENT_RELEASED, this);
+  lv_roller_set_selected(hourCounter, alarmController.Hours(), LV_ANIM_ON);
+  lv_obj_add_event_cb(hourCounter, ValueChangedHandler, LV_EVENT_RELEASED, this);
 
-  minuteCounter = std::make_shared<lv_obj_t>(lv_roller_create(lv_scr_act()));
-  lv_obj_align(minuteCounter.get(), LV_ALIGN_TOP_RIGHT, 0, 0);
-  lv_roller_set_selected(minuteCounter.get(), alarmController.Minutes(), LV_ANIM_ON);
-  lv_obj_add_event_cb(minuteCounter.get(), ValueChangedHandler, LV_EVENT_RELEASED, this);
+  minuteCounter = lv_roller_create(lv_screen_active());
+  lv_obj_align(minuteCounter, LV_ALIGN_TOP_RIGHT, 0, 0);
+  lv_roller_set_selected(minuteCounter, alarmController.Minutes(), LV_ANIM_ON);
+  lv_obj_add_event_cb(minuteCounter, ValueChangedHandler, LV_EVENT_RELEASED, this);
 
-  lv_obj_t* colonLabel = lv_label_create(lv_scr_act());
+  lv_obj_t* colonLabel = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_font(colonLabel, &jetbrains_mono_76, LV_STATE_DEFAULT);
   lv_label_set_text_static(colonLabel, ":");
   lv_obj_align(colonLabel, LV_ALIGN_CENTER, 0, -29);
 
-  btnStop = lv_button_create(lv_scr_act());
+  btnStop = lv_button_create(lv_screen_active());
   btnStop->user_data = this;
   lv_obj_add_event_cb(btnStop, btnEventHandlerStop, LV_EVENT_SHORT_CLICKED, this);
   lv_obj_set_size(btnStop, 115, 50);
@@ -118,7 +113,7 @@ Alarm::Alarm(Controllers::AlarmController& alarmController,
 
   static constexpr lv_color_t bgColor = Colors::bgAlt;
 
-  btnRecur = lv_button_create(lv_scr_act());
+  btnRecur = lv_button_create(lv_screen_active());
   btnRecur->user_data = this;
   lv_obj_add_event_cb(btnRecur, btnEventHandlerDisableAlarm, LV_EVENT_SHORT_CLICKED, this);
   lv_obj_set_size(btnRecur, 115, 50);
@@ -127,7 +122,7 @@ Alarm::Alarm(Controllers::AlarmController& alarmController,
   SetRecurButtonState();
   lv_obj_set_style_bg_color(btnRecur, bgColor, LV_PART_MAIN);
 
-  btnInfo = lv_button_create(lv_scr_act());
+  btnInfo = lv_button_create(lv_screen_active());
   btnInfo->user_data = this;
   lv_obj_add_event_cb(btnInfo, btnEventHandlerShowInfo, LV_EVENT_SHORT_CLICKED, this);
   lv_obj_set_size(btnInfo, 50, 50);
@@ -139,7 +134,7 @@ Alarm::Alarm(Controllers::AlarmController& alarmController,
   lv_obj_t* txtInfo = lv_label_create(btnInfo);
   lv_label_set_text_static(txtInfo, "i");
 
-  enableSwitch = lv_switch_create(lv_scr_act());
+  enableSwitch = lv_switch_create(lv_screen_active());
   enableSwitch->user_data = this;
   lv_obj_add_event_cb(enableSwitch, switchValueChanged, LV_EVENT_VALUE_CHANGED, this);
   lv_obj_set_size(enableSwitch, 100, 50);
@@ -160,7 +155,7 @@ Alarm::~Alarm() {
   if (alarmController.State() == AlarmController::AlarmState::Alerting) {
     StopAlerting();
   }
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 void Alarm::EnableAlarm() {
@@ -209,13 +204,13 @@ void Alarm::OnValueChanged() {
 
 void Alarm::UpdateAlarmTime() {
   if (lblampm != nullptr) {
-    if (lv_roller_get_selected(hourCounter.get()) >= 12) {
+    if (lv_roller_get_selected(hourCounter) >= 12) {
       lv_label_set_text_static(lblampm, "PM");
     } else {
       lv_label_set_text_static(lblampm, "AM");
     }
   }
-  alarmController.SetAlarmTime(lv_roller_get_selected(hourCounter.get()), lv_roller_get_selected(minuteCounter.get()));
+  alarmController.SetAlarmTime(lv_roller_get_selected(hourCounter), lv_roller_get_selected(minuteCounter));
 }
 
 void Alarm::SetAlerting() {
@@ -255,7 +250,7 @@ void Alarm::ShowInfo() {
   if (btnMessage != nullptr) {
     return;
   }
-  btnMessage = lv_button_create(lv_scr_act());
+  btnMessage = lv_button_create(lv_screen_active());
   btnMessage->user_data = this;
   lv_obj_add_event_cb(btnMessage, btnEventHandlerShowInfo, LV_EVENT_SHORT_CLICKED, this);
   lv_obj_set_height(btnMessage, 200);

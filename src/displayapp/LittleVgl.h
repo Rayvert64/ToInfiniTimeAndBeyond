@@ -62,7 +62,7 @@ namespace Pinetime {
       uint16_t writeOffset = 0;
       uint16_t scrollOffset = 0;
 
-      lv_point_t touchPoint = {};
+      lv_point_precise_t touchPoint = {};
       bool tapped = false;
       bool isCancelled = false;
     };

@@ -11,7 +11,8 @@ namespace Pinetime {
 
       private:
         uint8_t nCurrentScreen;
-        uint8_t nScreens;
+        uint8_t nScreens = 0;
+        uint8_t dotSize = 12;
       };
     }
   }

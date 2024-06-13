@@ -36,8 +36,8 @@ namespace Pinetime {
         uint8_t currentColorIndex;
         void NextColor();
 
-        std::shared_ptr<lv_obj_t> nCounter;
-        std::shared_ptr<lv_obj_t> dCounter;
+        lv_obj_t* nCounter;
+        lv_obj_t* dCounter;
 
         bool openingRoll = true;
         uint8_t currentRollHysteresis = 0;

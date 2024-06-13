@@ -22,7 +22,7 @@ Twos::Twos() {
     {LV_COLOR_MAKE(0x00, 0x7d, 0xc5), LV_COLOR_MAKE(0xff, 0xff, 0xff)},
   };
 
-  gridDisplay = lv_table_create(lv_scr_act());
+  gridDisplay = lv_table_create(lv_screen_active());
 
   for (size_t i = 0; i < nColors; i++) {
     lv_style_init(&cellStyles[i]);
@@ -58,7 +58,7 @@ Twos::Twos() {
   placeNewTile();
 
   // format score text
-  scoreText = lv_label_create(lv_scr_act());
+  scoreText = lv_label_create(lv_screen_active());
   lv_obj_set_width(scoreText, LV_HOR_RES);
   lv_obj_set_align(scoreText, LV_ALIGN_LEFT_MID);
   lv_obj_align(scoreText, LV_ALIGN_TOP_LEFT, 0, 0);
@@ -70,7 +70,7 @@ Twos::~Twos() {
   for (lv_style_t cellStyle : cellStyles) {
     lv_style_reset(&cellStyle);
   }
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 bool Twos::placeNewTile() {

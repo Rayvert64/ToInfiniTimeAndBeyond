@@ -1,7 +1,8 @@
 #include "displayapp/screens/StopWatch.h"
-
+#include "displayapp/Colors.h"
 #include "displayapp/screens/Symbols.h"
 #include "displayapp/InfiniTimeTheme.h"
+#include <lvgl/src/misc/lv_event.h>
 
 using namespace Pinetime::Applications::Screens;
 
@@ -17,18 +18,14 @@ namespace {
     return TimeSeparated_t {hours, mins, secs, hundredths};
   }
 
-  void play_pause_event_handler(lv_obj_t* obj, lv_event_t event) {
-    auto* stopWatch = static_cast<StopWatch*>(obj->user_data);
-    if (event == LV_EVENT_CLICKED) {
-      stopWatch->playPauseBtnEventHandler();
-    }
+  void play_pause_event_handler(lv_event_t* event) {
+    auto* stopWatch = static_cast<StopWatch*>(event->user_data);
+    stopWatch->playPauseBtnEventHandler();
   }
 
-  void stop_lap_event_handler(lv_obj_t* obj, lv_event_t event) {
-    auto* stopWatch = static_cast<StopWatch*>(obj->user_data);
-    if (event == LV_EVENT_CLICKED) {
-      stopWatch->stopLapBtnEventHandler();
-    }
+  void stop_lap_event_handler(lv_event_t* event) {
+    auto* stopWatch = static_cast<StopWatch*>(event->user_data);
+    stopWatch->stopLapBtnEventHandler();
   }
 
   constexpr TickType_t blinkInterval = pdMS_TO_TICKS(1000);
@@ -37,23 +34,23 @@ namespace {
 StopWatch::StopWatch(System::SystemTask& systemTask) : systemTask {systemTask} {
   static constexpr uint8_t btnWidth = 115;
   static constexpr uint8_t btnHeight = 80;
-  btnPlayPause = lv_button_create(lv_scr_act());
+  btnPlayPause = lv_button_create(lv_screen_active());
   btnPlayPause->user_data = this;
-  lv_obj_add_event_cb(btnPlayPause, play_pause_event_handler);
+  lv_obj_add_event_cb(btnPlayPause, play_pause_event_handler, LV_EVENT_SHORT_CLICKED, this);
   lv_obj_set_size(btnPlayPause, btnWidth, btnHeight);
   lv_obj_align(btnPlayPause, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
   txtPlayPause = lv_label_create(btnPlayPause);
 
-  btnStopLap = lv_button_create(lv_scr_act());
+  btnStopLap = lv_button_create(lv_screen_active());
   btnStopLap->user_data = this;
-  lv_obj_add_event_cb(btnStopLap, stop_lap_event_handler);
+  lv_obj_add_event_cb(btnStopLap, stop_lap_event_handler, LV_EVENT_SHORT_CLICKED, this);
   lv_obj_set_size(btnStopLap, btnWidth, btnHeight);
   lv_obj_align(btnStopLap, LV_ALIGN_BOTTOM_LEFT, 0, 0);
   txtStopLap = lv_label_create(btnStopLap);
-  lv_obj_set_state(btnStopLap, LV_STATE_DISABLED);
-  lv_obj_set_state(txtStopLap, LV_STATE_DISABLED);
+  lv_obj_set_state(btnStopLap, LV_STATE_DISABLED, true);
+  lv_obj_set_state(txtStopLap, LV_STATE_DISABLED, true);
 
-  lapText = lv_label_create(lv_scr_act());
+  lapText = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(lapText, Colors::lightGray, LV_STATE_DEFAULT);
   lv_label_set_text_static(lapText, "\n");
   lv_label_set_long_mode(lapText, LV_LABEL_LONG_WRAP);
@@ -61,12 +58,12 @@ StopWatch::StopWatch(System::SystemTask& systemTask) : systemTask {systemTask} {
   lv_obj_set_width(lapText, LV_HOR_RES);
   lv_obj_align(lapText, LV_ALIGN_BOTTOM_MID, 0, -btnHeight);
 
-  msecTime = lv_label_create(lv_scr_act());
+  msecTime = lv_label_create(lv_screen_active());
   lv_label_set_text_static(msecTime, "00");
   lv_obj_set_style_text_color(msecTime, Colors::lightGray, LV_STATE_DISABLED);
   lv_obj_align(msecTime, LV_ALIGN_OUT_TOP_MID, 0, 0);
 
-  time = lv_label_create(lv_scr_act());
+  time = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_font(time, &jetbrains_mono_76, LV_STATE_DEFAULT);
   lv_label_set_text_static(time, "00:00");
   lv_obj_set_style_text_color(time, Colors::lightGray, LV_STATE_DISABLED);
@@ -80,7 +77,7 @@ StopWatch::StopWatch(System::SystemTask& systemTask) : systemTask {systemTask} {
 StopWatch::~StopWatch() {
   lv_timer_del(taskRefresh);
   systemTask.PushMessage(Pinetime::System::Messages::EnableSleeping);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 void StopWatch::SetInterfacePaused() {
@@ -91,21 +88,21 @@ void StopWatch::SetInterfacePaused() {
 }
 
 void StopWatch::SetInterfaceRunning() {
-  lv_obj_set_state(time, LV_STATE_DEFAULT);
-  lv_obj_set_state(msecTime, LV_STATE_DEFAULT);
+  lv_obj_set_state(time, LV_STATE_DEFAULT, true);
+  lv_obj_set_state(msecTime, LV_STATE_DEFAULT, true);
   lv_obj_set_style_bg_color(btnPlayPause, Colors::bgAlt, LV_PART_MAIN);
   lv_obj_set_style_bg_color(btnStopLap, Colors::bgAlt, LV_PART_MAIN);
 
   lv_label_set_text_static(txtPlayPause, Symbols::pause);
   lv_label_set_text_static(txtStopLap, Symbols::lapsFlag);
 
-  lv_obj_set_state(btnStopLap, LV_STATE_DEFAULT);
-  lv_obj_set_state(txtStopLap, LV_STATE_DEFAULT);
+  lv_obj_set_state(btnStopLap, LV_STATE_DEFAULT, true);
+  lv_obj_set_state(txtStopLap, LV_STATE_DEFAULT, true);
 }
 
 void StopWatch::SetInterfaceStopped() {
-  lv_obj_set_state(time, LV_STATE_DISABLED);
-  lv_obj_set_state(msecTime, LV_STATE_DISABLED);
+  lv_obj_set_state(time, LV_STATE_DISABLED, true);
+  lv_obj_set_state(msecTime, LV_STATE_DISABLED, true);
   lv_obj_set_style_bg_color(btnPlayPause, Colors::blue, LV_PART_MAIN);
 
   lv_label_set_text_static(time, "00:00");
@@ -120,8 +117,8 @@ void StopWatch::SetInterfaceStopped() {
   lv_label_set_text_static(lapText, "");
   lv_label_set_text_static(txtPlayPause, Symbols::play);
   lv_label_set_text_static(txtStopLap, Symbols::lapsFlag);
-  lv_obj_set_state(btnStopLap, LV_STATE_DISABLED);
-  lv_obj_set_state(txtStopLap, LV_STATE_DISABLED);
+  lv_obj_set_state(btnStopLap, LV_STATE_DISABLED, true);
+  lv_obj_set_state(txtStopLap, LV_STATE_DISABLED, true);
 }
 
 void StopWatch::Reset() {
@@ -168,12 +165,12 @@ void StopWatch::Refresh() {
     const TickType_t currentTime = xTaskGetTickCount();
     if (currentTime > blinkTime) {
       blinkTime = currentTime + blinkInterval;
-      if (lv_obj_get_state(time, LV_PART_MAIN) == LV_STATE_DEFAULT) {
-        lv_obj_set_state(time, LV_STATE_DISABLED);
-        lv_obj_set_state(msecTime, LV_STATE_DISABLED);
+      if (lv_obj_get_state(time)) {
+        lv_obj_set_state(time, LV_STATE_DISABLED, true);
+        lv_obj_set_state(msecTime, LV_STATE_DISABLED, true);
       } else {
-        lv_obj_set_state(time, LV_STATE_DEFAULT);
-        lv_obj_set_state(msecTime, LV_STATE_DEFAULT);
+        lv_obj_set_state(time, LV_STATE_DEFAULT, true);
+        lv_obj_set_state(msecTime, LV_STATE_DEFAULT, true);
       }
     }
   }

@@ -1,7 +1,12 @@
 #include "displayapp/screens/Tile.h"
 #include "displayapp/screens/BatteryIcon.h"
+#include "displayapp/Colors.h"
 #include "components/ble/BleController.h"
 #include "displayapp/InfiniTimeTheme.h"
+#include <cstdint>
+#include <lvgl/src/core/lv_obj.h>
+#include <lvgl/src/core/lv_obj_style.h>
+#include <lvgl/src/lv_api_map_v8.h>
 
 using namespace Pinetime::Applications::Screens;
 
@@ -11,15 +16,10 @@ namespace {
     user_data->UpdateScreen();
   }
 
-  void event_handler(lv_obj_t* obj, lv_event_t event) {
-    if (event != LV_EVENT_VALUE_CHANGED) {
-      return;
-    }
-
-    Tile* screen = static_cast<Tile*>(obj->user_data);
-    auto* eventDataPtr = (uint32_t*) lv_event_get_data();
-    uint32_t eventData = *eventDataPtr;
-    screen->OnValueChangedEvent(obj, eventData);
+  void event_handler_value_changed(lv_event_t* event) {
+    auto* screen = static_cast<Tile*>(event->user_data);
+    auto clickedButton = lv_buttonmatrix_get_selected_button(lv_event_get_target_obj(event));
+    screen->OnValueChangedEvent(clickedButton);
   }
 }
 
@@ -39,7 +39,7 @@ Tile::Tile(uint8_t screenID,
   lv_obj_align(statusIcons.GetObject(), LV_ALIGN_TOP_RIGHT, -8, 0);
 
   // Time
-  label_time = lv_label_create(lv_scr_act());
+  label_time = lv_label_create(lv_screen_active());
   lv_obj_set_align(label_time, LV_ALIGN_CENTER);
   lv_obj_align(label_time, LV_ALIGN_TOP_LEFT, 0, 0);
 
@@ -60,18 +60,18 @@ Tile::Tile(uint8_t screenID,
   }
   btnmMap[btIndex] = "";
 
-  btnm1 = lv_btnmatrix_create(lv_scr_act(), nullptr);
+  btnm1 = lv_btnmatrix_create(lv_screen_active());
   lv_btnmatrix_set_map(btnm1, btnmMap);
   lv_obj_set_size(btnm1, LV_HOR_RES - 16, LV_VER_RES - 60);
   lv_obj_align(btnm1, LV_ALIGN_CENTER, 0, 10);
 
   lv_obj_set_style_radius(btnm1, 20, LV_STATE_DEFAULT);
-  lv_obj_set_style_local_bg_opa(btnm1, LV_BTNMATRIX_PART_BTN, LV_STATE_DEFAULT, LV_OPA_50);
-  lv_obj_set_style_bg_color(btnm1, PINETIME_COLOR_CYAN, LV_BTNMATRIX_PART_BTN);
-  lv_obj_set_style_local_bg_opa(btnm1, LV_BTNMATRIX_PART_BTN, LV_STATE_DISABLED, LV_OPA_50);
-  lv_obj_set_style_bg_color(btnm1, Colors::bgDark, LV_BTNMATRIX_PART_BTN);
-  lv_obj_set_style_local_pad_all(btnm1, LV_BTNMATRIX_PART_BG, LV_STATE_DEFAULT, 0);
-  lv_obj_set_style_local_pad_inner(btnm1, LV_BTNMATRIX_PART_BG, LV_STATE_DEFAULT, 10);
+  lv_obj_set_style_bg_opa(btnm1, LV_OPA_50, LV_STATE_DEFAULT);
+  lv_obj_set_style_bg_color(btnm1, PINETIME_COLOR_CYAN, LV_STATE_DEFAULT);
+  lv_obj_set_style_bg_opa(btnm1, LV_OPA_50, LV_STATE_PRESSED);
+  lv_obj_set_style_bg_color(btnm1, Colors::bgDark, LV_STATE_PRESSED);
+  lv_obj_set_style_pad_all(btnm1, 0, LV_STATE_DEFAULT);
+  lv_obj_set_style_text_align(btnm1, LV_ALIGN_CENTER, LV_STATE_DEFAULT);
 
   for (uint8_t i = 0; i < 6; i++) {
     lv_btnmatrix_set_btn_ctrl(btnm1, i, LV_BTNMATRIX_CTRL_CLICK_TRIG);
@@ -81,7 +81,7 @@ Tile::Tile(uint8_t screenID,
   }
 
   btnm1->user_data = this;
-  lv_obj_add_event_cb(btnm1, event_handler);
+  lv_obj_add_event_cb(btnm1, event_handler_value_changed, LV_EVENT_VALUE_CHANGED, this);
 
   taskUpdate = lv_timer_create(lv_update_task, 5000, this);
   UpdateScreen();
@@ -89,7 +89,7 @@ Tile::Tile(uint8_t screenID,
 
 Tile::~Tile() {
   lv_timer_del(taskUpdate);
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 void Tile::UpdateScreen() {
@@ -97,11 +97,7 @@ void Tile::UpdateScreen() {
   statusIcons.Update();
 }
 
-void Tile::OnValueChangedEvent(lv_obj_t* obj, uint32_t buttonId) {
-  if (obj != btnm1) {
-    return;
-  }
-
+void Tile::OnValueChangedEvent(uint32_t buttonId) {
   app->StartApp(apps[buttonId], DisplayApp::FullRefreshDirections::Up);
   running = false;
 }

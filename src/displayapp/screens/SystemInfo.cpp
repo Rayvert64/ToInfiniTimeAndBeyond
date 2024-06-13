@@ -69,7 +69,7 @@ SystemInfo::SystemInfo(Pinetime::Applications::DisplayApp* app,
 }
 
 SystemInfo::~SystemInfo() {
-  lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_screen_active());
 }
 
 bool SystemInfo::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
@@ -77,7 +77,7 @@ bool SystemInfo::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
 }
 
 std::unique_ptr<Screen> SystemInfo::CreateScreen1() {
-  lv_obj_t* label = lv_label_create(lv_scr_act());
+  lv_obj_t* label = lv_label_create(lv_screen_active());
 
   lv_label_set_text_fmt(label,
                         "#FFFF00 InfiniTime#\n\n"
@@ -143,13 +143,13 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen2() {
   #define TARGET_DEVICE_NAME "UNKNOWN"
 #endif
 
-  lv_obj_t* label = lv_label_create(lv_scr_act());
+  lv_obj_t* label = lv_label_create(lv_screen_active());
 
   lv_label_set_text_fmt(label,
-                        "#808080 Date# %04d-%02d-%02d\n"
-                        "#808080 Time# %02d:%02d:%02d\n"
-                        "#808080 Uptime#\n %02ud %02u:%02" PRIu32 ":%02u\n"
-                        "#808080 Battery# %d%%/%03imV\n"
+                        "#808080 Date# %04" PRIu16 "-%02" PRIu8 "-%02" PRIu8 "\n"
+                        "#808080 Time# %02" PRIu8 ":%02" PRIu8 ":%02" PRIu8 "\n"
+                        "#808080 Uptime#\n %02" PRIu32 " %02" PRIu32 ":%02" PRIu32 ":%02" PRIu32 "\n"
+                        "#808080 Battery# %" PRIu16 "%%/%03imV\n"
                         "#808080 Backlight# %s\n"
                         "#808080 Last reset# %s\n"
                         "#808080 Accel.# %s\n"
@@ -185,7 +185,7 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen3() {
   lv_mem_monitor_t mon;
   lv_mem_monitor(&mon);
 
-  lv_obj_t* label = lv_label_create(lv_scr_act());
+  lv_obj_t* label = lv_label_create(lv_screen_active());
 
   const auto& bleAddr = bleController.Address();
   lv_label_set_text_fmt(label,
@@ -220,7 +220,7 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen4() {
   static constexpr uint8_t maxTaskCount = 9;
   TaskStatus_t tasksStatus[maxTaskCount];
 
-  lv_obj_t* infoTask = lv_table_create(lv_scr_act());
+  lv_obj_t* infoTask = lv_table_create(lv_screen_active());
   lv_table_set_col_cnt(infoTask, 4);
   lv_table_set_row_cnt(infoTask, maxTaskCount + 1);
   lv_obj_set_style_pad_all(infoTask, 0, LV_STATE_DEFAULT);
@@ -240,7 +240,7 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen4() {
   for (uint8_t i = 0; i < nb && i < maxTaskCount; i++) {
     char buffer[11] = {0};
 
-    (void) snprintf(buffer, sizeof(buffer), "%ul", tasksStatus[i].xTaskNumber);
+    (void) snprintf(buffer, sizeof(buffer), "%lu", tasksStatus[i].xTaskNumber);
     lv_table_set_cell_value(infoTask, i + 1, 0, buffer);
     switch (tasksStatus[i].eCurrentState) {
       case eReady:
@@ -274,7 +274,7 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen4() {
 }
 
 std::unique_ptr<Screen> SystemInfo::CreateScreen5() {
-  lv_obj_t* label = lv_label_create(lv_scr_act());
+  lv_obj_t* label = lv_label_create(lv_screen_active());
 
   lv_label_set_text_static(label,
                            "Software Licensed\n"

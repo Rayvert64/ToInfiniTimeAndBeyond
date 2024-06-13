@@ -257,7 +257,7 @@ static void theme_apply(lv_obj_t* obj, lv_theme_style_t name) {
 
     case LV_THEME_CONT:
       lv_obj_clean_style_list(obj, LV_PART_MAIN);
-      list = lv_obj_get_style_list(obj, LV_CONT_PART_MAIN);
+      list = lv_obj_get_style_list(obj, LV_PART_MAIN);
       _lv_style_list_add_style(list, &style_box);
       break;
 
@@ -280,8 +280,8 @@ static void theme_apply(lv_obj_t* obj, lv_theme_style_t name) {
       lv_obj_clean_style_list(obj, LV_STATE_DEFAULT);
       list = lv_obj_get_style_list(obj, LV_STATE_DEFAULT);
 
-      lv_obj_clean_style_list(obj, LV_BAR_PART_INDIC);
-      list = lv_obj_get_style_list(obj, LV_BAR_PART_INDIC);
+      lv_obj_clean_style_list(obj, LV_PART_INDICATOR);
+      list = lv_obj_get_style_list(obj, LV_PART_INDICATOR);
       _lv_style_list_add_style(list, &style_bar_indic);
       break;
 
@@ -392,7 +392,7 @@ static void theme_apply(lv_obj_t* obj, lv_theme_style_t name) {
     } break;
 
     case LV_THEME_LINEMETER:
-      list = lv_obj_get_style_list(obj, LV_LINEMETER_PART_MAIN);
+      list = lv_obj_get_style_list(obj, LV_PART_INDICATOR);
       _lv_style_list_add_style(list, &style_bg);
       _lv_style_list_add_style(list, &style_lmeter);
       break;
