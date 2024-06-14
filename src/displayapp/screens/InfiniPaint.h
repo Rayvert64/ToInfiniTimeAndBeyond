@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <lvgl/lvgl.h>
 #include <cstdint>
 #include <algorithm> // std::fill
@@ -33,8 +34,8 @@ namespace Pinetime {
         Controllers::MotorController& motor;
         static constexpr uint16_t width = 10;
         static constexpr uint16_t height = 10;
-        static constexpr uint16_t bufferSize = width * height;
-        lv_color_t b[bufferSize];
+        static constexpr size_t bufferSize = width * height;
+        unsigned char* b[bufferSize];
         lv_color_t selectColor = lv_color_white();
         uint8_t color = 2;
       };

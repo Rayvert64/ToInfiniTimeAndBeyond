@@ -21,7 +21,7 @@ namespace Pinetime {
 
       void Init();
 
-      void FlushDisplay(const lv_area_t* area, lv_color_t* color_p);
+      void FlushDisplay(const lv_area_t* area, unsigned char* color_p);
       void GetTouchPadInfo(lv_indev_data_t* ptr) const;
       void SetFullRefresh(FullRefreshDirections direction);
       void SetNewTouchPoint(int16_t x, int16_t y, bool contact);

@@ -6,6 +6,7 @@
 #include <lvgl/src/indev/lv_indev.h>
 #include <lvgl/src/lv_conf_internal.h>
 #include <lvgl/src/themes/default/lv_theme_default.h>
+#include <sys/_types.h>
 #include <task.h>
 #include "drivers/St7789.h"
 #include "littlefs/lfs.h"
@@ -23,17 +24,7 @@ namespace {
 
 static void disp_flush(lv_display_t* disp_drv, const lv_area_t* area, unsigned char* buffer) {
   auto* lvgl = static_cast<LittleVgl*>(lv_display_get_user_data(disp_drv));
-  lvgl->FlushDisplay(area, color_p);
-}
-
-static void rounder(lv_display_t* disp_drv, lv_area_t* area) {
-  auto* lvgl = static_cast<LittleVgl*>(lv_display_get_user_data(disp_drv));
-  if (lvgl->GetFullRefresh()) {
-    area->x1 = 0;
-    area->x2 = LV_HOR_RES - 1;
-    area->y1 = 0;
-    area->y2 = LV_VER_RES - 1;
-  }
+  lvgl->FlushDisplay(area, buffer);
 }
 
 static void touchpad_read(lv_indev_t* indev_drv, lv_indev_data_t* data) {
@@ -58,12 +49,7 @@ void LittleVgl::InitDisplay() {
   /*Initialize the display buffer*/
 
   /*Used to copy the buffer's content to the display*/
-  disp_drv.flush_cb = disp_flush;
-  /*Set a display buffer*/
-  disp_drv.buffer = &disp_buf_2;
-  disp_drv.user_data = this;
-  disp_drv.rounder_cb = rounder;
-
+  lv_display_set_flush_cb(disp_drv, disp_flush);
   lv_display_set_user_data(disp_drv, this);
   lv_display_set_flush_cb(disp_drv, disp_flush);
 }
@@ -94,7 +80,7 @@ void LittleVgl::SetFullRefresh(FullRefreshDirections direction) {
   fullRefresh = true;
 }
 
-void LittleVgl::FlushDisplay(const lv_area_t* area, lv_color_t* color_p) {
+void LittleVgl::FlushDisplay(const lv_area_t* area, unsigned char* color_p) {
   uint16_t y1, y2, width, height = 0;
 
   if ((scrollDirection == LittleVgl::FullRefreshDirections::Down) && (area->y2 == visibleNbLines - 1)) {
