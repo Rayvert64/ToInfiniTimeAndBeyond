@@ -1,5 +1,8 @@
 #include "displayapp/screens/settings/SettingSteps.h"
+#include "displayapp/Colors.h"
 #include <lvgl/lvgl.h>
+#include <lvgl/src/misc/lv_event.h>
+#include <lvgl/src/misc/lv_types.h>
 #include "displayapp/DisplayApp.h"
 #include "displayapp/screens/Symbols.h"
 #include "displayapp/InfiniTimeTheme.h"
@@ -7,8 +10,9 @@
 using namespace Pinetime::Applications::Screens;
 
 namespace {
-  void event_handler(lv_obj_t* obj, lv_event_t event) {
-    SettingSteps* screen = static_cast<SettingSteps*>(obj->user_data);
+  void event_handler(lv_event_t* event) {
+    auto* screen = static_cast<SettingSteps*>(event->user_data);
+    lv_obj_t* obj = lv_event_get_target_obj(event);
     screen->UpdateSelected(obj, event);
   }
 }
@@ -40,7 +44,7 @@ SettingSteps::SettingSteps(Pinetime::Controllers::Settings& settingsController) 
 
   stepValue = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_font(stepValue, &jetbrains_mono_42, LV_STATE_DEFAULT);
-  lv_label_set_text_fmt(stepValue, "%lu", settingsController.GetStepsGoal());
+  lv_label_set_text_fmt(stepValue, "%" PRIu32 "", settingsController.GetStepsGoal());
   lv_obj_set_align(stepValue, LV_ALIGN_CENTER);
   lv_obj_align(stepValue, LV_ALIGN_CENTER, 0, -20);
 
@@ -55,12 +59,14 @@ SettingSteps::SettingSteps(Pinetime::Controllers::Settings& settingsController) 
   lv_obj_t* lblPlus = lv_label_create(btnPlus);
   lv_obj_set_style_text_font(lblPlus, &jetbrains_mono_42, LV_STATE_DEFAULT);
   lv_label_set_text_static(lblPlus, "+");
-  lv_obj_add_event_cb(btnPlus, event_handler);
+  lv_obj_add_event_cb(btnPlus, event_handler, LV_EVENT_SHORT_CLICKED, this);
+  lv_obj_add_event_cb(btnPlus, event_handler, LV_EVENT_PRESSED, this);
 
   btnMinus = lv_button_create(lv_screen_active());
   btnMinus->user_data = this;
   lv_obj_set_size(btnMinus, btnWidth, btnHeight);
-  lv_obj_add_event_cb(btnMinus, event_handler);
+  lv_obj_add_event_cb(btnMinus, event_handler, LV_EVENT_SHORT_CLICKED, this);
+  lv_obj_add_event_cb(btnMinus, event_handler, LV_EVENT_PRESSED, this);
   lv_obj_align(btnMinus, LV_ALIGN_BOTTOM_LEFT, 0, 0);
   lv_obj_set_style_bg_color(btnMinus, Colors::bgAlt, LV_PART_MAIN);
   lv_obj_t* lblMinus = lv_label_create(btnMinus);
@@ -73,13 +79,13 @@ SettingSteps::~SettingSteps() {
   settingsController.SaveSettings();
 }
 
-void SettingSteps::UpdateSelected(lv_obj_t* object, lv_event_t event) {
+void SettingSteps::UpdateSelected(lv_obj_t* object, lv_event_t* event) {
   uint32_t value = settingsController.GetStepsGoal();
 
   int valueChange = 0;
-  if (event == LV_EVENT_SHORT_CLICKED) {
+  if (event->code == LV_EVENT_SHORT_CLICKED) {
     valueChange = 500;
-  } else if (event == LV_EVENT_LONG_PRESSED || event == LV_EVENT_LONG_PRESSED_REPEAT) {
+  } else if (event->code == LV_EVENT_PRESSED) {
     valueChange = 1000;
   } else {
     return;
@@ -93,6 +99,6 @@ void SettingSteps::UpdateSelected(lv_obj_t* object, lv_event_t event) {
 
   if (value >= 1000 && value <= 500000) {
     settingsController.SetStepsGoal(value);
-    lv_label_set_text_fmt(stepValue, "%lu", settingsController.GetStepsGoal());
+    lv_label_set_text_fmt(stepValue, "%" PRIu32 "", settingsController.GetStepsGoal());
   }
 }

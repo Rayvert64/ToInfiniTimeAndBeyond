@@ -59,7 +59,7 @@ Load a font from the external resources: you first need to check that the file a
 lv_font_t* font_teko = nullptr;
 if (filesystem.FileOpen(&f, "/fonts/font.bin", LFS_O_RDONLY) >= 0) {
     filesystem.FileClose(&f);
-    font_teko = lv_font_load("F:/fonts/font.bin");
+    font_teko = lv_binfont_create("F:/fonts/font.bin");
 }
 
 if(font != nullptr) {

@@ -6,16 +6,16 @@ using namespace Pinetime::Utility;
 
 #ifndef PINETIME_IS_RECOVERY
 
-int16_t Pinetime::Utility::Asin(int16_t arg) {
-  int16_t a = arg < 0 ? -arg : arg;
+int32_t Pinetime::Utility::Asin(int16_t arg) {
+  int32_t a = arg < 0 ? -arg : arg;
 
-  int16_t angle = 45;
-  int16_t low = 0;
-  int16_t high = 90;
+  int32_t angle = 45;
+  int32_t low = 0;
+  int32_t high = 90;
   while (low <= high) {
-    int16_t sinAngle = _lv_trigo_sin(angle);
-    int16_t sinAngleSub = _lv_trigo_sin(angle - 1);
-    int16_t sinAngleAdd = _lv_trigo_sin(angle + 1);
+    int32_t sinAngle = lv_trigo_sin(angle);
+    int32_t sinAngleSub = lv_trigo_sin(angle - 1);
+    int32_t sinAngleAdd = lv_trigo_sin(angle + 1);
 
     if (a >= sinAngleSub && a <= sinAngleAdd) {
       if (a <= (sinAngleSub + sinAngle) / 2) {
@@ -42,7 +42,7 @@ int16_t Pinetime::Utility::Asin(int16_t arg) {
 
 #else
 
-int16_t Pinetime::Utility::Asin(int16_t /*arg*/) {
+int32_t Pinetime::Utility::Asin(int16_t /*arg*/) {
   return 0;
 }
 

@@ -123,34 +123,34 @@ WatchFaceAnalog::WatchFaceAnalog(Controllers::DateTime& dateTimeController,
   second_body = lv_line_create(lv_screen_active());
 
   lv_style_init(&second_line_style);
-  lv_style_set_line_width(&second_line_style, LV_STATE_DEFAULT, 3);
-  lv_style_set_line_color(&second_line_style, LV_STATE_DEFAULT, PINETIME_COLOR_RED);
-  lv_style_set_line_rounded(&second_line_style, LV_STATE_DEFAULT, true);
-  lv_obj_add_style(second_body, &second_line_style, LV_LINE_PART_MAIN);
+  lv_style_set_line_width(&second_line_style, 3);
+  lv_style_set_line_color(&second_line_style, PINETIME_COLOR_RED);
+  lv_style_set_line_rounded(&second_line_style, true);
+  lv_obj_add_style(second_body, &second_line_style, LV_PART_MAIN);
 
   lv_style_init(&minute_line_style);
-  lv_style_set_line_width(&minute_line_style, LV_STATE_DEFAULT, 7);
-  lv_style_set_line_color(&minute_line_style, LV_STATE_DEFAULT, lv_color_white());
-  lv_style_set_line_rounded(&minute_line_style, LV_STATE_DEFAULT, true);
-  lv_obj_add_style(minute_body, &minute_line_style, LV_LINE_PART_MAIN);
+  lv_style_set_line_width(&minute_line_style, 7);
+  lv_style_set_line_color(&minute_line_style, lv_color_white());
+  lv_style_set_line_rounded(&minute_line_style, true);
+  lv_obj_add_style(minute_body, &minute_line_style, LV_PART_MAIN);
 
   lv_style_init(&minute_line_style_trace);
-  lv_style_set_line_width(&minute_line_style_trace, LV_STATE_DEFAULT, 3);
-  lv_style_set_line_color(&minute_line_style_trace, LV_STATE_DEFAULT, lv_color_white());
-  lv_style_set_line_rounded(&minute_line_style_trace, LV_STATE_DEFAULT, false);
-  lv_obj_add_style(minute_body_trace, &minute_line_style_trace, LV_LINE_PART_MAIN);
+  lv_style_set_line_width(&minute_line_style_trace, 3);
+  lv_style_set_line_color(&minute_line_style_trace, lv_color_white());
+  lv_style_set_line_rounded(&minute_line_style_trace, false);
+  lv_obj_add_style(minute_body_trace, &minute_line_style_trace, LV_PART_MAIN);
 
   lv_style_init(&hour_line_style);
-  lv_style_set_line_width(&hour_line_style, LV_STATE_DEFAULT, 7);
-  lv_style_set_line_color(&hour_line_style, LV_STATE_DEFAULT, lv_color_white());
-  lv_style_set_line_rounded(&hour_line_style, LV_STATE_DEFAULT, true);
-  lv_obj_add_style(hour_body, &hour_line_style, LV_LINE_PART_MAIN);
+  lv_style_set_line_width(&hour_line_style, 7);
+  lv_style_set_line_color(&hour_line_style, lv_color_white());
+  lv_style_set_line_rounded(&hour_line_style, true);
+  lv_obj_add_style(hour_body, &hour_line_style, LV_PART_MAIN);
 
   lv_style_init(&hour_line_style_trace);
-  lv_style_set_line_width(&hour_line_style_trace, LV_STATE_DEFAULT, 3);
-  lv_style_set_line_color(&hour_line_style_trace, LV_STATE_DEFAULT, lv_color_white());
-  lv_style_set_line_rounded(&hour_line_style_trace, LV_STATE_DEFAULT, false);
-  lv_obj_add_style(hour_body_trace, &hour_line_style_trace, LV_LINE_PART_MAIN);
+  lv_style_set_line_width(&hour_line_style_trace, 3);
+  lv_style_set_line_color(&hour_line_style_trace, lv_color_white());
+  lv_style_set_line_rounded(&hour_line_style_trace, false);
+  lv_obj_add_style(hour_body_trace, &hour_line_style_trace, LV_PART_MAIN);
 
   taskRefresh = lv_timer_create(RefreshTaskCallback, LV_DEF_REFR_PERIOD, this);
   Refresh();

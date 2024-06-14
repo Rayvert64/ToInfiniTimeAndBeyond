@@ -1,8 +1,11 @@
 #include "displayapp/screens/WatchFaceInfineat.h"
 
+#include <cstdint>
 #include <lvgl/lvgl.h>
 #include "lvgl/src/core/lv_obj.h"
 #include <cstdio>
+#include <lvgl/src/core/lv_obj_event.h>
+#include <lvgl/src/misc/lv_event.h>
 #include "displayapp/screens/Symbols.h"
 #include "displayapp/screens/BleIcon.h"
 #include "components/settings/Settings.h"
@@ -16,7 +19,7 @@ using namespace Pinetime::Applications::Screens;
 namespace {
   void event_handler(lv_event_t* event) {
     auto* screen = static_cast<WatchFaceInfineat*>(event->user_data);
-    screen->UpdateSelected(obj, event);
+    screen->UpdateSelected(lv_event_get_target_obj(event), event);
   }
 
   enum class colors {
@@ -33,69 +36,69 @@ namespace {
 
   constexpr int nLines = WatchFaceInfineat::nLines;
 
-  constexpr std::array<lv_color_t, nLines> orangeColors = {LV_COLOR_MAKE(0xfd, 0x87, 0x2b),
-                                                           LV_COLOR_MAKE(0xdb, 0x33, 0x16),
-                                                           LV_COLOR_MAKE(0x6f, 0x10, 0x00),
-                                                           LV_COLOR_MAKE(0xfd, 0x7a, 0x0a),
-                                                           LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                           LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                           LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                           LV_COLOR_MAKE(0xe8, 0x51, 0x02),
-                                                           LV_COLOR_MAKE(0xea, 0x1c, 0x00)};
-  constexpr std::array<lv_color_t, nLines> blueColors = {LV_COLOR_MAKE(0xe7, 0xf8, 0xff),
-                                                         LV_COLOR_MAKE(0x22, 0x32, 0xd0),
-                                                         LV_COLOR_MAKE(0x18, 0x2a, 0x8b),
-                                                         LV_COLOR_MAKE(0xe7, 0xf8, 0xff),
-                                                         LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                         LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                         LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                         LV_COLOR_MAKE(0x59, 0x91, 0xff),
-                                                         LV_COLOR_MAKE(0x16, 0x36, 0xff)};
-  constexpr std::array<lv_color_t, nLines> greenColors = {LV_COLOR_MAKE(0xb8, 0xff, 0x9b),
-                                                          LV_COLOR_MAKE(0x08, 0x86, 0x08),
-                                                          LV_COLOR_MAKE(0x00, 0x4a, 0x00),
-                                                          LV_COLOR_MAKE(0xb8, 0xff, 0x9b),
-                                                          LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                          LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                          LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                          LV_COLOR_MAKE(0x62, 0xd5, 0x15),
-                                                          LV_COLOR_MAKE(0x00, 0x74, 0x00)};
-  constexpr std::array<lv_color_t, nLines> rainbowColors = {LV_COLOR_MAKE(0x2d, 0xa4, 0x00),
-                                                            LV_COLOR_MAKE(0xac, 0x09, 0xc4),
-                                                            LV_COLOR_MAKE(0xfe, 0x03, 0x03),
-                                                            LV_COLOR_MAKE(0x0d, 0x57, 0xff),
-                                                            LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                            LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                            LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                            LV_COLOR_MAKE(0xe0, 0xb9, 0x00),
-                                                            LV_COLOR_MAKE(0xe8, 0x51, 0x02)};
-  constexpr std::array<lv_color_t, nLines> grayColors = {LV_COLOR_MAKE(0xee, 0xee, 0xee),
-                                                         LV_COLOR_MAKE(0x98, 0x95, 0x9b),
-                                                         LV_COLOR_MAKE(0x19, 0x19, 0x19),
-                                                         LV_COLOR_MAKE(0xee, 0xee, 0xee),
-                                                         LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                         LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                         LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                         LV_COLOR_MAKE(0x91, 0x91, 0x91),
-                                                         LV_COLOR_MAKE(0x3a, 0x3a, 0x3a)};
-  constexpr std::array<lv_color_t, nLines> nordBlueColors = {LV_COLOR_MAKE(0xc3, 0xda, 0xf2),
-                                                             LV_COLOR_MAKE(0x4d, 0x78, 0xce),
-                                                             LV_COLOR_MAKE(0x15, 0x34, 0x51),
-                                                             LV_COLOR_MAKE(0xc3, 0xda, 0xf2),
-                                                             LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                             LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                             LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                             LV_COLOR_MAKE(0x5d, 0x8a, 0xd2),
-                                                             LV_COLOR_MAKE(0x21, 0x51, 0x8a)};
-  constexpr std::array<lv_color_t, nLines> nordGreenColors = {LV_COLOR_MAKE(0xd5, 0xf0, 0xe9),
-                                                              LV_COLOR_MAKE(0x23, 0x83, 0x73),
-                                                              LV_COLOR_MAKE(0x1d, 0x41, 0x3f),
-                                                              LV_COLOR_MAKE(0xd5, 0xf0, 0xe9),
-                                                              LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                              LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                              LV_COLOR_MAKE(0xff, 0xff, 0xff),
-                                                              LV_COLOR_MAKE(0x2f, 0xb8, 0xa2),
-                                                              LV_COLOR_MAKE(0x11, 0x70, 0x5a)};
+  constexpr std::array<lv_color_t, nLines> orangeColors = {lv_color_t LV_COLOR_MAKE(0xfd, 0x87, 0x2b),
+                                                           lv_color_t LV_COLOR_MAKE(0xdb, 0x33, 0x16),
+                                                           lv_color_t LV_COLOR_MAKE(0x6f, 0x10, 0x00),
+                                                           lv_color_t LV_COLOR_MAKE(0xfd, 0x7a, 0x0a),
+                                                           lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                           lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                           lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                           lv_color_t LV_COLOR_MAKE(0xe8, 0x51, 0x02),
+                                                           lv_color_t LV_COLOR_MAKE(0xea, 0x1c, 0x00)};
+  constexpr std::array<lv_color_t, nLines> blueColors = {lv_color_t LV_COLOR_MAKE(0xe7, 0xf8, 0xff),
+                                                         lv_color_t LV_COLOR_MAKE(0x22, 0x32, 0xd0),
+                                                         lv_color_t LV_COLOR_MAKE(0x18, 0x2a, 0x8b),
+                                                         lv_color_t LV_COLOR_MAKE(0xe7, 0xf8, 0xff),
+                                                         lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                         lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                         lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                         lv_color_t LV_COLOR_MAKE(0x59, 0x91, 0xff),
+                                                         lv_color_t LV_COLOR_MAKE(0x16, 0x36, 0xff)};
+  constexpr std::array<lv_color_t, nLines> greenColors = {lv_color_t LV_COLOR_MAKE(0xb8, 0xff, 0x9b),
+                                                          lv_color_t LV_COLOR_MAKE(0x08, 0x86, 0x08),
+                                                          lv_color_t LV_COLOR_MAKE(0x00, 0x4a, 0x00),
+                                                          lv_color_t LV_COLOR_MAKE(0xb8, 0xff, 0x9b),
+                                                          lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                          lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                          lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                          lv_color_t LV_COLOR_MAKE(0x62, 0xd5, 0x15),
+                                                          lv_color_t LV_COLOR_MAKE(0x00, 0x74, 0x00)};
+  constexpr std::array<lv_color_t, nLines> rainbowColors = {lv_color_t LV_COLOR_MAKE(0x2d, 0xa4, 0x00),
+                                                            lv_color_t LV_COLOR_MAKE(0xac, 0x09, 0xc4),
+                                                            lv_color_t LV_COLOR_MAKE(0xfe, 0x03, 0x03),
+                                                            lv_color_t LV_COLOR_MAKE(0x0d, 0x57, 0xff),
+                                                            lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                            lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                            lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                            lv_color_t LV_COLOR_MAKE(0xe0, 0xb9, 0x00),
+                                                            lv_color_t LV_COLOR_MAKE(0xe8, 0x51, 0x02)};
+  constexpr std::array<lv_color_t, nLines> grayColors = {lv_color_t LV_COLOR_MAKE(0xee, 0xee, 0xee),
+                                                         lv_color_t LV_COLOR_MAKE(0x98, 0x95, 0x9b),
+                                                         lv_color_t LV_COLOR_MAKE(0x19, 0x19, 0x19),
+                                                         lv_color_t LV_COLOR_MAKE(0xee, 0xee, 0xee),
+                                                         lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                         lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                         lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                         lv_color_t LV_COLOR_MAKE(0x91, 0x91, 0x91),
+                                                         lv_color_t LV_COLOR_MAKE(0x3a, 0x3a, 0x3a)};
+  constexpr std::array<lv_color_t, nLines> nordBlueColors = {lv_color_t LV_COLOR_MAKE(0xc3, 0xda, 0xf2),
+                                                             lv_color_t LV_COLOR_MAKE(0x4d, 0x78, 0xce),
+                                                             lv_color_t LV_COLOR_MAKE(0x15, 0x34, 0x51),
+                                                             lv_color_t LV_COLOR_MAKE(0xc3, 0xda, 0xf2),
+                                                             lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                             lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                             lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                             lv_color_t LV_COLOR_MAKE(0x5d, 0x8a, 0xd2),
+                                                             lv_color_t LV_COLOR_MAKE(0x21, 0x51, 0x8a)};
+  constexpr std::array<lv_color_t, nLines> nordGreenColors = {lv_color_t LV_COLOR_MAKE(0xd5, 0xf0, 0xe9),
+                                                              lv_color_t LV_COLOR_MAKE(0x23, 0x83, 0x73),
+                                                              lv_color_t LV_COLOR_MAKE(0x1d, 0x41, 0x3f),
+                                                              lv_color_t LV_COLOR_MAKE(0xd5, 0xf0, 0xe9),
+                                                              lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                              lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                              lv_color_t LV_COLOR_MAKE(0xff, 0xff, 0xff),
+                                                              lv_color_t LV_COLOR_MAKE(0x2f, 0xb8, 0xa2),
+                                                              lv_color_t LV_COLOR_MAKE(0x11, 0x70, 0x5a)};
 
   constexpr const std::array<lv_color_t, nLines>* returnColor(colors color) {
     if (color == colors::orange) {
@@ -137,12 +140,12 @@ WatchFaceInfineat::WatchFaceInfineat(Controllers::DateTime& dateTimeController,
   lfs_file f = {};
   if (filesystem.FileOpen(&f, "/fonts/teko.bin", LFS_O_RDONLY) >= 0) {
     filesystem.FileClose(&f);
-    font_teko = lv_font_load("F:/fonts/teko.bin");
+    font_teko = lv_binfont_create("F:/fonts/teko.bin");
   }
 
   if (filesystem.FileOpen(&f, "/fonts/bebas.bin", LFS_O_RDONLY) >= 0) {
     filesystem.FileClose(&f);
-    font_bebas = lv_font_load("F:/fonts/bebas.bin");
+    font_bebas = lv_binfont_create("F:/fonts/bebas.bin");
   }
 
   // Side Cover
@@ -156,7 +159,7 @@ WatchFaceInfineat::WatchFaceInfineat(Controllers::DateTime& dateTimeController,
                                                                {{-20, 124}, {25, -11}},
                                                                {{-29, 89}, {27, 254}}};
 
-  static constexpr lv_style_int_t lineWidths[nLines] = {18, 15, 14, 22, 20, 18, 18, 52, 48};
+  static constexpr uint8_t lineWidths[nLines] = {18, 15, 14, 22, 20, 18, 18, 52, 48};
 
   const std::array<lv_color_t, nLines>* colors = returnColor(static_cast<enum colors>(settingsController.GetInfineatColorIndex()));
   for (int i = 0; i < nLines; i++) {
@@ -251,7 +254,7 @@ WatchFaceInfineat::WatchFaceInfineat(Controllers::DateTime& dateTimeController,
   lv_obj_set_style_bg_opa(btnClose, LV_OPA_70, LV_STATE_DEFAULT);
   lv_obj_t* lblClose = lv_label_create(btnClose);
   lv_label_set_text_static(lblClose, "X");
-  lv_obj_add_event_cb(btnClose, event_handler);
+  lv_obj_add_event_cb(btnClose, event_handler, LV_EVENT_CLICKED, this);
   lv_obj_add_flag(btnClose, LV_OBJ_FLAG_HIDDEN);
 
   btnNextColor = lv_button_create(lv_screen_active());
@@ -261,7 +264,7 @@ WatchFaceInfineat::WatchFaceInfineat(Controllers::DateTime& dateTimeController,
   lv_obj_set_style_bg_opa(btnNextColor, LV_OPA_70, LV_STATE_DEFAULT);
   lv_obj_t* lblNextColor = lv_label_create(btnNextColor);
   lv_label_set_text_static(lblNextColor, ">");
-  lv_obj_add_event_cb(btnNextColor, event_handler);
+  lv_obj_add_event_cb(btnNextColor, event_handler, LV_EVENT_CLICKED, this);
   lv_obj_add_flag(btnNextColor, LV_OBJ_FLAG_HIDDEN);
 
   btnPrevColor = lv_button_create(lv_screen_active());
@@ -271,7 +274,7 @@ WatchFaceInfineat::WatchFaceInfineat(Controllers::DateTime& dateTimeController,
   lv_obj_set_style_bg_opa(btnPrevColor, LV_OPA_70, LV_STATE_DEFAULT);
   lv_obj_t* lblPrevColor = lv_label_create(btnPrevColor);
   lv_label_set_text_static(lblPrevColor, "<");
-  lv_obj_add_event_cb(btnPrevColor, event_handler);
+  lv_obj_add_event_cb(btnPrevColor, event_handler, LV_EVENT_CLICKED, this);
   lv_obj_add_flag(btnPrevColor, LV_OBJ_FLAG_HIDDEN);
 
   btnToggleCover = lv_button_create(lv_screen_active());
@@ -282,7 +285,7 @@ WatchFaceInfineat::WatchFaceInfineat(Controllers::DateTime& dateTimeController,
   const char* labelToggle = settingsController.GetInfineatShowSideCover() ? "ON" : "OFF";
   lblToggle = lv_label_create(btnToggleCover);
   lv_label_set_text_static(lblToggle, labelToggle);
-  lv_obj_add_event_cb(btnToggleCover, event_handler);
+  lv_obj_add_event_cb(btnToggleCover, event_handler, LV_EVENT_CLICKED, this);
   lv_obj_add_flag(btnToggleCover, LV_OBJ_FLAG_HIDDEN);
 
   // Button to access the settings
@@ -292,7 +295,7 @@ WatchFaceInfineat::WatchFaceInfineat(Controllers::DateTime& dateTimeController,
   lv_obj_align(btnSettings, LV_ALIGN_CENTER, 0, 0);
   lv_obj_set_style_radius(btnSettings, 30, LV_STATE_DEFAULT);
   lv_obj_set_style_bg_opa(btnSettings, LV_OPA_70, LV_STATE_DEFAULT);
-  lv_obj_add_event_cb(btnSettings, event_handler);
+  lv_obj_add_event_cb(btnSettings, event_handler, LV_EVENT_CLICKED, this);
   labelBtnSettings = lv_label_create(btnSettings);
   lv_obj_set_style_text_font(labelBtnSettings, &lv_font_sys_48, LV_STATE_DEFAULT);
   lv_label_set_text_static(labelBtnSettings, Symbols::settings);
@@ -306,25 +309,24 @@ WatchFaceInfineat::~WatchFaceInfineat() {
   lv_timer_del(taskRefresh);
 
   if (font_bebas != nullptr) {
-    lv_font_free(font_bebas);
+    lv_binfont_destroy(font_bebas);
   }
   if (font_teko != nullptr) {
-    lv_font_free(font_teko);
+    lv_binfont_destroy(font_teko);
   }
 
   lv_obj_clean(lv_screen_active());
 }
 
 bool WatchFaceInfineat::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
-  if ((event == Pinetime::Applications::TouchEvents::LongTap) && lv_obj_get_hidden(btnSettings)) {
-    if (lv_obj_has_flag(btnSettings, LV_OBJ_FLAG_HIDDEN)) {
-      lv_obj_remove_flag(btnSettings, LV_OBJ_FLAG_HIDDEN);
-    };
-    savedTick = lv_tick_get();
-    return true;
-  }
+  if ((event == Pinetime::Applications::TouchEvents::LongTap) && lv_obj_has_flag(btnSettings, LV_OBJ_FLAG_HIDDEN)) {
+    lv_obj_remove_flag(btnSettings, LV_OBJ_FLAG_HIDDEN);
+  };
+  savedTick = lv_tick_get();
+  return true;
+
   // Prevent screen from sleeping when double tapping with settings on
-  if ((event == Pinetime::Applications::TouchEvents::DoubleTap) && !lv_obj_get_hidden(btnClose)) {
+  if ((event == Pinetime::Applications::TouchEvents::DoubleTap) && !lv_obj_has_flag(btnSettings, LV_OBJ_FLAG_HIDDEN)) {
     return true;
   }
   return false;
@@ -339,15 +341,15 @@ void WatchFaceInfineat::CloseMenu() {
 }
 
 bool WatchFaceInfineat::OnButtonPushed() {
-  if (!lv_obj_get_hidden(btnClose)) {
+  if (!lv_obj_has_flag(btnSettings, LV_OBJ_FLAG_HIDDEN)) {
     CloseMenu();
     return true;
   }
   return false;
 }
 
-void WatchFaceInfineat::UpdateSelected(lv_obj_t* object, lv_event_t event) {
-  if (event == LV_EVENT_CLICKED) {
+void WatchFaceInfineat::UpdateSelected(lv_obj_t* object, lv_event_t* event) {
+  if (event->code == LV_EVENT_CLICKED) {
     bool showSideCover = settingsController.GetInfineatShowSideCover();
     int colorIndex = settingsController.GetInfineatColorIndex();
 
@@ -356,8 +358,14 @@ void WatchFaceInfineat::UpdateSelected(lv_obj_t* object, lv_event_t event) {
       if (lv_obj_has_flag(btnClose, LV_OBJ_FLAG_HIDDEN)) {
         lv_obj_remove_flag(btnClose, LV_OBJ_FLAG_HIDDEN);
       };
-      lv_obj_set_hidden(btnNextColor, !showSideCover);
-      lv_obj_set_hidden(btnPrevColor, !showSideCover);
+      if (!showSideCover) {
+        lv_obj_add_flag(btnNextColor, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(btnPrevColor, LV_OBJ_FLAG_HIDDEN);
+      } else {
+        lv_obj_remove_flag(btnNextColor, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_remove_flag(btnPrevColor, LV_OBJ_FLAG_HIDDEN);
+      }
+
       if (lv_obj_has_flag(btnToggleCover, LV_OBJ_FLAG_HIDDEN)) {
         lv_obj_remove_flag(btnToggleCover, LV_OBJ_FLAG_HIDDEN);
       };
@@ -369,10 +377,19 @@ void WatchFaceInfineat::UpdateSelected(lv_obj_t* object, lv_event_t event) {
       settingsController.SetInfineatShowSideCover(!showSideCover);
       ToggleBatteryIndicatorColor(!showSideCover);
       for (auto& line : lines) {
-        lv_obj_set_hidden(line, showSideCover);
+        if (showSideCover) {
+          lv_obj_add_flag(line, LV_OBJ_FLAG_HIDDEN);
+        } else {
+          lv_obj_remove_flag(line, LV_OBJ_FLAG_HIDDEN);
+        }
       }
-      lv_obj_set_hidden(btnNextColor, showSideCover);
-      lv_obj_set_hidden(btnPrevColor, showSideCover);
+      if (showSideCover) {
+        lv_obj_add_flag(btnNextColor, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(btnPrevColor, LV_OBJ_FLAG_HIDDEN);
+      } else {
+        lv_obj_remove_flag(btnNextColor, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_remove_flag(btnPrevColor, LV_OBJ_FLAG_HIDDEN);
+      }
       const char* labelToggle = showSideCover ? "OFF" : "ON";
       lv_label_set_text_static(lblToggle, labelToggle);
     }
@@ -401,7 +418,11 @@ void WatchFaceInfineat::UpdateSelected(lv_obj_t* object, lv_event_t event) {
 void WatchFaceInfineat::Refresh() {
   notificationState = notificationManager.AreNewNotificationsAvailable();
   if (notificationState.IsUpdated()) {
-    lv_obj_set_hidden(notificationIcon, !notificationState.Get());
+    if (!notificationState.Get()) {
+      lv_obj_add_flag(notificationIcon, LV_OBJ_FLAG_HIDDEN);
+    } else {
+      lv_obj_remove_flag(notificationIcon, LV_OBJ_FLAG_HIDDEN);
+    }
     lv_obj_align(notificationIcon, LV_ALIGN_TOP_RIGHT, 0, 0);
   }
 
@@ -461,12 +482,12 @@ void WatchFaceInfineat::Refresh() {
 
   stepCount = motionController.NbSteps();
   if (stepCount.IsUpdated()) {
-    lv_label_set_text_fmt(stepValue, "%lu", stepCount.Get());
+    lv_label_set_text_fmt(stepValue, "%" PRIu32 "", stepCount.Get());
     lv_obj_align(stepValue, LV_ALIGN_BOTTOM_MID, 10, 0);
     lv_obj_align(stepIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
   }
 
-  if (!lv_obj_get_hidden(btnSettings)) {
+  if (!lv_obj_has_flag(btnSettings, LV_OBJ_FLAG_HIDDEN)) {
     if ((savedTick > 0) && (lv_tick_get() - savedTick > 3000)) {
       lv_obj_add_flag(btnSettings, LV_OBJ_FLAG_HIDDEN);
       savedTick = 0;
@@ -484,7 +505,7 @@ void WatchFaceInfineat::ToggleBatteryIndicatorColor(bool showSideCover) {
   if (!showSideCover) { // make indicator and notification icon color white
     lv_obj_set_style_bg_image_recolor_opa(logoPine, LV_OPA_100, LV_STATE_DEFAULT);
     lv_obj_set_style_bg_image_recolor(logoPine, lv_color_white(), LV_STATE_DEFAULT);
-    lv_obj_set_style_local_line_color(lineBattery, lv_color_black(), LV_STATE_DEFAULT);
+    lv_obj_set_style_line_color(lineBattery, lv_color_black(), LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(notificationIcon, lv_color_white(), LV_PART_MAIN);
   } else {
     lv_obj_set_style_bg_image_recolor_opa(logoPine, LV_OPA_0, LV_STATE_DEFAULT);

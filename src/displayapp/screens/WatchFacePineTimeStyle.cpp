@@ -118,9 +118,8 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
   lv_obj_set_style_text_font(weatherIcon, &fontawesome_weathericons, LV_STATE_DEFAULT);
   lv_label_set_text(weatherIcon, Symbols::ban);
   lv_obj_align(weatherIcon, LV_ALIGN_TOP_MID, 0, 35);
-  lv_obj_set_auto_realign(weatherIcon, true);
   if (settingsController.GetPTSWeather() == Pinetime::Controllers::Settings::PTSWeather::On) {
-    if (lv_obj_has_flag(weatherIcon)) {
+    if (lv_obj_has_flag(weatherIcon, LV_OBJ_FLAG_HIDDEN)) {
       lv_obj_remove_flag(weatherIcon, LV_OBJ_FLAG_HIDDEN);
     };
   } else {
@@ -133,7 +132,7 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
   lv_label_set_text(temperature, "--");
   lv_obj_align(temperature, LV_ALIGN_TOP_MID, 0, 65);
   if (settingsController.GetPTSWeather() == Pinetime::Controllers::Settings::PTSWeather::On) {
-    if (lv_obj_has_flag(temperature)) {
+    if (lv_obj_has_flag(temperature, LV_OBJ_FLAG_HIDDEN)) {
       lv_obj_remove_flag(temperature, LV_OBJ_FLAG_HIDDEN);
     };
   } else {

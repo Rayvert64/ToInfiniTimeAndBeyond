@@ -37,7 +37,7 @@ namespace Pinetime {
 
         bool OnTouchEvent(TouchEvents event) override;
         bool OnButtonPushed() override;
-        void UpdateSelected(lv_obj_t* object, lv_event_t event);
+        void UpdateSelected(lv_obj_t* object, lv_event_t* event);
         void CloseMenu();
 
         void Refresh() override;

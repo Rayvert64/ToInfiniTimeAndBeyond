@@ -1,7 +1,10 @@
 #include "displayapp/screens/settings/SettingWakeUp.h"
 #include <lvgl/lvgl.h>
+#include <lvgl/src/core/lv_obj.h>
+#include <lvgl/src/core/lv_obj_event.h>
 #include "displayapp/DisplayApp.h"
 #include "displayapp/screens/Screen.h"
+#include "displayapp/Colors.h"
 #include "displayapp/screens/Symbols.h"
 #include "components/settings/Settings.h"
 #include "displayapp/screens/Styles.h"
@@ -13,9 +16,7 @@ constexpr std::array<SettingWakeUp::Option, 5> SettingWakeUp::options;
 namespace {
   void event_handler(lv_event_t* event) {
     auto* screen = static_cast<SettingWakeUp*>(event->user_data);
-    if (event == LV_EVENT_VALUE_CHANGED) {
-      screen->UpdateSelected(obj);
-    }
+    screen->UpdateSelected(lv_event_get_target_obj(event));
   }
 }
 
@@ -50,7 +51,7 @@ SettingWakeUp::SettingWakeUp(Pinetime::Controllers::Settings& settingsController
       lv_obj_set_state(cbOption[i], LV_STATE_CHECKED, true);
     }
     cbOption[i]->user_data = this;
-    lv_obj_add_event_cb(cbOption[i], event_handler);
+    lv_obj_add_event_cb(cbOption[i], event_handler, LV_EVENT_VALUE_CHANGED, this);
   }
 }
 
@@ -74,6 +75,6 @@ void SettingWakeUp::UpdateSelected(lv_obj_t* object) {
   // for example, when setting SingleTap, DoubleTap is unset and vice versa.
   auto modes = settingsController.getWakeUpModes();
   for (size_t i = 0; i < options.size(); ++i) {
-    lv_checkbox_set_checked(cbOption[i], modes[i]);
+    lv_obj_set_state(cbOption[i], LV_STATE_CHECKED, modes[i]);
   }
 }

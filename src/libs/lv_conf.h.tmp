@@ -41,7 +41,7 @@
 #define LV_ANTIALIAS        1
 
 /* Default display refresh period.
- * Can be changed in the display driver (`lv_disp_drv_t`).*/
+ * Can be changed in the display driver (`lv_display_t`).*/
 #define LV_DISP_DEF_REFR_PERIOD      20      /*[ms]*/
 
 /* Dot Per Inch: used to initialize default sizes.

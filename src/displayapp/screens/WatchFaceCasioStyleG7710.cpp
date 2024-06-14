@@ -2,6 +2,7 @@
 
 #include <lvgl/lvgl.h>
 #include <cstdio>
+#include <lvgl/src/core/lv_obj_pos.h>
 #include "displayapp/screens/BatteryIcon.h"
 #include "displayapp/screens/BleIcon.h"
 #include "displayapp/screens/NotificationIcon.h"
@@ -35,17 +36,17 @@ WatchFaceCasioStyleG7710::WatchFaceCasioStyleG7710(Controllers::DateTime& dateTi
   lfs_file f = {};
   if (filesystem.FileOpen(&f, "/fonts/lv_font_dots_40.bin", LFS_O_RDONLY) >= 0) {
     filesystem.FileClose(&f);
-    font_dot40 = lv_font_load("F:/fonts/lv_font_dots_40.bin");
+    font_dot40 = lv_binfont_create("F:/fonts/lv_font_dots_40.bin");
   }
 
   if (filesystem.FileOpen(&f, "/fonts/7segments_40.bin", LFS_O_RDONLY) >= 0) {
     filesystem.FileClose(&f);
-    font_segment40 = lv_font_load("F:/fonts/7segments_40.bin");
+    font_segment40 = lv_binfont_create("F:/fonts/7segments_40.bin");
   }
 
   if (filesystem.FileOpen(&f, "/fonts/7segments_115.bin", LFS_O_RDONLY) >= 0) {
     filesystem.FileClose(&f);
-    font_segment115 = lv_font_load("F:/fonts/7segments_115.bin");
+    font_segment115 = lv_binfont_create("F:/fonts/7segments_115.bin");
   }
 
   label_battery_value = lv_label_create(lv_screen_active());
@@ -91,28 +92,28 @@ WatchFaceCasioStyleG7710::WatchFaceCasioStyleG7710(Controllers::DateTime& dateTi
   lv_label_set_text_static(label_day_of_year, "181-184");
 
   lv_style_init(&style_line);
-  lv_style_set_line_width(&style_line, LV_STATE_DEFAULT, 2);
-  lv_style_set_line_color(&style_line, LV_STATE_DEFAULT, color_text);
-  lv_style_set_line_rounded(&style_line, LV_STATE_DEFAULT, true);
+  lv_style_set_line_width(&style_line, 2);
+  lv_style_set_line_color(&style_line, color_text);
+  lv_style_set_line_rounded(&style_line, true);
 
   lv_style_init(&style_border);
-  lv_style_set_line_width(&style_border, LV_STATE_DEFAULT, 6);
-  lv_style_set_line_color(&style_border, LV_STATE_DEFAULT, color_text);
-  lv_style_set_line_rounded(&style_border, LV_STATE_DEFAULT, true);
+  lv_style_set_line_width(&style_border, 6);
+  lv_style_set_line_color(&style_border, color_text);
+  lv_style_set_line_rounded(&style_border, true);
 
   line_icons = lv_line_create(lv_screen_active());
   lv_line_set_points(line_icons, line_icons_points, 3);
-  lv_obj_add_style(line_icons, &style_line, LV_LINE_PART_MAIN);
+  lv_obj_add_style(line_icons, &style_line, LV_PART_MAIN);
   lv_obj_align(line_icons, LV_ALIGN_TOP_RIGHT, -10, 18);
 
   line_day_of_week_number = lv_line_create(lv_screen_active());
   lv_line_set_points(line_day_of_week_number, line_day_of_week_number_points, 4);
-  lv_obj_add_style(line_day_of_week_number, &style_border, LV_LINE_PART_MAIN);
+  lv_obj_add_style(line_day_of_week_number, &style_border, LV_PART_MAIN);
   lv_obj_align(line_day_of_week_number, LV_ALIGN_TOP_LEFT, 0, 8);
 
   line_day_of_year = lv_line_create(lv_screen_active());
   lv_line_set_points(line_day_of_year, line_day_of_year_points, 3);
-  lv_obj_add_style(line_day_of_year, &style_line, LV_LINE_PART_MAIN);
+  lv_obj_add_style(line_day_of_year, &style_line, LV_PART_MAIN);
   lv_obj_align(line_day_of_year, LV_ALIGN_TOP_RIGHT, 0, 60);
 
   label_date = lv_label_create(lv_screen_active());
@@ -123,7 +124,7 @@ WatchFaceCasioStyleG7710::WatchFaceCasioStyleG7710(Controllers::DateTime& dateTi
 
   line_date = lv_line_create(lv_screen_active());
   lv_line_set_points(line_date, line_date_points, 3);
-  lv_obj_add_style(line_date, &style_line, LV_LINE_PART_MAIN);
+  lv_obj_add_style(line_date, &style_line, LV_PART_MAIN);
   lv_obj_align(line_date, LV_ALIGN_TOP_RIGHT, 0, 100);
 
   label_time = lv_label_create(lv_screen_active());
@@ -133,7 +134,7 @@ WatchFaceCasioStyleG7710::WatchFaceCasioStyleG7710(Controllers::DateTime& dateTi
 
   line_time = lv_line_create(lv_screen_active());
   lv_line_set_points(line_time, line_time_points, 3);
-  lv_obj_add_style(line_time, &style_line, LV_LINE_PART_MAIN);
+  lv_obj_add_style(line_time, &style_line, LV_PART_MAIN);
   lv_obj_align(line_time, LV_ALIGN_BOTTOM_RIGHT, 0, -25);
 
   label_time_ampm = lv_label_create(lv_screen_active());
@@ -179,15 +180,15 @@ WatchFaceCasioStyleG7710::~WatchFaceCasioStyleG7710() {
   lv_style_reset(&style_border);
 
   if (font_dot40 != nullptr) {
-    lv_font_free(font_dot40);
+    lv_binfont_destroy(font_dot40);
   }
 
   if (font_segment40 != nullptr) {
-    lv_font_free(font_segment40);
+    lv_binfont_destroy(font_segment40);
   }
 
   if (font_segment115 != nullptr) {
-    lv_font_free(font_segment115);
+    lv_binfont_destroy(font_segment115);
   }
 
   lv_obj_clean(lv_screen_active());
@@ -212,7 +213,11 @@ void WatchFaceCasioStyleG7710::Refresh() {
     lv_label_set_text_static(bleIcon, BleIcon::GetIcon(bleState.Get()));
   }
 
-  lv_obj_align(batteryIcon.GetObject());
+  lv_obj_update_layout(label_battery_value);
+  lv_obj_update_layout(batteryIcon.GetObject());
+  lv_obj_update_layout(batteryPlug);
+  lv_obj_update_layout(bleIcon);
+  lv_obj_update_layout(notificationIcon);
 
   notificationState = notificatioManager.AreNewNotificationsAvailable();
   if (notificationState.IsUpdated()) {
@@ -250,14 +255,14 @@ void WatchFaceCasioStyleG7710::Refresh() {
       int dayOfYear = dateTimeController.DayOfYear();
       if (settingsController.GetClockType() == Controllers::Settings::ClockType::H24) {
         // 24h mode: ddmmyyyy, first DOW=Monday;
-        lv_label_set_text_fmt(label_date, "%3d-%2d", day, month);
+        lv_label_set_text_fmt(label_date, "%3" PRIu8 "-%2" PRIu8 "", day, static_cast<uint8_t>(month));
         weekNumberFormat = "%V"; // Replaced by the week number of the year (Monday as the first day of the week) as a decimal number
                                  // [01,53]. If the week containing 1 January has four or more days in the new year, then it is considered
                                  // week 1. Otherwise, it is the last week of the previous year, and the next week is week 1. Both January
                                  // 4th and the first Thursday of January are always in week 1. [ tm_year, tm_wday, tm_yday]
       } else {
         // 12h mode: mmddyyyy, first DOW=Sunday;
-        lv_label_set_text_fmt(label_date, "%3d-%2d", month, day);
+        lv_label_set_text_fmt(label_date, "%3" PRIu8 "-%2" PRIu8 "", static_cast<uint8_t>(month), day);
         weekNumberFormat = "%U"; // Replaced by the week number of the year as a decimal number [00,53]. The first Sunday of January is the
                                  // first day of week 1; days in the new year before this are in week 0. [ tm_year, tm_wday, tm_yday]
       }
@@ -294,7 +299,7 @@ void WatchFaceCasioStyleG7710::Refresh() {
 
   stepCount = motionController.NbSteps();
   if (stepCount.IsUpdated()) {
-    lv_label_set_text_fmt(stepValue, "%lu", stepCount.Get());
+    lv_label_set_text_fmt(stepValue, "%" PRIu32 "", stepCount.Get());
   }
 }
 

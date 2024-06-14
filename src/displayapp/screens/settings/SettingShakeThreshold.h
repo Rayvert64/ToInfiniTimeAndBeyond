@@ -20,7 +20,8 @@ namespace Pinetime {
 
         ~SettingShakeThreshold() override;
         void Refresh() override;
-        void UpdateSelected(lv_obj_t* object, lv_event_t event);
+        void UpdateSelectedBtnValueChanged();
+        void UpdateSelectedBtnReleased();
 
       private:
         Controllers::Settings& settingsController;

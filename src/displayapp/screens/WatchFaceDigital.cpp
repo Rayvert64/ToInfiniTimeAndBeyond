@@ -1,5 +1,5 @@
 #include "displayapp/screens/WatchFaceDigital.h"
-
+#include "displayapp/Colors.h"
 #include <lvgl/lvgl.h>
 #include <cstdio>
 #include "displayapp/screens/NotificationIcon.h"
@@ -44,7 +44,6 @@ WatchFaceDigital::WatchFaceDigital(Controllers::DateTime& dateTimeController,
   lv_obj_set_style_text_font(weatherIcon, &fontawesome_weathericons, LV_STATE_DEFAULT);
   lv_label_set_text(weatherIcon, "");
   lv_obj_align(weatherIcon, LV_ALIGN_TOP_MID, -20, 50);
-  lv_obj_set_auto_realign(weatherIcon, true);
 
   temperature = lv_label_create(lv_screen_active());
   lv_obj_set_style_text_color(temperature, lv_color_hex(0x999999), LV_STATE_DEFAULT);
@@ -161,7 +160,7 @@ void WatchFaceDigital::Refresh() {
 
   stepCount = motionController.NbSteps();
   if (stepCount.IsUpdated()) {
-    lv_label_set_text_fmt(stepValue, "%lu", stepCount.Get());
+    lv_label_set_text_fmt(stepValue, "%" PRIu32 "", stepCount.Get());
   }
 
   currentWeather = weatherService.Current();
