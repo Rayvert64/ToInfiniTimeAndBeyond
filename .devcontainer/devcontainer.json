@@ -4,7 +4,12 @@
 	"build": {
 		"dockerfile": "../docker/Dockerfile"
 	},
-	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined", "--net=host" ],
+	"runArgs": [
+		"--cap-add=SYS_PTRACE",
+		"--security-opt",
+		"seccomp=unconfined",
+		"--net=host"
+	],
 	"customizations": {
 		"vscode": {
 			"settings": {
@@ -25,7 +30,12 @@
 				"ms-vscode.cmake-tools",
 				"marus25.cortex-debug",
 				"notskm.clang-tidy",
-				"mjohns.clang-format"
+				"mjohns.clang-format",
+				"GitHub.copilot",
+				"llvm-vs-code-extensions.vscode-clangd",
+				"mhutchie.git-graph",
+				"trond-snekvik.gnu-mapfiles",
+				"eamodio.gitlens"
 			]
 		}
 	}
