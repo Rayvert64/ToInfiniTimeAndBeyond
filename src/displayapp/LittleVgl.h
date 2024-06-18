@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <lvgl/lvgl.h>
 #include <components/fs/FS.h>
 
@@ -46,6 +47,7 @@ namespace Pinetime {
       lv_draw_buf_t disp_buf_2;
       lv_color_t buf2_1[LV_HOR_RES * 4];
       lv_color_t buf2_2[LV_HOR_RES * 4];
+      size_t buf2_1_size = sizeof(buf2_1);
 
       lv_display_t* disp_drv;
 

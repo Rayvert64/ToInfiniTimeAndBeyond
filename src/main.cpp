@@ -109,42 +109,9 @@ Pinetime::Controllers::TouchHandler touchHandler;
 Pinetime::Controllers::ButtonHandler buttonHandler;
 Pinetime::Controllers::BrightnessController brightnessController {};
 
-Pinetime::Applications::DisplayApp displayApp(lcd,
-                                              touchPanel,
-                                              batteryController,
-                                              bleController,
-                                              dateTimeController,
-                                              watchdog,
-                                              notificationManager,
-                                              heartRateController,
-                                              settingsController,
-                                              motorController,
-                                              motionController,
-                                              alarmController,
-                                              brightnessController,
-                                              touchHandler,
-                                              fs);
+Pinetime::Applications::DisplayApp* displayApp;
+Pinetime::System::SystemTask* systemTask;
 
-Pinetime::System::SystemTask systemTask(spi,
-                                        spiNorFlash,
-                                        twiMaster,
-                                        touchPanel,
-                                        batteryController,
-                                        bleController,
-                                        dateTimeController,
-                                        alarmController,
-                                        watchdog,
-                                        notificationManager,
-                                        heartRateSensor,
-                                        motionController,
-                                        motionSensor,
-                                        settingsController,
-                                        heartRateController,
-                                        displayApp,
-                                        heartRateApp,
-                                        fs,
-                                        touchHandler,
-                                        buttonHandler);
 int mallocFailedCount = 0;
 int stackOverflowCount = 0;
 extern "C" {
@@ -167,7 +134,7 @@ std::chrono::time_point<std::chrono::system_clock, std::chrono::nanoseconds> NoI
 
 void nrfx_gpiote_evt_handler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action) {
   if (pin == Pinetime::PinMap::Cst816sIrq) {
-    systemTask.OnTouchEvent();
+    systemTask->OnTouchEvent();
     return;
   }
 
@@ -184,11 +151,11 @@ void nrfx_gpiote_evt_handler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action
 
 void DebounceTimerChargeCallback(TimerHandle_t xTimer) {
   xTimerStop(xTimer, 0);
-  systemTask.PushMessage(Pinetime::System::Messages::OnChargingEvent);
+  systemTask->PushMessage(Pinetime::System::Messages::OnChargingEvent);
 }
 
 void DebounceTimerCallback(TimerHandle_t /*unused*/) {
-  systemTask.PushMessage(Pinetime::System::Messages::HandleButtonEvent);
+  systemTask->PushMessage(Pinetime::System::Messages::HandleButtonEvent);
 }
 
 void SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler(void) {
@@ -309,6 +276,46 @@ void enable_dcdc_regulator() {
 }
 
 int main() {
+  Pinetime::Applications::DisplayApp Apps = Pinetime::Applications::DisplayApp(lcd,
+                                                                               touchPanel,
+                                                                               batteryController,
+                                                                               bleController,
+                                                                               dateTimeController,
+                                                                               watchdog,
+                                                                               notificationManager,
+                                                                               heartRateController,
+                                                                               settingsController,
+                                                                               motorController,
+                                                                               motionController,
+                                                                               alarmController,
+                                                                               brightnessController,
+                                                                               touchHandler,
+                                                                               fs);
+  displayApp = &Apps;
+
+  Pinetime::System::SystemTask Tasks = Pinetime::System::SystemTask(spi,
+                                                                    spiNorFlash,
+                                                                    twiMaster,
+                                                                    touchPanel,
+                                                                    batteryController,
+                                                                    bleController,
+                                                                    dateTimeController,
+                                                                    alarmController,
+                                                                    watchdog,
+                                                                    notificationManager,
+                                                                    heartRateSensor,
+                                                                    motionController,
+                                                                    motionSensor,
+                                                                    settingsController,
+                                                                    heartRateController,
+                                                                    Apps,
+                                                                    heartRateApp,
+                                                                    fs,
+                                                                    touchHandler,
+                                                                    buttonHandler);
+
+  systemTask = &Tasks;
+
   enable_dcdc_regulator();
   logger.Init();
 
@@ -355,7 +362,7 @@ int main() {
     NoInit_MagicWord = NoInit_MagicValue;
   }
 
-  systemTask.Start();
+  systemTask->Start();
 
   nimble_port_init();
 
