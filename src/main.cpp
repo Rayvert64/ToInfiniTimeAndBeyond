@@ -109,8 +109,8 @@ Pinetime::Controllers::TouchHandler touchHandler;
 Pinetime::Controllers::ButtonHandler buttonHandler;
 Pinetime::Controllers::BrightnessController brightnessController {};
 
-Pinetime::Applications::DisplayApp* displayApp;
-Pinetime::System::SystemTask* systemTask;
+Pinetime::Applications::DisplayApp* displayApp = nullptr;
+Pinetime::System::SystemTask* systemTask = nullptr;
 
 int mallocFailedCount = 0;
 int stackOverflowCount = 0;
@@ -133,7 +133,7 @@ uint32_t NoInit_MagicWord __attribute__((section(".noinit")));
 std::chrono::time_point<std::chrono::system_clock, std::chrono::nanoseconds> NoInit_BackUpTime __attribute__((section(".noinit")));
 
 void nrfx_gpiote_evt_handler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action) {
-  if (pin == Pinetime::PinMap::Cst816sIrq) {
+  if (pin == Pinetime::PinMap::Cst816sIrq && systemTask != nullptr) {
     systemTask->OnTouchEvent();
     return;
   }
@@ -150,12 +150,16 @@ void nrfx_gpiote_evt_handler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action
 }
 
 void DebounceTimerChargeCallback(TimerHandle_t xTimer) {
-  xTimerStop(xTimer, 0);
-  systemTask->PushMessage(Pinetime::System::Messages::OnChargingEvent);
+  if(systemTask != nullptr){
+    xTimerStop(xTimer, 0);
+    systemTask->PushMessage(Pinetime::System::Messages::OnChargingEvent);
+  }
 }
 
 void DebounceTimerCallback(TimerHandle_t /*unused*/) {
-  systemTask->PushMessage(Pinetime::System::Messages::HandleButtonEvent);
+  if(systemTask != nullptr){
+    systemTask->PushMessage(Pinetime::System::Messages::HandleButtonEvent);
+  }
 }
 
 void SPIM0_SPIS0_TWIM0_TWIS0_SPI0_TWI0_IRQHandler(void) {
