@@ -5,6 +5,7 @@
 		"dockerfile": "../docker/Dockerfile"
 	},
 	"runArgs": [
+		"--privileged",
 		"--cap-add=SYS_PTRACE",
 		"--security-opt",
 		"seccomp=unconfined",

@@ -1,0 +1,56 @@
+FROM fedora:40
+
+ARG NODE_MAJOR=20
+RUN dnf -y update && \
+    dnf -y install \
+        unzip \
+        curl \
+        wget \
+        xz
+
+RUN dnf -y install \
+      zig \
+      glibc-devel \
+      samurai \
+      git \
+      cmake \
+      make \
+      python3-pip \
+      perl-utils \
+      jq \
+      openssl-devel \
+      libffi-devel \
+      pixman-devel \
+      cairo-devel \
+      pango \
+      pango-devel \
+      clang-analyzer \
+      clang-devel \
+      clang-tools-extra \
+      pkgconf-pkg-config \
+      nodejs && \
+    pip3 install s3cmd
+
+# Git needed for PROJECT_GIT_COMMIT_HASH variable setting
+
+RUN pip3 install adafruit-nrfutil
+RUN pip3 install -Iv cryptography==3.3
+RUN pip3 install cbor
+RUN npm i lv_font_conv@1.5.3 -g
+
+# build.sh knows how to compile
+COPY build.sh /opt/
+
+# Lets get each in a separate docker layer for better downloads
+# GCC
+RUN bash -c "source /opt/build.sh; GetGcc;"
+# NrfSdk
+RUN bash -c "source /opt/build.sh; GetNrfSdk;"
+# McuBoot
+RUN bash -c "source /opt/build.sh; GetMcuBoot;"
+
+# Add the infinitime user for connecting devcontainer
+RUN adduser infinitime
+
+ENV SOURCES_DIR /sources
+CMD ["/opt/build.sh"]
