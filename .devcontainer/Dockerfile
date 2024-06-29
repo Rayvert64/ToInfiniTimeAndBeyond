@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-ARG DEBIAN_FRONTEND=noninteractive
+#ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -qq \
     && apt-get install -y \
 # x86_64 / generic packages
@@ -14,25 +14,25 @@ RUN apt-get update -qq \
       python3-pil \
       tar \
       unzip \
-      wget \ 
+      wget \
       curl \
       dos2unix \
-      clang-format-12 \
+      clang-format \
       clang-tidy \
       locales \
-      libncurses5 \
+      libncurses \
 # aarch64 packages
       libffi-dev \
       libssl-dev \
-      python3-dev \ 
+      python3-dev \
       rustc \
     && rm -rf /var/cache/apt/* /var/lib/apt/lists/*;
-    
-#SET LOCALE 
+
+#SET LOCALE
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8 
+ENV LC_ALL en_US.UTF-8
 
 RUN pip3 install adafruit-nrfutil
 # required for McuBoot

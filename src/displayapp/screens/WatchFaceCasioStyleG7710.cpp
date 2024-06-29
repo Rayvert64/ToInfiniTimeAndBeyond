@@ -2,6 +2,7 @@
 
 #include <lvgl/lvgl.h>
 #include <cstdio>
+#include <lvgl/src/lv_core/lv_obj.h>
 #include "displayapp/screens/BatteryIcon.h"
 #include "displayapp/screens/BleIcon.h"
 #include "displayapp/screens/NotificationIcon.h"
@@ -12,6 +13,8 @@
 #include "components/heartrate/HeartRateController.h"
 #include "components/motion/MotionController.h"
 #include "components/settings/Settings.h"
+#include "displayapp/screens/WeatherSymbols.h"
+#include "components/ble/SimpleWeatherService.h"
 using namespace Pinetime::Applications::Screens;
 
 WatchFaceCasioStyleG7710::WatchFaceCasioStyleG7710(Controllers::DateTime& dateTimeController,
@@ -21,6 +24,7 @@ WatchFaceCasioStyleG7710::WatchFaceCasioStyleG7710(Controllers::DateTime& dateTi
                                                    Controllers::Settings& settingsController,
                                                    Controllers::HeartRateController& heartRateController,
                                                    Controllers::MotionController& motionController,
+                                                   Controllers::SimpleWeatherService& weatherService,
                                                    Controllers::FS& filesystem)
   : currentDateTime {{}},
     batteryIcon(false),
@@ -30,7 +34,8 @@ WatchFaceCasioStyleG7710::WatchFaceCasioStyleG7710(Controllers::DateTime& dateTi
     notificatioManager {notificatioManager},
     settingsController {settingsController},
     heartRateController {heartRateController},
-    motionController {motionController} {
+    motionController {motionController},
+    weatherService {weatherService} {
 
   lfs_file f = {};
   if (filesystem.FileOpen(&f, "/fonts/lv_font_dots_40.bin", LFS_O_RDONLY) >= 0) {
@@ -84,11 +89,24 @@ WatchFaceCasioStyleG7710::WatchFaceCasioStyleG7710(Controllers::DateTime& dateTi
   lv_obj_set_style_local_text_font(label_week_number, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_dot40);
   lv_label_set_text_static(label_week_number, "WK26");
 
-  label_day_of_year = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(label_day_of_year, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 100, 30);
-  lv_obj_set_style_local_text_color(label_day_of_year, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, color_text);
-  lv_obj_set_style_local_text_font(label_day_of_year, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_segment40);
-  lv_label_set_text_static(label_day_of_year, "181-184");
+  weatherIcon = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_align(weatherIcon, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 100, 30);
+  lv_obj_set_style_local_text_color(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
+  lv_obj_set_style_local_text_font(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &fontawesome_weathericons);
+  lv_label_set_text(weatherIcon, Symbols::ban);
+  lv_obj_set_auto_realign(weatherIcon, true);
+
+  label_weather = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_set_style_local_text_color(label_weather, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, color_text);
+  lv_obj_set_style_local_text_font(label_weather, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_dot40);
+  lv_label_set_text(label_weather, "--");
+  // lv_obj_align(label_weather, sidebar, LV_ALIGN_IN_TOP_MID, 0, 65);
+
+  label_day_of_year = nullptr;
+  // lv_obj_align(label_day_of_year, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 100, 30);
+  // lv_obj_set_style_local_text_color(label_day_of_year, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, color_text);
+  // lv_obj_set_style_local_text_font(label_day_of_year, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_segment40);
+  // lv_label_set_text_static(label_day_of_year, "181-184");
 
   lv_style_init(&style_line);
   lv_style_set_line_width(&style_line, LV_STATE_DEFAULT, 2);
@@ -283,11 +301,29 @@ void WatchFaceCasioStyleG7710::Refresh() {
       lv_label_set_text_fmt(label_week_number, "WK%02d", weekNumber);
 
       lv_obj_realign(label_day_of_week);
-      lv_obj_realign(label_day_of_year);
       lv_obj_realign(label_week_number);
       lv_obj_realign(label_date);
     }
   }
+
+  currentWeather = weatherService.Current();
+  if (currentWeather.IsUpdated()) {
+    auto optCurrentWeather = currentWeather.Get();
+    if (optCurrentWeather) {
+      int16_t temp = optCurrentWeather->temperature;
+      if (settingsController.GetWeatherFormat() == Controllers::Settings::WeatherFormat::Imperial) {
+        temp = Controllers::SimpleWeatherService::CelsiusToFahrenheit(temp);
+      }
+      temp = temp / 100 + (temp % 100 >= 50 ? 1 : 0);
+      lv_label_set_text_fmt(label_weather, "%d°", temp);
+      lv_label_set_text(weatherIcon, Symbols::GetSymbol(optCurrentWeather->iconId));
+    }
+  } else {
+    lv_label_set_text(label_weather, "--");
+    lv_label_set_text(label_weather, Symbols::ban);
+  }
+  lv_obj_realign(label_weather);
+  lv_obj_realign(weatherIcon);
 
   heartbeat = heartRateController.HeartRate();
   heartbeatRunning = heartRateController.State() != Controllers::HeartRateController::States::Stopped;

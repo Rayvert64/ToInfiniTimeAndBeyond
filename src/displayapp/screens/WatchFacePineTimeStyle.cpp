@@ -27,14 +27,14 @@
 #include "displayapp/screens/BleIcon.h"
 #include "displayapp/screens/NotificationIcon.h"
 #include "displayapp/screens/Symbols.h"
-#include "displayapp/screens/WeatherSymbols.h"
+// #include "displayapp/screens/WeatherSymbols.h"
 #include "components/battery/BatteryController.h"
 #include "components/ble/BleController.h"
 #include "components/ble/NotificationManager.h"
 #include "components/motion/MotionController.h"
 #include "components/settings/Settings.h"
 #include "displayapp/DisplayApp.h"
-#include "components/ble/SimpleWeatherService.h"
+// #include "components/ble/SimpleWeatherService.h"
 
 using namespace Pinetime::Applications::Screens;
 
@@ -50,8 +50,8 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
                                                const Controllers::Ble& bleController,
                                                Controllers::NotificationManager& notificationManager,
                                                Controllers::Settings& settingsController,
-                                               Controllers::MotionController& motionController,
-                                               Controllers::SimpleWeatherService& weatherService)
+                                               Controllers::MotionController& motionController)
+  // Controllers::SimpleWeatherService& weatherService)
   : currentDateTime {{}},
     batteryIcon(false),
     dateTimeController {dateTimeController},
@@ -59,9 +59,7 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
     bleController {bleController},
     notificationManager {notificationManager},
     settingsController {settingsController},
-    motionController {motionController},
-    weatherService {weatherService} {
-
+    motionController {motionController} {
   // Create a 200px wide background rectangle
   timebar = lv_obj_create(lv_scr_act(), nullptr);
   lv_obj_set_style_local_bg_color(timebar, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, Convert(settingsController.GetPTSColorBG()));
@@ -113,38 +111,38 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
   lv_obj_set_style_local_text_color(notificationIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Convert(settingsController.GetPTSColorTime()));
   lv_obj_align(notificationIcon, timebar, LV_ALIGN_IN_TOP_LEFT, 5, 5);
 
-  weatherIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
-  lv_obj_set_style_local_text_font(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &fontawesome_weathericons);
-  lv_label_set_text(weatherIcon, Symbols::ban);
-  lv_obj_align(weatherIcon, sidebar, LV_ALIGN_IN_TOP_MID, 0, 35);
-  lv_obj_set_auto_realign(weatherIcon, true);
-  if (settingsController.GetPTSWeather() == Pinetime::Controllers::Settings::PTSWeather::On) {
-    lv_obj_set_hidden(weatherIcon, false);
-  } else {
-    lv_obj_set_hidden(weatherIcon, true);
-  }
-
-  temperature = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(temperature, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
-  lv_label_set_text(temperature, "--");
-  lv_obj_align(temperature, sidebar, LV_ALIGN_IN_TOP_MID, 0, 65);
-  if (settingsController.GetPTSWeather() == Pinetime::Controllers::Settings::PTSWeather::On) {
-    lv_obj_set_hidden(temperature, false);
-  } else {
-    lv_obj_set_hidden(temperature, true);
-  }
+  // weatherIcon = lv_label_create(lv_scr_act(), nullptr);
+  // lv_obj_set_style_local_text_color(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
+  // lv_obj_set_style_local_text_font(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &fontawesome_weathericons);
+  // lv_label_set_text(weatherIcon, Symbols::ban);
+  // lv_obj_align(weatherIcon, sidebar, LV_ALIGN_IN_TOP_MID, 0, 35);
+  // lv_obj_set_auto_realign(weatherIcon, true);
+  // if (settingsController.GetPTSWeather() == Pinetime::Controllers::Settings::PTSWeather::On) {
+  //   lv_obj_set_hidden(weatherIcon, false);
+  // } else {
+  //   lv_obj_set_hidden(weatherIcon, true);
+  // }
+  //
+  // temperature = lv_label_create(lv_scr_act(), nullptr);
+  // lv_obj_set_style_local_text_color(temperature, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
+  // lv_label_set_text(temperature, "--");
+  // lv_obj_align(temperature, sidebar, LV_ALIGN_IN_TOP_MID, 0, 65);
+  // if (settingsController.GetPTSWeather() == Pinetime::Controllers::Settings::PTSWeather::On) {
+  //  lv_obj_set_hidden(temperature, false);
+  //} else {
+  //  lv_obj_set_hidden(temperature, true);
+  //}
 
   // Calendar icon
   calendarOuter = lv_obj_create(lv_scr_act(), nullptr);
   lv_obj_set_style_local_bg_color(calendarOuter, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
   lv_obj_set_style_local_radius(calendarOuter, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, 0);
   lv_obj_set_size(calendarOuter, 34, 34);
-  if (settingsController.GetPTSWeather() == Pinetime::Controllers::Settings::PTSWeather::On) {
-    lv_obj_align(calendarOuter, sidebar, LV_ALIGN_CENTER, 0, 20);
-  } else {
-    lv_obj_align(calendarOuter, sidebar, LV_ALIGN_CENTER, 0, 0);
-  }
+  // if (settingsController.GetPTSWeather() == Pinetime::Controllers::Settings::PTSWeather::On) {
+  //   lv_obj_align(calendarOuter, sidebar, LV_ALIGN_CENTER, 0, 20);
+  // } else {
+  lv_obj_align(calendarOuter, sidebar, LV_ALIGN_CENTER, 0, 0);
+  //}
 
   calendarInner = lv_obj_create(lv_scr_act(), nullptr);
   lv_obj_set_style_local_bg_color(calendarInner, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);
@@ -360,15 +358,15 @@ WatchFacePineTimeStyle::WatchFacePineTimeStyle(Controllers::DateTime& dateTimeCo
   lv_obj_set_event_cb(btnSteps, event_handler);
   lv_obj_set_hidden(btnSteps, true);
 
-  btnWeather = lv_btn_create(lv_scr_act(), nullptr);
-  btnWeather->user_data = this;
-  lv_obj_set_size(btnWeather, 160, 60);
-  lv_obj_align(btnWeather, lv_scr_act(), LV_ALIGN_CENTER, 0, 60);
-  lv_obj_set_style_local_bg_opa(btnWeather, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
-  lv_obj_t* lblWeather = lv_label_create(btnWeather, nullptr);
-  lv_label_set_text_static(lblWeather, "Weather");
-  lv_obj_set_event_cb(btnWeather, event_handler);
-  lv_obj_set_hidden(btnWeather, true);
+  // btnWeather = lv_btn_create(lv_scr_act(), nullptr);
+  // btnWeather->user_data = this;
+  // lv_obj_set_size(btnWeather, 160, 60);
+  // lv_obj_align(btnWeather, lv_scr_act(), LV_ALIGN_CENTER, 0, 60);
+  // lv_obj_set_style_local_bg_opa(btnWeather, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_50);
+  // lv_obj_t* lblWeather = lv_label_create(btnWeather, nullptr);
+  // lv_label_set_text_static(lblWeather, "Weather");
+  // lv_obj_set_event_cb(btnWeather, event_handler);
+  // lv_obj_set_hidden(btnWeather, true);
 
   btnSetColor = lv_btn_create(lv_scr_act(), nullptr);
   btnSetColor->user_data = this;
@@ -428,7 +426,7 @@ void WatchFacePineTimeStyle::CloseMenu() {
   lv_obj_set_hidden(btnRandom, true);
   lv_obj_set_hidden(btnClose, true);
   lv_obj_set_hidden(btnSteps, true);
-  lv_obj_set_hidden(btnWeather, true);
+  // lv_obj_set_hidden(btnWeather, true);
 }
 
 bool WatchFacePineTimeStyle::OnButtonPushed() {
@@ -539,27 +537,27 @@ void WatchFacePineTimeStyle::Refresh() {
     }
   }
 
-  currentWeather = weatherService.Current();
-
-  if (currentWeather.IsUpdated()) {
-    auto optCurrentWeather = currentWeather.Get();
-    if (optCurrentWeather) {
-      int16_t temp = optCurrentWeather->temperature;
-      if (settingsController.GetWeatherFormat() == Controllers::Settings::WeatherFormat::Imperial) {
-        temp = Controllers::SimpleWeatherService::CelsiusToFahrenheit(temp);
-      }
-      temp = temp / 100 + (temp % 100 >= 50 ? 1 : 0);
-      lv_label_set_text_fmt(temperature, "%d°", temp);
-      lv_label_set_text(weatherIcon, Symbols::GetSymbol(optCurrentWeather->iconId));
-      lv_obj_realign(temperature);
-      lv_obj_realign(weatherIcon);
-    }
-  } else {
-    lv_label_set_text(temperature, "--");
-    lv_label_set_text(weatherIcon, Symbols::ban);
-    lv_obj_realign(temperature);
-    lv_obj_realign(weatherIcon);
-  }
+  // currentWeather = weatherService.Current();
+  //
+  // if (currentWeather.IsUpdated()) {
+  //  auto optCurrentWeather = currentWeather.Get();
+  //  if (optCurrentWeather) {
+  //    int16_t temp = optCurrentWeather->temperature;
+  //    if (settingsController.GetWeatherFormat() == Controllers::Settings::WeatherFormat::Imperial) {
+  //      temp = Controllers::SimpleWeatherService::CelsiusToFahrenheit(temp);
+  //    }
+  //    temp = temp / 100 + (temp % 100 >= 50 ? 1 : 0);
+  //    lv_label_set_text_fmt(temperature, "%d°", temp);
+  //    lv_label_set_text(weatherIcon, Symbols::GetSymbol(optCurrentWeather->iconId));
+  //    lv_obj_realign(temperature);
+  //    lv_obj_realign(weatherIcon);
+  //  }
+  //} else {
+  //  lv_label_set_text(temperature, "--");
+  //  lv_label_set_text(weatherIcon, Symbols::ban);
+  //  lv_obj_realign(temperature);
+  //  lv_obj_realign(weatherIcon);
+  //}
 
   if (!lv_obj_get_hidden(btnSetColor)) {
     if ((savedTick > 0) && (lv_tick_get() - savedTick > 3000)) {
@@ -706,37 +704,37 @@ void WatchFacePineTimeStyle::UpdateSelected(lv_obj_t* object, lv_event_t event) 
         settingsController.SetPTSGaugeStyle(Controllers::Settings::PTSGaugeStyle::Full);
       }
     }
-    if (object == btnWeather) {
-      if (lv_obj_get_hidden(weatherIcon)) {
-        // show weather icon and temperature
-        lv_obj_set_hidden(weatherIcon, false);
-        lv_obj_set_hidden(temperature, false);
-        lv_obj_align(calendarOuter, sidebar, LV_ALIGN_CENTER, 0, 20);
-        lv_obj_realign(calendarInner);
-        lv_obj_realign(calendarBar1);
-        lv_obj_realign(calendarBar2);
-        lv_obj_realign(calendarCrossBar1);
-        lv_obj_realign(calendarCrossBar2);
-        lv_obj_realign(dateDayOfWeek);
-        lv_obj_realign(dateDay);
-        lv_obj_realign(dateMonth);
-        settingsController.SetPTSWeather(Controllers::Settings::PTSWeather::On);
-      } else {
-        // hide weather
-        lv_obj_set_hidden(weatherIcon, true);
-        lv_obj_set_hidden(temperature, true);
-        lv_obj_align(calendarOuter, sidebar, LV_ALIGN_CENTER, 0, 0);
-        lv_obj_realign(calendarInner);
-        lv_obj_realign(calendarBar1);
-        lv_obj_realign(calendarBar2);
-        lv_obj_realign(calendarCrossBar1);
-        lv_obj_realign(calendarCrossBar2);
-        lv_obj_realign(dateDayOfWeek);
-        lv_obj_realign(dateDay);
-        lv_obj_realign(dateMonth);
-        settingsController.SetPTSWeather(Controllers::Settings::PTSWeather::Off);
-      }
-    }
+    // if (object == btnWeather) {
+    //   if (lv_obj_get_hidden(weatherIcon)) {
+    //     // show weather icon and temperature
+    //     lv_obj_set_hidden(weatherIcon, false);
+    //     lv_obj_set_hidden(temperature, false);
+    //     lv_obj_align(calendarOuter, sidebar, LV_ALIGN_CENTER, 0, 20);
+    //     lv_obj_realign(calendarInner);
+    //     lv_obj_realign(calendarBar1);
+    //     lv_obj_realign(calendarBar2);
+    //     lv_obj_realign(calendarCrossBar1);
+    //     lv_obj_realign(calendarCrossBar2);
+    //     lv_obj_realign(dateDayOfWeek);
+    //     lv_obj_realign(dateDay);
+    //     lv_obj_realign(dateMonth);
+    //     settingsController.SetPTSWeather(Controllers::Settings::PTSWeather::On);
+    //   } else {
+    //     // hide weather
+    //     lv_obj_set_hidden(weatherIcon, true);
+    //     lv_obj_set_hidden(temperature, true);
+    //     lv_obj_align(calendarOuter, sidebar, LV_ALIGN_CENTER, 0, 0);
+    //     lv_obj_realign(calendarInner);
+    //     lv_obj_realign(calendarBar1);
+    //     lv_obj_realign(calendarBar2);
+    //     lv_obj_realign(calendarCrossBar1);
+    //     lv_obj_realign(calendarCrossBar2);
+    //     lv_obj_realign(dateDayOfWeek);
+    //     lv_obj_realign(dateDay);
+    //     lv_obj_realign(dateMonth);
+    //     settingsController.SetPTSWeather(Controllers::Settings::PTSWeather::Off);
+    //   }
+    // }
     if (object == btnSetColor) {
       lv_obj_set_hidden(btnSetColor, true);
       lv_obj_set_hidden(btnSetOpts, true);
@@ -754,7 +752,7 @@ void WatchFacePineTimeStyle::UpdateSelected(lv_obj_t* object, lv_event_t event) 
       lv_obj_set_hidden(btnSetColor, true);
       lv_obj_set_hidden(btnSetOpts, true);
       lv_obj_set_hidden(btnSteps, false);
-      lv_obj_set_hidden(btnWeather, false);
+      // lv_obj_set_hidden(btnWeather, false);
       lv_obj_set_hidden(btnClose, false);
     }
   }

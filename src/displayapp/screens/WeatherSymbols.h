@@ -1,4 +1,5 @@
 #pragma once
+
 #include "components/ble/SimpleWeatherService.h"
 #include "displayapp/screens/Symbols.h"
 
