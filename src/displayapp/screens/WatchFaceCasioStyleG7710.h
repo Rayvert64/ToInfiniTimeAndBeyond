@@ -35,8 +35,8 @@ namespace Pinetime {
                                  Controllers::Settings& settingsController,
                                  Controllers::HeartRateController& heartRateController,
                                  Controllers::MotionController& motionController,
-                                 Controllers::SimpleWeatherService& weather,
-                                 Controllers::FS& filesystem);
+                                 Controllers::FS& filesystem,
+                                 Controllers::SimpleWeatherService& weather);
         ~WatchFaceCasioStyleG7710() override;
 
         void Refresh() override;
@@ -76,7 +76,7 @@ namespace Pinetime {
         lv_obj_t* label_day_of_week;
         lv_obj_t* label_week_number;
         lv_obj_t* line_day_of_week_number;
-        lv_obj_t* label_day_of_year;
+        lv_obj_t* label_degrees;
         lv_obj_t* line_day_of_year;
         lv_obj_t* backgroundLabel;
         lv_obj_t* bleIcon;
@@ -100,7 +100,7 @@ namespace Pinetime {
         Controllers::Settings& settingsController;
         Controllers::HeartRateController& heartRateController;
         Controllers::MotionController& motionController;
-        Controllers::SimpleWeatherService& weatherService;
+        Controllers::SimpleWeatherService& weatherSrvc;
 
         lv_task_t* taskRefresh;
         lv_font_t* font_dot40 = nullptr;
@@ -122,8 +122,8 @@ namespace Pinetime {
                                                      controllers.settingsController,
                                                      controllers.heartRateController,
                                                      controllers.motionController,
-                                                     *controllers.weatherController,
-                                                     controllers.filesystem);
+                                                     controllers.filesystem,
+                                                     *controllers.weatherController);
       };
 
       static bool IsAvailable(Pinetime::Controllers::FS& filesystem) {

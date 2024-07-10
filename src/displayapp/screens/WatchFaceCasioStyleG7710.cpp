@@ -3,6 +3,7 @@
 #include <lvgl/lvgl.h>
 #include <cstdio>
 #include <lvgl/src/lv_core/lv_obj.h>
+#include <lvgl/src/lv_misc/lv_color.h>
 #include "displayapp/screens/BatteryIcon.h"
 #include "displayapp/screens/BleIcon.h"
 #include "displayapp/screens/NotificationIcon.h"
@@ -24,10 +25,9 @@ WatchFaceCasioStyleG7710::WatchFaceCasioStyleG7710(Controllers::DateTime& dateTi
                                                    Controllers::Settings& settingsController,
                                                    Controllers::HeartRateController& heartRateController,
                                                    Controllers::MotionController& motionController,
-                                                   Controllers::SimpleWeatherService& weatherService,
-                                                   Controllers::FS& filesystem)
-  : currentDateTime {{}},
-    batteryIcon(false),
+                                                   Controllers::FS& filesystem,
+                                                   Controllers::SimpleWeatherService& weatherService)
+  : batteryIcon(false),
     dateTimeController {dateTimeController},
     batteryController {batteryController},
     bleController {bleController},
@@ -35,7 +35,7 @@ WatchFaceCasioStyleG7710::WatchFaceCasioStyleG7710(Controllers::DateTime& dateTi
     settingsController {settingsController},
     heartRateController {heartRateController},
     motionController {motionController},
-    weatherService {weatherService} {
+    weatherSrvc {weatherService} {
 
   lfs_file f = {};
   if (filesystem.FileOpen(&f, "/fonts/lv_font_dots_40.bin", LFS_O_RDONLY) >= 0) {
@@ -90,23 +90,22 @@ WatchFaceCasioStyleG7710::WatchFaceCasioStyleG7710(Controllers::DateTime& dateTi
   lv_label_set_text_static(label_week_number, "WK26");
 
   weatherIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(weatherIcon, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 100, 30);
-  lv_obj_set_style_local_text_color(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
+  lv_obj_align(weatherIcon, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 130, 30);
+  lv_obj_set_style_local_text_color(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, color_text);
   lv_obj_set_style_local_text_font(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &fontawesome_weathericons);
   lv_label_set_text(weatherIcon, Symbols::ban);
-  lv_obj_set_auto_realign(weatherIcon, true);
 
   label_weather = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_set_style_local_text_color(label_weather, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, color_text);
   lv_obj_set_style_local_text_font(label_weather, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_dot40);
   lv_label_set_text(label_weather, "--");
-  // lv_obj_align(label_weather, sidebar, LV_ALIGN_IN_TOP_MID, 0, 65);
+  lv_obj_align(label_weather, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -10, 30);
 
-  label_day_of_year = nullptr;
-  // lv_obj_align(label_day_of_year, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 100, 30);
-  // lv_obj_set_style_local_text_color(label_day_of_year, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, color_text);
-  // lv_obj_set_style_local_text_font(label_day_of_year, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_segment40);
-  // lv_label_set_text_static(label_day_of_year, "181-184");
+  label_degrees = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_align(label_degrees, label_weather, LV_ALIGN_IN_TOP_RIGHT, 45, -5);
+  lv_obj_set_style_local_text_color(label_degrees, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, color_text);
+  // lv_obj_set_style_local_text_font(label_degrees, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, font_segment40);
+  lv_label_set_text_static(label_degrees, "°");
 
   lv_style_init(&style_line);
   lv_style_set_line_width(&style_line, LV_STATE_DEFAULT, 2);
@@ -266,10 +265,10 @@ void WatchFaceCasioStyleG7710::Refresh() {
     if (currentDate.IsUpdated()) {
       const char* weekNumberFormat = "%V";
 
-      uint16_t year = dateTimeController.Year();
+      // uint16_t year = dateTimeController.Year();
       Controllers::DateTime::Months month = dateTimeController.Month();
       uint8_t day = dateTimeController.Day();
-      int dayOfYear = dateTimeController.DayOfYear();
+      // int dayOfYear = dateTimeController.DayOfYear();
       if (settingsController.GetClockType() == Controllers::Settings::ClockType::H24) {
         // 24h mode: ddmmyyyy, first DOW=Monday;
         lv_label_set_text_fmt(label_date, "%3d-%2d", day, month);
@@ -289,15 +288,15 @@ void WatchFaceCasioStyleG7710::Refresh() {
       tm* tmTime = std::localtime(&ttTime);
 
       // TODO: When we start using C++20, use std::chrono::year::is_leap
-      int daysInCurrentYear = (year % 4 == 0 && year % 100 != 0) || year % 400 == 0 ? 366 : 365;
-      uint16_t daysTillEndOfYearNumber = daysInCurrentYear - dayOfYear;
+      // int daysInCurrentYear = (year % 4 == 0 && year % 100 != 0) || year % 400 == 0 ? 366 : 365;
+      // uint16_t daysTillEndOfYearNumber = daysInCurrentYear - dayOfYear;
 
       char buffer[8];
-      strftime(buffer, 8, weekNumberFormat, tmTime);
+      (void) strftime(buffer, 8, weekNumberFormat, tmTime);
       uint8_t weekNumber = atoi(buffer);
 
       lv_label_set_text_fmt(label_day_of_week, "%s", dateTimeController.DayOfWeekShortToString());
-      lv_label_set_text_fmt(label_day_of_year, "%3d-%3d", dayOfYear, daysTillEndOfYearNumber);
+      // lv_label_set_text_fmt(label_day_of_year, "%3d-%3d", dayOfYear, daysTillEndOfYearNumber);
       lv_label_set_text_fmt(label_week_number, "WK%02d", weekNumber);
 
       lv_obj_realign(label_day_of_week);
@@ -306,7 +305,7 @@ void WatchFaceCasioStyleG7710::Refresh() {
     }
   }
 
-  currentWeather = weatherService.Current();
+  currentWeather = weatherSrvc.Current();
   if (currentWeather.IsUpdated()) {
     auto optCurrentWeather = currentWeather.Get();
     if (optCurrentWeather) {
@@ -315,12 +314,12 @@ void WatchFaceCasioStyleG7710::Refresh() {
         temp = Controllers::SimpleWeatherService::CelsiusToFahrenheit(temp);
       }
       temp = temp / 100 + (temp % 100 >= 50 ? 1 : 0);
-      lv_label_set_text_fmt(label_weather, "%d°", temp);
+      lv_label_set_text_fmt(label_weather, "%d", temp);
       lv_label_set_text(weatherIcon, Symbols::GetSymbol(optCurrentWeather->iconId));
     }
   } else {
     lv_label_set_text(label_weather, "--");
-    lv_label_set_text(label_weather, Symbols::ban);
+    lv_label_set_text(weatherIcon, Symbols::ban);
   }
   lv_obj_realign(label_weather);
   lv_obj_realign(weatherIcon);
