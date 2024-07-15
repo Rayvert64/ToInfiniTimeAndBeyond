@@ -357,6 +357,9 @@ set(LVGL_SRC
 
 list(APPEND IMAGE_FILES
         displayapp/icons/battery/batteryicon.c
+        displayapp/icons/botw/weather/temp_c.c
+        displayapp/icons/botw/weather/gauge_needle.c
+        displayapp/backgrounds/Sheikah-bkgd.c
         )
 list(APPEND SOURCE_FILES
         stdlib.c
@@ -771,7 +774,7 @@ link_directories(
 
 set(COMMON_FLAGS -MP -MD -mthumb -mabi=aapcs -ftree-vrp -ffunction-sections -fdata-sections -fno-strict-aliasing -fno-builtin -fshort-enums -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fstack-usage -fno-exceptions -fno-non-call-exceptions)
 set(WARNING_FLAGS -Wall -Wextra -Warray-bounds=2 -Wformat=2 -Wformat-overflow=2 -Wformat-truncation=2 -Wformat-nonliteral -Wno-missing-field-initializers -Wno-unknown-pragmas -Wno-expansion-to-defined -Wreturn-type -Werror=return-type -Werror)
-set(DEBUG_FLAGS -Og -g3)
+set(DEBUG_FLAGS -Os -g3)
 set(RELEASE_FLAGS -Os)
 set(CXX_FLAGS -fno-rtti)
 set(ASM_FLAGS -x assembler-with-cpp)

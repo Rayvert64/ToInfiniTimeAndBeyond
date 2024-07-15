@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose Debug or Release")
 
-project(pinetime VERSION 1.14.2 LANGUAGES C CXX ASM)
+project(pinetime VERSION 1.14.3 LANGUAGES C CXX ASM)
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 20)
@@ -29,9 +29,9 @@ if(BUILD_DFU)
   set(BUILD_DFU true)
 endif()
 
-if(BUILD_RESOURCES)
+#if(BUILD_RESOURCES)
   set(BUILD_RESOURCES true)
-endif()
+#endif()
 
 set(TARGET_DEVICE "PINETIME" CACHE STRING "Target device")
 set_property(CACHE TARGET_DEVICE PROPERTY STRINGS PINETIME MOY_TFK5 MOY_TIN5 MOY_TON5 MOY_UNK)

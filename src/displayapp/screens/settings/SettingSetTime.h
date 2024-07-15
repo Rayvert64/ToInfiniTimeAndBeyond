@@ -30,8 +30,8 @@ namespace Pinetime {
         lv_obj_t* lblampm;
         lv_obj_t* btnSetTime;
         lv_obj_t* lblSetTime;
-        Widgets::Counter hourCounter = Widgets::Counter(0, 23, jetbrains_mono_42);
-        Widgets::Counter minuteCounter = Widgets::Counter(0, 59, jetbrains_mono_42);
+        Widgets::Counter hourCounter = Widgets::Counter(0, 23, roboto_medium_42);
+        Widgets::Counter minuteCounter = Widgets::Counter(0, 59, roboto_medium_42);
       };
     }
   }

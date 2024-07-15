@@ -1,5 +1,8 @@
 #include "displayapp/screens/FirmwareUpdate.h"
 #include <lvgl/lvgl.h>
+#include <lvgl/src/lv_core/lv_obj.h>
+#include <lvgl/src/lv_core/lv_obj_style_dec.h>
+#include <lvgl/src/lv_widgets/lv_label.h>
 #include "components/ble/BleController.h"
 #include "displayapp/DisplayApp.h"
 
@@ -10,6 +13,11 @@ FirmwareUpdate::FirmwareUpdate(const Pinetime::Controllers::Ble& bleController) 
   titleLabel = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text_static(titleLabel, "Firmware update");
   lv_obj_align(titleLabel, nullptr, LV_ALIGN_IN_TOP_MID, 0, 50);
+
+  titleSheikaLabel = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text_static(titleSheikaLabel, "Firmware update");
+  lv_obj_set_style_local_text_font(titleSheikaLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &botw_sheikah_20);
+  lv_obj_align(titleSheikaLabel, nullptr, LV_ALIGN_IN_TOP_MID, 0, 75);
 
   bar1 = lv_bar_create(lv_scr_act(), nullptr);
   lv_obj_set_size(bar1, 200, 30);

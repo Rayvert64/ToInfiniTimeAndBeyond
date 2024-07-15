@@ -48,6 +48,7 @@ namespace Pinetime {
         using days = std::chrono::duration<int32_t, std::ratio<86400>>; // TODO: days is standard in c++20
         Utility::DirtyValue<std::chrono::time_point<std::chrono::system_clock, days>> currentDate;
 
+        lv_obj_t* background;
         lv_obj_t* label_time;
         lv_obj_t* label_date;
         lv_obj_t* label_prompt_1;

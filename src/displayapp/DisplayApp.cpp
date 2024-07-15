@@ -217,7 +217,7 @@ void DisplayApp::Refresh() {
           DimScreen();
         }
         if (IsPastSleepTime()) {
-          systemTask->PushMessage(System::Messages::GoToSleep);
+          // systemTask->PushMessage(System::Messages::GoToSleep);
           state = States::Idle;
         }
       } else if (isDimmed) {
