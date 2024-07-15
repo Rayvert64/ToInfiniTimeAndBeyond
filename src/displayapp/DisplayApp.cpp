@@ -133,6 +133,8 @@ void DisplayApp::Start(System::BootErrors error) {
   if (pdPASS != xTaskCreate(DisplayApp::Process, "displayapp", 800, this, 0, &taskHandle)) {
     APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
   }
+
+  // systemTask->PushMessage(System::Messages::DisableSleeping);
 }
 
 void DisplayApp::Process(void* instance) {
@@ -217,7 +219,7 @@ void DisplayApp::Refresh() {
           DimScreen();
         }
         if (IsPastSleepTime()) {
-          // systemTask->PushMessage(System::Messages::GoToSleep);
+          systemTask->PushMessage(System::Messages::GoToSleep);
           state = States::Idle;
         }
       } else if (isDimmed) {

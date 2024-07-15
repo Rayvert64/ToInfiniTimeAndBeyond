@@ -173,7 +173,7 @@ typedef void* lv_anim_user_data_t;
 #define LV_USE_OPA_SCALE        0
 
 /* 1: Use image zoom and rotation*/
-#define LV_USE_IMG_TRANSFORM    0
+#define LV_USE_IMG_TRANSFORM    1
 
 /* 1: Enable object groups (for keyboard/encoder navigation) */
 #define LV_USE_GROUP            0
@@ -678,7 +678,7 @@ typedef void* lv_obj_user_data_t;
  * 1: Some extra precision
  * 2: Best precision
  */
-#define LV_LINEMETER_PRECISE    0
+#define LV_LINEMETER_PRECISE    2
 #endif
 
 /*Mask (dependencies: -)*/

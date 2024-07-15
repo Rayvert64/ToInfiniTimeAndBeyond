@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <lvgl/src/lv_misc/lv_color.h>
 #include <memory>
+#include <sys/_stdint.h>
 #include "displayapp/screens/Screen.h"
 #include "components/datetime/DateTimeController.h"
 #include "components/ble/BleController.h"
@@ -68,8 +69,10 @@ namespace Pinetime {
         lv_obj_t* notificationIcon;
         lv_obj_t* weatherMeterBackground;
         lv_obj_t* weatherMeter;
-        lv_obj_t* weatherMeterLabel;
+        // lv_obj_t* weatherMeterLabel;
         int32_t temperature;
+        int32_t target_temp;
+        bool go_to_temp = true;
 
         Controllers::DateTime& dateTimeController;
         Controllers::NotificationManager& notificationManager;

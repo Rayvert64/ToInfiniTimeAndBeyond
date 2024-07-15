@@ -51,23 +51,25 @@ WatchFaceDigital::WatchFaceDigital(Controllers::DateTime& dateTimeController,
   lv_img_set_src(weatherMeterBackground, &temp_c);
   lv_obj_align(weatherMeterBackground, lv_scr_act(), LV_ALIGN_OUT_BOTTOM_RIGHT, 0, -50);
 
+  target_temp = 150;
+
   weatherMeter = lv_gauge_create(lv_scr_act(), nullptr);
-  lv_obj_align(weatherMeter, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 0, 100);
-  // lv_obj_clean_style_list(weatherMeter, LV_GAUGE_PART_MAIN);
-  // lv_obj_clean_style_list(weatherMeter, LV_GAUGE_PART_MAJOR);
-  // lv_obj_clean_style_list(weatherMeter, LV_GAUGE_PART_NEEDLE);
+  lv_obj_align(weatherMeter, weatherMeterBackground, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_clean_style_list(weatherMeter, LV_GAUGE_PART_MAIN);
+  lv_obj_clean_style_list(weatherMeter, LV_GAUGE_PART_MAJOR);
   lv_obj_set_style_local_image_recolor_opa(weatherMeter, LV_GAUGE_PART_NEEDLE, LV_STATE_DEFAULT, LV_OPA_COVER);
   lv_obj_set_style_local_text_opa(weatherMeter, LV_GAUGE_PART_MAJOR, LV_STATE_DEFAULT, LV_OPA_TRANSP);
   lv_gauge_set_needle_count(weatherMeter, 1, needleColor);
-  lv_obj_set_size(weatherMeter, 40, 40);
+  lv_obj_set_size(weatherMeter, 50, 50);
+  lv_gauge_set_range(weatherMeter, -400, 500);
   lv_gauge_set_needle_img(weatherMeter, &gauge_needle, 3, 4);
-  lv_gauge_set_value(weatherMeter, 0, 30u);
+  lv_gauge_set_value(weatherMeter, 0, 0u);
   temperature = lv_gauge_get_value(weatherMeter, 0);
 
-  weatherMeterLabel = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style_local_text_color(weatherMeterLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_LIME);
-  lv_label_set_text_fmt(weatherMeterLabel, "%d", temperature);
-  lv_obj_align(weatherMeterLabel, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+  //  weatherMeterLabel = lv_label_create(lv_scr_act(), nullptr);
+  //  lv_obj_set_style_local_text_color(weatherMeterLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_LIME);
+  //  lv_label_set_text_fmt(weatherMeterLabel, "%d", temperature);
+  //  lv_obj_align(weatherMeterLabel, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 0);
 
   notificationIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_set_style_local_text_color(notificationIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_LIME);
@@ -197,7 +199,7 @@ void WatchFaceDigital::Refresh() {
 
 void WatchFaceDigital::UpdateTempGauge() {
   currentWeather = weatherSrvc.Current();
-  int16_t temp = 10;
+  int16_t temp = 15;
   if (currentWeather.IsUpdated()) {
     auto optCurrentWeather = currentWeather.Get();
     if (optCurrentWeather) {
@@ -206,25 +208,44 @@ void WatchFaceDigital::UpdateTempGauge() {
         temp = Controllers::SimpleWeatherService::CelsiusToFahrenheit(temp);
       }
       temp = temp / 100 + (temp % 100 >= 50 ? 1 : 0);
+      if (temp * 100 != target_temp)
+        go_to_temp = true;
+      target_temp = temp * 10;
     }
   }
+  // Do a x10 to temp to have a more stable needle
+  temp *= 10;
 
-  // A little wiggle on the guage looks neat
-  int16_t hysteresis = (int16_t) (((std::rand() % 5) + 1) * (std::rand() % 2 ? -1 : 1));
-  temp += hysteresis;
+  // int32_t angle = 0;
+  if (!go_to_temp) {
+    // A little wiggle on the guage looks neat
+    int16_t hysteresis = (int16_t) (((std::rand() % 5) + 1) * (std::rand() % 2 ? -1 : 1));
+    temp = target_temp + hysteresis;
+  } else {
+    int32_t curr = lv_gauge_get_value(weatherMeter, 0);
 
+    if (curr < target_temp)
+      curr++;
+    else if (curr > target_temp)
+      curr--;
+
+    if (curr == target_temp) {
+      go_to_temp = false;
+    }
+    temp = (int16_t) curr;
+  }
   temperature = temp;
 
   lv_gauge_set_value(weatherMeter, 0, temperature);
-  temperature = lv_gauge_get_value(weatherMeter, 0);
+  // angle = lv_gauge_get_last_angle(weatherMeter);
 
   lv_obj_align(weatherMeterBackground, lv_scr_act(), LV_ALIGN_OUT_BOTTOM_RIGHT, 0, -50);
-  lv_obj_align(weatherMeter, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 0, 100);
+  lv_obj_align(weatherMeter, weatherMeterBackground, LV_ALIGN_CENTER, 0, 0);
 
-  lv_label_set_text_fmt(weatherMeterLabel, "%d", temperature);
-  lv_obj_align(weatherMeterLabel, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 0);
+  // lv_label_set_text_fmt(weatherMeterLabel, "%d", temperature);
+  // lv_obj_align(weatherMeterLabel, nullptr, LV_ALIGN_IN_TOP_LEFT, 0, 0);
 
   lv_obj_realign(weatherMeterBackground);
   lv_obj_realign(weatherMeter);
-  lv_obj_realign(weatherMeterLabel);
+  // lv_obj_realign(weatherMeterLabel);
 }

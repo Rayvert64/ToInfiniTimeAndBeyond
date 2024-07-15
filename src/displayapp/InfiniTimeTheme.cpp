@@ -1,4 +1,5 @@
 #include "displayapp/InfiniTimeTheme.h"
+#include "displayapp/backgrounds/Sheikah-bkgd.c"
 #include <algorithm>
 #include <lvgl/src/lv_misc/lv_color.h>
 #include <lvgl/src/lv_themes/lv_theme.h>
@@ -56,7 +57,7 @@ static void style_init_reset(lv_style_t* style) {
 
 static void basic_init() {
   style_init_reset(&style_bg);
-  lv_style_set_bg_opa(&style_bg, LV_STATE_DEFAULT, LV_OPA_COVER);
+  lv_style_set_bg_opa(&style_bg, LV_STATE_DEFAULT, LV_OPA_TRANSP);
   lv_style_set_bg_color(&style_bg, LV_STATE_DEFAULT, LV_COLOR_BLACK);
   lv_style_set_text_font(&style_bg, LV_STATE_DEFAULT, theme.font_normal);
 
@@ -253,8 +254,8 @@ static void theme_apply(lv_obj_t* obj, lv_theme_style_t name) {
   lv_style_list_t* list;
 
   /*Check for background image*/
-  // lv_disp_set_bg_image(nullptr, &Sheikah_bkgd);
-  lv_disp_set_bg_color(nullptr, LV_COLOR_MAKE(0x13, 0x0F, 0x3C));
+  lv_disp_set_bg_image(nullptr, &Sheikah_bkgd);
+  // lv_disp_set_bg_color(nullptr, LV_COLOR_MAKE(0x13, 0x0F, 0x3C));
   lv_disp_set_bg_opa(nullptr, 255);
 
   switch (name) {
@@ -296,12 +297,12 @@ static void theme_apply(lv_obj_t* obj, lv_theme_style_t name) {
       break;
 
     case LV_THEME_BAR:
-      // lv_obj_clean_style_list(obj, LV_BAR_PART_BG);
-      // list = lv_obj_get_style_list(obj, LV_BAR_PART_BG);
-      //
-      // lv_obj_clean_style_list(obj, LV_BAR_PART_INDIC);
-      // list = lv_obj_get_style_list(obj, LV_BAR_PART_INDIC);
-      //_lv_style_list_add_style(list, &style_bar_indic);
+      lv_obj_clean_style_list(obj, LV_BAR_PART_BG);
+      list = lv_obj_get_style_list(obj, LV_BAR_PART_BG);
+
+      lv_obj_clean_style_list(obj, LV_BAR_PART_INDIC);
+      list = lv_obj_get_style_list(obj, LV_BAR_PART_INDIC);
+      _lv_style_list_add_style(list, &style_bar_indic);
       break;
 
     case LV_THEME_IMAGE:
@@ -411,7 +412,7 @@ static void theme_apply(lv_obj_t* obj, lv_theme_style_t name) {
     } break;
 
     case LV_THEME_GAUGE:
-      list = lv_obj_get_style_list(obj, LV_LINEMETER_PART_MAIN);
+      list = lv_obj_get_style_list(obj, LV_GAUGE_PART_MAIN);
       _lv_style_list_add_style(list, &style_bg);
       _lv_style_list_add_style(list, &style_gauge);
       break;
