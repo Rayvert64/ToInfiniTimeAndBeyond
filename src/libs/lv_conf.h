@@ -414,6 +414,7 @@ typedef void* lv_indev_drv_user_data_t;            /*Type of user data in the in
  */
 
 #define LV_FONT_CUSTOM_DECLARE LV_FONT_DECLARE(roboto_medium_20) \
+                               LV_FONT_DECLARE(roboto_italics_20) \
                                LV_FONT_DECLARE(jetbrains_mono_extrabold_compressed) \
                                LV_FONT_DECLARE(roboto_medium_42) \
                                LV_FONT_DECLARE(roboto_medium_76) \
@@ -709,7 +710,7 @@ typedef void* lv_obj_user_data_t;
 #define LV_ROLLER_DEF_ANIM_TIME     200
 
 /*Number of extra "pages" when the roller is infinite*/
-#define LV_ROLLER_INF_PAGES         7
+#define LV_ROLLER_INF_PAGES         5
 #endif
 
 /*Slider (dependencies: lv_bar)*/

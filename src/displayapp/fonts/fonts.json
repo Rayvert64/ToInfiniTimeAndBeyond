@@ -13,6 +13,16 @@
       "bpp": 1,
       "size": 20
    },
+   "roboto_italics_20": {
+      "sources": [
+         {
+            "file": "Roboto-Italic.ttf",
+            "symbols": "AMPM1234567890:"
+         }
+      ],
+      "bpp": 1,
+      "size": 25
+   },
    "roboto_medium_42": {
       "sources": [
          {

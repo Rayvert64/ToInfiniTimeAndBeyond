@@ -8675,11 +8675,7 @@ const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_HEART_FUL
 };
 
 const lv_img_dsc_t heart_full = {
-  LV_IMG_CF_TRUE_COLOR_ALPHA,
-  0,
-  0,
-  30,
-  24,
+  {LV_IMG_CF_TRUE_COLOR_ALPHA, 0, 0, 30, 24},
   720 * LV_IMG_PX_SIZE_ALPHA_BYTE,
   heart_full_map,
 };
