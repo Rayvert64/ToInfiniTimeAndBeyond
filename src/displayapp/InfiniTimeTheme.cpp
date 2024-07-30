@@ -37,7 +37,6 @@ static lv_style_t style_sw_knob;
 static lv_style_t style_arc_bg;
 static lv_style_t style_arc_knob;
 static lv_style_t style_arc_indic;
-static lv_style_t style_table_cell;
 static lv_style_t style_pad_small;
 static lv_style_t style_gauge;
 static lv_style_t style_lmeter;
@@ -163,15 +162,6 @@ static void basic_init() {
   lv_style_set_bg_color(&style_arc_knob, LV_STATE_DEFAULT, LV_COLOR_WHITE);
   lv_style_set_pad_all(&style_arc_knob, LV_STATE_DEFAULT, LV_DPX(5));
 
-  style_init_reset(&style_table_cell);
-  lv_style_set_border_color(&style_table_cell, LV_STATE_DEFAULT, LV_COLOR_GRAY);
-  lv_style_set_border_width(&style_table_cell, LV_STATE_DEFAULT, 1);
-  lv_style_set_border_side(&style_table_cell, LV_STATE_DEFAULT, LV_BORDER_SIDE_FULL);
-  lv_style_set_pad_left(&style_table_cell, LV_STATE_DEFAULT, 5);
-  lv_style_set_pad_right(&style_table_cell, LV_STATE_DEFAULT, 5);
-  lv_style_set_pad_top(&style_table_cell, LV_STATE_DEFAULT, 2);
-  lv_style_set_pad_bottom(&style_table_cell, LV_STATE_DEFAULT, 2);
-
   style_init_reset(&style_pad_small);
   lv_style_int_t pad_small_value = 10;
   lv_style_set_pad_all(&style_pad_small, LV_STATE_DEFAULT, pad_small_value);
@@ -254,8 +244,8 @@ static void theme_apply(lv_obj_t* obj, lv_theme_style_t name) {
   lv_style_list_t* list;
 
   /*Check for background image*/
-  lv_disp_set_bg_image(nullptr, &Sheikah_bkgd);
-  // lv_disp_set_bg_color(nullptr, LV_COLOR_MAKE(0x13, 0x0F, 0x3C));
+  // lv_disp_set_bg_image(nullptr, &Sheikah_bkgd);
+  lv_disp_set_bg_color(nullptr, LV_COLOR_MAKE(0x13, 0x0F, 0x3C));
   lv_disp_set_bg_opa(nullptr, 255);
 
   switch (name) {
@@ -377,39 +367,24 @@ static void theme_apply(lv_obj_t* obj, lv_theme_style_t name) {
       _lv_style_list_add_style(list, &style_sw_knob);
       break;
 
-    case LV_THEME_DROPDOWN:
-      lv_obj_clean_style_list(obj, LV_DROPDOWN_PART_MAIN);
-      list = lv_obj_get_style_list(obj, LV_DROPDOWN_PART_MAIN);
-      _lv_style_list_add_style(list, &style_btn);
-
-      lv_obj_clean_style_list(obj, LV_DROPDOWN_PART_LIST);
-      list = lv_obj_get_style_list(obj, LV_DROPDOWN_PART_LIST);
-      _lv_style_list_add_style(list, &style_box);
-      _lv_style_list_add_style(list, &style_ddlist_list);
-
-      lv_obj_clean_style_list(obj, LV_DROPDOWN_PART_SELECTED);
-      list = lv_obj_get_style_list(obj, LV_DROPDOWN_PART_SELECTED);
-      _lv_style_list_add_style(list, &style_ddlist_selected);
-
-      lv_obj_clean_style_list(obj, LV_DROPDOWN_PART_SCROLLBAR);
-      list = lv_obj_get_style_list(obj, LV_DROPDOWN_PART_SCROLLBAR);
-      _lv_style_list_add_style(list, &style_scrollbar);
-      break;
-
-    case LV_THEME_TABLE: {
-      list = lv_obj_get_style_list(obj, LV_TABLE_PART_BG);
-      _lv_style_list_add_style(list, &style_bg);
-
-      int idx = 1; /* start value should be 1, not zero, since cell styles
-                  start at 1 due to presence of LV_TABLE_PART_BG=0
-                  in the enum (lv_table.h) */
-      /* declaring idx outside loop to work with older compilers */
-      for (; idx <= LV_TABLE_CELL_STYLE_CNT; idx++) {
-        list = lv_obj_get_style_list(obj, idx);
-        _lv_style_list_add_style(list, &style_table_cell);
-        _lv_style_list_add_style(list, &style_label_white);
-      }
-    } break;
+      //    case LV_THEME_DROPDOWN:
+      //      lv_obj_clean_style_list(obj, LV_DROPDOWN_PART_MAIN);
+      //      list = lv_obj_get_style_list(obj, LV_DROPDOWN_PART_MAIN);
+      //      _lv_style_list_add_style(list, &style_btn);
+      //
+      //      lv_obj_clean_style_list(obj, LV_DROPDOWN_PART_LIST);
+      //      list = lv_obj_get_style_list(obj, LV_DROPDOWN_PART_LIST);
+      //      _lv_style_list_add_style(list, &style_box);
+      //      _lv_style_list_add_style(list, &style_ddlist_list);
+      //
+      //      lv_obj_clean_style_list(obj, LV_DROPDOWN_PART_SELECTED);
+      //      list = lv_obj_get_style_list(obj, LV_DROPDOWN_PART_SELECTED);
+      //      _lv_style_list_add_style(list, &style_ddlist_selected);
+      //
+      //      lv_obj_clean_style_list(obj, LV_DROPDOWN_PART_SCROLLBAR);
+      //      list = lv_obj_get_style_list(obj, LV_DROPDOWN_PART_SCROLLBAR);
+      //      _lv_style_list_add_style(list, &style_scrollbar);
+      //      break;
 
     case LV_THEME_GAUGE:
       list = lv_obj_get_style_list(obj, LV_GAUGE_PART_MAIN);

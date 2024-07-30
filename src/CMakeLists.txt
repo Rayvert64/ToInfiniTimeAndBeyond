@@ -359,6 +359,11 @@ list(APPEND IMAGE_FILES
         displayapp/icons/battery/batteryicon.c
         displayapp/icons/botw/weather/temp_c.c
         displayapp/icons/botw/weather/gauge_needle.c
+        displayapp/icons/botw/weather/triangle.c
+        displayapp/icons/botw/hearts/heart_full.c
+        displayapp/icons/botw/connectivity/sheika_ble_active.c
+        displayapp/icons/botw/connectivity/sheika_ble_inactive.c
+        displayapp/icons/botw/connectivity/triforce_notification.c
         displayapp/backgrounds/Sheikah-bkgd.c
         )
 list(APPEND SOURCE_FILES
@@ -380,12 +385,12 @@ list(APPEND SOURCE_FILES
         displayapp/screens/FirmwareUpdate.cpp
         displayapp/screens/Music.cpp
         displayapp/screens/Navigation.cpp
-        displayapp/screens/Metronome.cpp
+        #displayapp/screens/Metronome.cpp
         displayapp/screens/Motion.cpp
         displayapp/screens/FirmwareValidation.cpp
         displayapp/screens/ApplicationList.cpp
         displayapp/screens/Notifications.cpp
-        displayapp/screens/Twos.cpp
+        #displayapp/screens/Twos.cpp
         displayapp/screens/HeartRate.cpp
         displayapp/screens/FlashLight.cpp
         displayapp/screens/List.cpp
@@ -420,12 +425,7 @@ list(APPEND SOURCE_FILES
         displayapp/screens/settings/SettingBluetooth.cpp
 
         ## Watch faces
-        displayapp/screens/WatchFaceAnalog.cpp
         displayapp/screens/WatchFaceDigital.cpp
-        displayapp/screens/WatchFaceInfineat.cpp
-        displayapp/screens/WatchFaceTerminal.cpp
-        displayapp/screens/WatchFacePineTimeStyle.cpp
-        #displayapp/screens/WatchFaceCasioStyleG7710.cpp
 
         ##
 
@@ -608,7 +608,7 @@ set(INCLUDE_FILES
         displayapp/Apps.h
         displayapp/screens/Notifications.h
         displayapp/screens/HeartRate.h
-        displayapp/screens/Metronome.h
+        #displayapp/screens/Metronome.h
         displayapp/screens/Motion.h
         displayapp/screens/Timer.h
         displayapp/screens/Alarm.h

@@ -2,7 +2,7 @@
    "roboto_medium_20": {
       "sources": [
          {
-            "file": "Roboto-Medium.ttf",
+            "file": "Roboto-MediumItalic.ttf",
             "range": "0x20-0x7e, 0x410-0x44f, 0xB0"
          },
          {
@@ -16,22 +16,23 @@
    "roboto_italics_20": {
       "sources": [
          {
-            "file": "Roboto-Italic.ttf",
-            "symbols": "AMPM1234567890:"
+            "file": "Roboto-MediumItalic.ttf",
+            "symbols": "AMPM1234567890: "
          }
       ],
       "bpp": 1,
-      "size": 25
+      "size": 20
    },
    "roboto_medium_42": {
       "sources": [
          {
-            "file": "Roboto-Medium.ttf",
-            "range": "0x25, 0x2b, 0x2d, 0x30-0x3a, 0x4b-0x4d, 0x66, 0x69, 0x6b, 0x6d, 0x74"
+            "file": "Roboto-MediumItalic.ttf",
+            "range": "0x25, 0x2b, 0x2d, 0x30-0x3a, 0x4b-0x4d, 0x66, 0x69, 0x6b, 0x6d, 0x74",
+            "symbols": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890.,?!:;-'\"““‘’/\\[]{}()~@#$&*₹%^+_<> "
          }
       ],
       "bpp": 1,
-      "size": 42
+      "size": 30
    },
    "roboto_medium_76": {
       "sources": [
@@ -81,7 +82,7 @@
          }
       ],
       "bpp": 1,
-      "size": 25
+      "size": 18
    },
    "botw_sheikah_20": {
       "sources": [
@@ -91,7 +92,7 @@
          }
       ],
       "bpp": 1,
-      "size": 20
+      "size": 18
    },
    "botw_sheikah_42": {
       "sources": [

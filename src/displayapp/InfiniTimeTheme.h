@@ -13,6 +13,13 @@ namespace Colors {
   static constexpr lv_color_t bgAlt = LV_COLOR_MAKE(0x38, 0x38, 0x38);
   static constexpr lv_color_t bgDark = LV_COLOR_MAKE(0x18, 0x18, 0x18);
   static constexpr lv_color_t highlight = green;
+  static constexpr lv_color_t ui_tan = LV_COLOR_MAKE(0xE2, 0xDE, 0xD3);
+  static constexpr lv_color_t ui_sheika_blue_light = LV_COLOR_MAKE(0x00, 0xFF, 0xE7);
+  static constexpr lv_color_t ui_sheika_blue_dark = LV_COLOR_MAKE(0x1E, 0x65, 0x8D);
+  static constexpr lv_color_t ui_sheika_purple = LV_COLOR_MAKE(0xC4, 0x66, 0xCB);
+  static constexpr lv_color_t ui_font_small_dark = LV_COLOR_MAKE(0x3C, 0xD3, 0xFC);
+  static constexpr lv_color_t heart_red = LV_COLOR_MAKE(0xF1, 0x36, 0x2F);
+
 };
 
 /**

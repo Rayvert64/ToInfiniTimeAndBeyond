@@ -75,9 +75,9 @@ namespace Pinetime {
                  Pinetime::Controllers::ButtonHandler& buttonHandler);
 
       void Start();
-      void PushMessage(Messages msg);
+      void PushMessage(Messages msg) volatile;
 
-      void OnTouchEvent();
+      void OnTouchEvent() volatile;
 
       void OnIdle();
       void OnDim();

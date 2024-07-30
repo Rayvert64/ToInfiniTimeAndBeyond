@@ -1,4 +1,5 @@
 #include "displayapp/screens/FirmwareUpdate.h"
+#include <displayapp/InfiniTimeTheme.h>
 #include <lvgl/lvgl.h>
 #include <lvgl/src/lv_core/lv_obj.h>
 #include <lvgl/src/lv_core/lv_obj_style_dec.h>
@@ -11,13 +12,16 @@ using namespace Pinetime::Applications::Screens;
 FirmwareUpdate::FirmwareUpdate(const Pinetime::Controllers::Ble& bleController) : bleController {bleController} {
 
   titleLabel = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text_static(titleLabel, "Firmware update");
-  lv_obj_align(titleLabel, nullptr, LV_ALIGN_IN_TOP_MID, 0, 50);
+  lv_label_set_text_static(titleLabel, "Firmware Update");
+  lv_obj_set_style_local_text_font(titleLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &roboto_medium_42);
+  lv_obj_align(titleLabel, nullptr, LV_ALIGN_IN_TOP_MID, 0, 40);
+  lv_obj_set_style_local_text_color(titleLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::ui_sheika_blue_light);
 
   titleSheikaLabel = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text_static(titleSheikaLabel, "Firmware update");
+  lv_label_set_text_static(titleSheikaLabel, "Firmwareupdate");
   lv_obj_set_style_local_text_font(titleSheikaLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &botw_sheikah_20);
   lv_obj_align(titleSheikaLabel, nullptr, LV_ALIGN_IN_TOP_MID, 0, 75);
+  lv_obj_set_style_local_text_color(titleSheikaLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, Colors::ui_sheika_blue_dark);
 
   bar1 = lv_bar_create(lv_scr_act(), nullptr);
   lv_obj_set_size(bar1, 200, 30);

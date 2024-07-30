@@ -38,7 +38,7 @@ namespace Pinetime {
     private:
       void InitDisplay();
       void InitTouchpad();
-      void InitFileSystem();
+      // void InitFileSystem();
 
       Pinetime::Drivers::St7789& lcd;
       Pinetime::Controllers::FS& filesystem;

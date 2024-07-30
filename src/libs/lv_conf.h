@@ -161,7 +161,7 @@ typedef void* lv_anim_user_data_t;
 #define LV_USE_OUTLINE  0
 
 /*1: enable pattern drawing on rectangles*/
-#define LV_USE_PATTERN  1
+#define LV_USE_PATTERN  0
 
 /*1: enable value string drawing on rectangles*/
 #define LV_USE_VALUE_STR    0
@@ -170,7 +170,7 @@ typedef void* lv_anim_user_data_t;
 #define LV_USE_BLEND_MODES      0
 
 /* 1: Use the `opa_scale` style property to set the opacity of an object and its children at once*/
-#define LV_USE_OPA_SCALE        0
+#define LV_USE_OPA_SCALE        1
 
 /* 1: Use image zoom and rotation*/
 #define LV_USE_IMG_TRANSFORM    1
@@ -203,7 +203,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h" */
 
 /* 1: Enable file system (might be required for images */
 // TODO: Enable FS
-#define LV_USE_FILESYSTEM       1
+#define LV_USE_FILESYSTEM       0
 #if LV_USE_FILESYSTEM
 /*Declare the type of the user data of file system drivers (can be e.g. `void *`, `int`, `struct`)*/
 typedef void * lv_fs_drv_user_data_t;
@@ -433,7 +433,7 @@ typedef void* lv_indev_drv_user_data_t;            /*Type of user data in the in
 /* Enables/disables support for compressed fonts. If it's disabled, compressed
  * glyphs cannot be processed by the library and won't be rendered.
  */
-#define LV_USE_FONT_COMPRESSED 1
+#define LV_USE_FONT_COMPRESSED 0
 
 /* Enable subpixel rendering */
 #define LV_USE_FONT_SUBPX 0
@@ -615,7 +615,7 @@ typedef void* lv_obj_user_data_t;
 #define LV_USE_CPICKER   0
 
 /*Drop down list (dependencies: lv_page, lv_label, lv_symbol_def.h)*/
-#define LV_USE_DROPDOWN    1
+#define LV_USE_DROPDOWN    0
 #if LV_USE_DROPDOWN != 0
 /*Open and close default animation time [ms] (0: no animation)*/
 #define LV_DROPDOWN_DEF_ANIM_TIME     200
@@ -679,7 +679,7 @@ typedef void* lv_obj_user_data_t;
  * 1: Some extra precision
  * 2: Best precision
  */
-#define LV_LINEMETER_PRECISE    2
+#define LV_LINEMETER_PRECISE    1
 #endif
 
 /*Mask (dependencies: -)*/
@@ -704,7 +704,7 @@ typedef void* lv_obj_user_data_t;
 #endif
 
 /*Roller (dependencies: lv_ddlist)*/
-#define LV_USE_ROLLER    1
+#define LV_USE_ROLLER    0
 #if LV_USE_ROLLER != 0
 /*Focus animation time [ms] (0: no animation)*/
 #define LV_ROLLER_DEF_ANIM_TIME     200

@@ -484,7 +484,7 @@ void SystemTask::GoToRunning() {
   }
 }
 
-void SystemTask::OnTouchEvent() {
+void SystemTask::OnTouchEvent() volatile {
   if (state == SystemTaskState::Running) {
     PushMessage(Messages::OnTouchEvent);
   } else if (state == SystemTaskState::Sleeping) {
@@ -495,7 +495,7 @@ void SystemTask::OnTouchEvent() {
   }
 }
 
-void SystemTask::PushMessage(System::Messages msg) {
+void SystemTask::PushMessage(System::Messages msg) volatile {
   if (msg == Messages::GoToSleep && !doNotGoToSleep) {
     state = SystemTaskState::GoingToSleep;
   }
