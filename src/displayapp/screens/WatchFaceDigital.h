@@ -48,10 +48,13 @@ namespace Pinetime {
         void UpdateTempGauge();
         void UpdateTempRoller();
         void UpdateMotionMeter();
+        int32_t GetMotionLevel();
+        void ApplySimpleMotionToLine(uint32_t motionDiff);
+        void ApplyComplexMotionToLine(uint32_t motionDiff);
+        void ApplyAgressiveMotionToLine(uint32_t motionDiff);
         void InitWeatherRollerObjects();
         void InitTemperatureMeter();
         void InitMotionMeter();
-        float loweredSin(int16_t val);
 
         bool sleepDisabled;
 

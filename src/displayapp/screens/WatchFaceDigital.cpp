@@ -1,6 +1,7 @@
 #include "displayapp/screens/WatchFaceDigital.h"
 
 #include <arduinoFFT/src/types.h>
+#include <cmath>
 #include <cstddef>
 #include <cstdint>
 #include <cstdlib>
@@ -40,6 +41,12 @@
 #include "components/ble/SimpleWeatherService.h"
 
 using namespace Pinetime::Applications::Screens;
+
+constexpr int32_t LOW_MOVEMENT_MAX = 300;
+constexpr int32_t MEDIUM_MOVEMENT_MAX = 600;
+constexpr int32_t HIGH_MOVEMENT_MAX = 1200;
+
+static float loweredSin(int16_t val);
 
 WatchFaceDigital::WatchFaceDigital(Controllers::DateTime& dateTimeController,
                                    const Controllers::Battery& batteryController,
@@ -393,31 +400,30 @@ void WatchFaceDigital::InitMotionMeter() {
   lv_obj_set_style_local_radius(motionMeterBackgrnd, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, 25);
   lv_obj_align(motionMeterBackgrnd, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, 0, -45);
 
-  motionMeterTestLabel = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(motionMeterTestLabel, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
-  lv_obj_set_style_local_text_font(motionMeterTestLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &roboto_italics_20);
-  lv_label_set_text(motionMeterTestLabel, "fq");
+  // motionMeterTestLabel = lv_label_create(lv_scr_act(), nullptr);
+  // lv_obj_align(motionMeterTestLabel, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+  // lv_obj_set_style_local_text_font(motionMeterTestLabel, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &roboto_italics_20);
+  // lv_label_set_text(motionMeterTestLabel, "fq");
 
   for (uint8_t i = 0; i < NUM_POINTS_MOTION_METER; i++) {
-    motionMeterPoints[i] = {i, 0};
+    motionMeterPoints[i] = {i, 25};
   }
 
   motionMeterLine = lv_line_create(motionMeterBackgrnd, nullptr);
   lv_line_set_points(motionMeterLine, motionMeterPoints, NUM_POINTS_MOTION_METER);
-  lv_obj_align(motionMeterLine, motionMeterBackgrnd, LV_ALIGN_CENTER, 0, 0);
+  lv_obj_align(motionMeterLine, motionMeterBackgrnd, LV_ALIGN_IN_TOP_MID, 0, 0);
   lv_obj_set_style_local_line_color(motionMeterLine, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, Colors::ui_sheika_purple);
   lv_obj_set_style_local_line_width(motionMeterLine, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, 2);
 }
 
 void WatchFaceDigital::UpdateMotionMeter() {
   static uint8_t counter = 0;
-  static int16_t x = 0;
-  static int16_t y = 0;
-  static int16_t z = 0;
+  static int32_t motion = 0;
+  // static int32_t maxMotion = 0;
   counter++;
 
-  if (counter % 2 != 0) {
-    for (int16_t i = 0; i < NUM_POINTS_MOTION_METER; i++) {
+  if (counter % 3 != 0) {
+    for (int16_t i = 5; i < (NUM_POINTS_MOTION_METER - 5); i++) {
       if (motionMeterPoints[i].y > motionMeterPointsTargets[i]) {
         motionMeterPoints[i].y--;
       } else if (motionMeterPoints[i].y < motionMeterPointsTargets[i]) {
@@ -425,36 +431,92 @@ void WatchFaceDigital::UpdateMotionMeter() {
       }
     }
   } else {
-    int16_t xLive = 0;
-    int16_t yLive = 0;
-    int16_t zLive = 0;
 
-    // Get current motion
-    xLive = motionController.X() / (int16_t) 5;
-    yLive = motionController.Y() / (int16_t) 5;
-    zLive = motionController.Z() / (int16_t) 5;
+    int32_t motionLive = GetMotionLevel();
+    uint32_t motionDelta = std::abs(motion - motionLive);
 
-    int16_t xDiff = (x - xLive);
-    int16_t yDiff = (y - yLive);
-    int16_t zDiff = (z - zLive);
-
-    for (int16_t i = 0; i < NUM_POINTS_MOTION_METER; i++) {
-      motionMeterPointsTargets[i] =
-        (lv_coord_t) ((((xDiff * loweredSin(i * xDiff))) + (yDiff * loweredSin(i * yDiff)) + (zDiff * loweredSin(i * zDiff))));
+    if (motionDelta > MEDIUM_MOVEMENT_MAX) {
+      // Even more complicated
+      ApplySimpleMotionToLine((motionDelta > HIGH_MOVEMENT_MAX ? HIGH_MOVEMENT_MAX : motionDelta));
+    } else if (motionDelta > LOW_MOVEMENT_MAX) {
+      // A more complicated sum of two sins
+      ApplyComplexMotionToLine(motionDelta);
+    } else {
+      // A simple large sin wave should be enough
+      ApplyAgressiveMotionToLine(motionDelta);
     }
 
+    // lv_label_set_text_fmt(motionMeterTestLabel, "%04d\nMax: %04d", motion - motionLive, maxMotion);
+
     // Save last motion
-    x = xLive;
-    y = yLive;
-    z = zLive;
+    motion = motionLive;
   }
 
   lv_line_set_points(motionMeterLine, motionMeterPoints, NUM_POINTS_MOTION_METER);
   lv_obj_realign(motionMeterLine);
+  // lv_obj_realign(motionMeterTestLabel);
+}
+
+// When there is not a lot of movement, a simple large sin function
+// should be enough to convey that we are sneaky
+void WatchFaceDigital::ApplySimpleMotionToLine(uint32_t motionDiff) {
+  static uint8_t curveMotion = 0; // This will give a nice feeling of lateral motion to the curve
+  curveMotion++;
+  for (int16_t i = 5; i < (NUM_POINTS_MOTION_METER - 5); i++) {
+    motionMeterPointsTargets[i] = (lv_coord_t) ((motionDiff >> 1) * loweredSin((i + curveMotion) * 28) + 25);
+    if (motionMeterPoints[i].y > motionMeterPointsTargets[i]) {
+      motionMeterPoints[i].y--;
+    } else if (motionMeterPoints[i].y < motionMeterPointsTargets[i]) {
+      motionMeterPoints[i].y++;
+    }
+  }
+}
+
+// When there is a moderate amount of movement we put a more intense sin function
+// and simply multiply the value by a sin function that only goes up to pie.
+// This will make a nice "gaussian" sin wave.
+void WatchFaceDigital::ApplyComplexMotionToLine(uint32_t motionDiff) {
+  static uint8_t curveMotion = 0; // This will give a nice feeling of lateral motion to the curve
+  curveMotion++;
+  for (int16_t i = 5; i < (NUM_POINTS_MOTION_METER - 5); i++) {
+    motionMeterPointsTargets[i] =
+      (lv_coord_t) (((motionDiff >> 2) * loweredSin((i + curveMotion) * 3)) * loweredSin((i + curveMotion) * 56)) + 25;
+    if (motionMeterPoints[i].y > motionMeterPointsTargets[i]) {
+      motionMeterPoints[i].y--;
+    } else if (motionMeterPoints[i].y < motionMeterPointsTargets[i]) {
+      motionMeterPoints[i].y++;
+    }
+  }
+}
+
+// When there is a lot of movement. Here we want many peaks that seem dissorganized
+// so we add more peaks and multiply by the absolute value of a sin that goes up to 2pie.
+// This is not too much more complicated calculation wise, but to a puny human this seems nuts!
+void WatchFaceDigital::ApplyAgressiveMotionToLine(uint32_t motionDiff) {
+  static uint8_t curveMotion = 0; // This will give a nice feeling of lateral motion to the curve
+  curveMotion++;
+  for (int16_t i = 5; i < (NUM_POINTS_MOTION_METER - 5); i++) {
+    motionMeterPointsTargets[i] =
+      (lv_coord_t) (((motionDiff >> 3) * std::abs(loweredSin((i + curveMotion) * 7.5))) * loweredSin((i + curveMotion) * 56)) + 25;
+    if (motionMeterPoints[i].y > motionMeterPointsTargets[i]) {
+      motionMeterPoints[i].y--;
+    } else if (motionMeterPoints[i].y < motionMeterPointsTargets[i]) {
+      motionMeterPoints[i].y++;
+    }
+  }
+}
+
+int32_t WatchFaceDigital::GetMotionLevel() {
+  // Get current motion
+  int16_t xLive = motionController.X() / (int16_t) 2;
+  int16_t yLive = motionController.Y() / (int16_t) 2;
+  int16_t zLive = motionController.Z() / (int16_t) 2;
+
+  return xLive + yLive + zLive;
 }
 
 // This returns a value between -1 and 1
-float WatchFaceDigital::loweredSin(int16_t val) {
+static float loweredSin(int16_t val) {
   // Value between -1 and 1
   return ((float) _lv_trigo_sin(val) / (float) INT16_MAX);
 }
