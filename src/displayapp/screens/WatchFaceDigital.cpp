@@ -301,7 +301,6 @@ void WatchFaceDigital::UpdateTempRoller() {
   auto optCurrentWeather = currentWeather.Get();
   if (optCurrentWeather.has_value()) {
     lv_label_set_text(weatherRollerTextSelected, Symbols::GetSymbol(optCurrentWeather->iconId));
-    lv_obj_align(weatherRollerTextSelected, weatherRoller, LV_ALIGN_CENTER, -45 + (12 - hour), 0);
   }
 
   auto optForecastWeather = forecastWeather.Get();
@@ -310,6 +309,7 @@ void WatchFaceDigital::UpdateTempRoller() {
     lv_label_set_text(weatherRollerTextNext2, Symbols::GetSymbol(optForecastWeather->days[2].iconId));
   }
 
+  lv_obj_align(weatherRollerTextSelected, weatherRoller, LV_ALIGN_CENTER, -45 + (12 - hour), 0);
   lv_obj_align(weatherRollerTextNext1, weatherRoller, LV_ALIGN_CENTER, 0 + (12 - hour), 0);
   lv_obj_align(weatherRollerTextNext2, weatherRoller, LV_ALIGN_CENTER, 45 + (12 - hour), 0);
   lv_obj_set_style_local_text_opa(weatherRollerTextNext2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER - (24 - hour));
