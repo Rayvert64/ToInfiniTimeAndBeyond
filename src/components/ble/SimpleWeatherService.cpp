@@ -20,6 +20,7 @@
 
 #include <algorithm>
 #include <array>
+#include <bits/iterator_concepts.h>
 #include <cstring>
 #include <nrf_log.h>
 
@@ -157,4 +158,31 @@ bool SimpleWeatherService::CurrentWeather::operator==(const SimpleWeatherService
   return this->iconId == other.iconId && this->temperature == other.temperature && this->timestamp == other.timestamp &&
          this->maxTemperature == other.maxTemperature && this->minTemperature == other.maxTemperature &&
          std::strcmp(this->location.data(), other.location.data()) == 0;
+}
+
+bool SimpleWeatherService::Forecast::Day::operator==(const SimpleWeatherService::Forecast::Day& other) const {
+  return this->iconId == other.iconId && this->maxTemperature == other.maxTemperature && this->minTemperature == other.minTemperature;
+}
+
+bool SimpleWeatherService::Forecast::operator==(const SimpleWeatherService::Forecast& other) const {
+  if (this->timestamp != other.timestamp || this->nbDays != other.nbDays) {
+    return false;
+  }
+
+  if (this->days.size() != other.days.size()) {
+    return false;
+  }
+
+  auto day = this->days.begin();
+  auto dayOther = other.days.begin();
+
+  while (day != this->days.end() || dayOther != other.days.end()) {
+    if (day == dayOther) {
+      return false;
+    }
+    day++;
+    dayOther++;
+  }
+
+  return true;
 }

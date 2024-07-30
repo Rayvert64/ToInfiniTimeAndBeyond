@@ -73,6 +73,7 @@ namespace Pinetime {
         using days = std::chrono::duration<int32_t, std::ratio<86400>>; // TODO: days is standard in c++20
         Utility::DirtyValue<std::chrono::time_point<std::chrono::system_clock, days>> currentDate;
         Utility::DirtyValue<std::optional<Pinetime::Controllers::SimpleWeatherService::CurrentWeather>> currentWeather {};
+        Utility::DirtyValue<std::optional<Pinetime::Controllers::SimpleWeatherService::Forecast>> forecastWeather {};
 
         const lv_color_t needleColor[1] = {LV_COLOR_CYAN};
         lv_obj_t* heart_containers[MAX_HEARTS];
