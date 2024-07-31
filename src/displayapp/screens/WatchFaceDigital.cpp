@@ -42,9 +42,11 @@
 
 using namespace Pinetime::Applications::Screens;
 
-constexpr int32_t LOW_MOVEMENT_MAX = 300;
-constexpr int32_t MEDIUM_MOVEMENT_MAX = 600;
-constexpr int32_t HIGH_MOVEMENT_MAX = 1200;
+constexpr int32_t LOW_MOVEMENT_MAX = 600;
+constexpr int32_t MEDIUM_MOVEMENT_MAX = 1200;
+constexpr int32_t HIGH_MOVEMENT_MAX = 2400;
+
+constexpr uint8_t CURVE_BEGINNING_AND_END_PADDING = 5;
 
 static float loweredSin(int16_t val);
 
@@ -312,7 +314,7 @@ void WatchFaceDigital::UpdateTempRoller() {
   lv_obj_align(weatherRollerTextSelected, weatherRoller, LV_ALIGN_CENTER, -45 + (12 - hour), 0);
   lv_obj_align(weatherRollerTextNext1, weatherRoller, LV_ALIGN_CENTER, 0 + (12 - hour), 0);
   lv_obj_align(weatherRollerTextNext2, weatherRoller, LV_ALIGN_CENTER, 45 + (12 - hour), 0);
-  lv_obj_set_style_local_text_opa(weatherRollerTextNext2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER - (24 - hour));
+  lv_obj_set_style_local_text_opa(weatherRollerTextNext2, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER - ((24 - hour) * 6));
 
   char ampmChar[3] = "AM";
   if (hour == 0) {
@@ -426,7 +428,7 @@ void WatchFaceDigital::UpdateMotionMeter() {
   counter++;
 
   if (counter % 3 != 0) {
-    for (int16_t i = 5; i < (NUM_POINTS_MOTION_METER - 5); i++) {
+    for (int16_t i = CURVE_BEGINNING_AND_END_PADDING; i < (NUM_POINTS_MOTION_METER - CURVE_BEGINNING_AND_END_PADDING); i++) {
       if (motionMeterPoints[i].y > motionMeterPointsTargets[i]) {
         motionMeterPoints[i].y--;
       } else if (motionMeterPoints[i].y < motionMeterPointsTargets[i]) {
@@ -440,7 +442,7 @@ void WatchFaceDigital::UpdateMotionMeter() {
 
     if (motionDelta > MEDIUM_MOVEMENT_MAX) {
       // Even more complicated
-      ApplySimpleMotionToLine((motionDelta > HIGH_MOVEMENT_MAX ? HIGH_MOVEMENT_MAX : motionDelta));
+      ApplyAgressiveMotionToLine(motionDelta);
     } else if (motionDelta > LOW_MOVEMENT_MAX) {
       // A more complicated sum of two sins
       ApplyComplexMotionToLine(motionDelta);
@@ -462,10 +464,12 @@ void WatchFaceDigital::UpdateMotionMeter() {
 
 // When there is not a lot of movement, a simple large sin function
 // should be enough to convey that we are sneaky
-void WatchFaceDigital::ApplySimpleMotionToLine(uint32_t motionDiff) {
+// @NOTE: UNUSED, as since we can not draw actual curves, a large wave looks bad when we
+//        draw it using our technique. (A collection of 50 strait lines)
+[[maybe_unused]] void WatchFaceDigital::ApplySimpleMotionToLine(uint32_t motionDiff) {
   static uint8_t curveMotion = 0; // This will give a nice feeling of lateral motion to the curve
-  curveMotion++;
-  for (int16_t i = 5; i < (NUM_POINTS_MOTION_METER - 5); i++) {
+  curveMotion += 2;
+  for (int16_t i = CURVE_BEGINNING_AND_END_PADDING; i < (NUM_POINTS_MOTION_METER - CURVE_BEGINNING_AND_END_PADDING); i++) {
     motionMeterPointsTargets[i] = (lv_coord_t) ((motionDiff >> 1) * loweredSin((i + curveMotion) * 28) + 25);
     if (motionMeterPoints[i].y > motionMeterPointsTargets[i]) {
       motionMeterPoints[i].y--;
@@ -481,9 +485,8 @@ void WatchFaceDigital::ApplySimpleMotionToLine(uint32_t motionDiff) {
 void WatchFaceDigital::ApplyComplexMotionToLine(uint32_t motionDiff) {
   static uint8_t curveMotion = 0; // This will give a nice feeling of lateral motion to the curve
   curveMotion++;
-  for (int16_t i = 5; i < (NUM_POINTS_MOTION_METER - 5); i++) {
-    motionMeterPointsTargets[i] =
-      (lv_coord_t) (((motionDiff >> 2) * loweredSin((i + curveMotion) * 3)) * loweredSin((i + curveMotion) * 56)) + 25;
+  for (int16_t i = CURVE_BEGINNING_AND_END_PADDING; i < (NUM_POINTS_MOTION_METER - CURVE_BEGINNING_AND_END_PADDING); i++) {
+    motionMeterPointsTargets[i] = (lv_coord_t) (((motionDiff >> 2) * loweredSin(i * 3)) * loweredSin((i + curveMotion) * 56)) + 25;
     if (motionMeterPoints[i].y > motionMeterPointsTargets[i]) {
       motionMeterPoints[i].y--;
     } else if (motionMeterPoints[i].y < motionMeterPointsTargets[i]) {
@@ -498,9 +501,9 @@ void WatchFaceDigital::ApplyComplexMotionToLine(uint32_t motionDiff) {
 void WatchFaceDigital::ApplyAgressiveMotionToLine(uint32_t motionDiff) {
   static uint8_t curveMotion = 0; // This will give a nice feeling of lateral motion to the curve
   curveMotion++;
-  for (int16_t i = 5; i < (NUM_POINTS_MOTION_METER - 5); i++) {
+  for (int16_t i = CURVE_BEGINNING_AND_END_PADDING; i < (NUM_POINTS_MOTION_METER - CURVE_BEGINNING_AND_END_PADDING); i++) {
     motionMeterPointsTargets[i] =
-      (lv_coord_t) (((motionDiff >> 3) * std::abs(loweredSin((i + curveMotion) * 7.5))) * loweredSin((i + curveMotion) * 56)) + 25;
+      (lv_coord_t) (((motionDiff >> 3) * std::abs(loweredSin(i * 7.5))) * loweredSin((i + curveMotion) * 56)) + 25;
     if (motionMeterPoints[i].y > motionMeterPointsTargets[i]) {
       motionMeterPoints[i].y--;
     } else if (motionMeterPoints[i].y < motionMeterPointsTargets[i]) {
@@ -511,9 +514,9 @@ void WatchFaceDigital::ApplyAgressiveMotionToLine(uint32_t motionDiff) {
 
 int32_t WatchFaceDigital::GetMotionLevel() {
   // Get current motion
-  int16_t xLive = motionController.X() / (int16_t) 2;
-  int16_t yLive = motionController.Y() / (int16_t) 2;
-  int16_t zLive = motionController.Z() / (int16_t) 2;
+  int16_t xLive = motionController.X();
+  int16_t yLive = motionController.Y();
+  int16_t zLive = motionController.Z();
 
   return xLive + yLive + zLive;
 }

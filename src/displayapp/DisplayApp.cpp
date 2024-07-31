@@ -134,7 +134,7 @@ void DisplayApp::Start(System::BootErrors error) {
     APP_ERROR_HANDLER(NRF_ERROR_NO_MEM);
   }
 
-  systemTask->PushMessage(System::Messages::DisableSleeping);
+  // systemTask->PushMessage(System::Messages::DisableSleeping);
 }
 
 void DisplayApp::Process(void* instance) {
