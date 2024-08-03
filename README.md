@@ -1,8 +1,22 @@
-# [InfiniTime](https://github.com/InfiniTimeOrg/InfiniTime)
+# BOTWatch
 
-![InfiniTime logo](doc/logo/infinitime-logo-small.jpg "InfiniTime Logo")
+![BOTWatch logo](doc/logo/BOTWatch-logo.png "InfiniTime Logo")
 
-Fast open-source firmware for the [PineTime smartwatch](https://www.pine64.org/pinetime/) with many features, written in modern C++.
+Do you like Zelda from the Legend Of Zelda: Breath Of The Wild? I do to, I wish I could run and scale mountains like he does!
+
+Great, now that I have caught you're attention with that first sentence and triggered you with the blatantly silly gramatical mistake in this sentence: this is an open-source firmware for the [PineTime smartwatch](https://www.pine64.org/pinetime/) with many features, written in "modern-ish" C++. A fork of the Popular [Infinitime](https://github.com/InfiniTimeOrg/InfiniTime) firmware that runs on the PineWatch. Forked from version 1.14.
+
+**NOTE TO THE READER: In order to get people to read documentation, I like to add a bit of humour and flair to my docs. This should be addressed in the [CODE_OF_CONDUCT](./CODE_OF_CONDUCT.md) file that will be included if it isn't already**
+
+**MINI CODE OF CONDUCT(TW(Trigger Warning)): In the documentation I like to insult the reader, it keeps them on their toes, and makes the reading entertaining! That being said, if you are one to be easily triggered, that is OK, not everyone has the same sensibilities. If, say, "userA" has issues with an other user("userB") being insulted by a joke, "userA" will be the one told to "chill out." (That's right _userA_)**
+
+## "Why not add this as a watchface to Infinitime?"
+So there are many reasons for this, some of them good!
+1. In order to get certain things working, I've had to change some LVGL configurations.
+1. I got rid of the filesystem functionality. Since I want most images to be loaded at runtime.
+   * This was done to improve performance, since I wanted to have something that felt like you were in the BOTW game.
+1. Performance/Battery life: The watchface has some more complicated things to draw than the original firmware, this means RAM is almost all taken, which in turn will lower the battery life by quite a bit.
+   * Like battery life is about two days rather than the usual 4-5 days the original firmware will do.
 
 ## New to InfiniTime?
 
