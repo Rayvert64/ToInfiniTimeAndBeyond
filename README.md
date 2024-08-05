@@ -8,7 +8,7 @@ Great, now that I have caught you're attention with that first sentence and trig
 
 **NOTE TO THE READER: In order to get people to read documentation, I like to add a bit of humour and flair to my docs. This should be addressed in the [CODE_OF_CONDUCT](./CODE_OF_CONDUCT.md) file that will be included if it isn't already**
 
-**MINI CODE OF CONDUCT(TW(Trigger Warning)): In the documentation I like to insult the reader, it keeps them on their toes, and makes the reading entertaining! That being said, if you are one to be easily triggered, that is OK, not everyone has the same sensibilities. If, say, "userA" has issues with an other user("userB") being insulted by a joke, "userA" will be the one told to "chill out." (That's right _userA_)**
+**MINI CODE OF CONDUCT(TW(Trigger Warning)): In the documentation I like to joke at the expense of the reader, it keeps them on their toes, and makes the reading entertaining! That being said, if you are one to be easily triggered, that is OK, not everyone has the same sensibilities. If, say, "userA" has issues with an other user("userB") being insulted by a joke, "userA" will be the one told to "chill out." (That's right _userA_)**
 
 ## "Why not add this as a watchface to Infinitime?"
 So there are many reasons for this, some of them good!
@@ -92,7 +92,12 @@ It integrates the following projects:
 - Font: **[Jetbrains Mono](https://www.jetbrains.com/fr-fr/lp/mono/)** under the Apache 2.0 license
 
 ## Credits
+So since this project is mostly based on the pinetime(InfiniTime) community, most of the credit goes to them. However there is are two projects that have inspired me to start this project, so go give them some love!
+1. **BOTWatchy(The original inspiration!):** https://github.com/mehtmehtsen/BotWatchy
+1. **@hparamore's Zelda BOTW UI Kit(Where I got some assets from!):** https://www.figma.com/community/file/965825767811358609/zelda-botw-ui-kit
+1. **Zelda Universe(Where I got the fonts for this project):** https://zeldauniverse.net/media/fonts/
 
+```
 I’m not working alone on this project. First, many people create pull requests for this project. Then, there is the whole #pinetime community: a lot of people all around the world who are hacking, searching, experimenting and programming the Pinetime. We exchange our ideas, experiments and code in the chat rooms and forums.
 
 Here are some people I would like to highlight:
@@ -100,3 +105,4 @@ Here are some people I would like to highlight:
 - [Atc1441](https://github.com/atc1441/): He works on an Arduino based firmware for the Pinetime and many other smartwatches based on similar hardware. He was of great help when I was implementing support for the BMA421 motion sensor and I²C driver.
 - [Koen](https://github.com/bosmoment): He’s working on a firmware based on RiotOS. He integrated similar libs as me: NimBLE, LittleVGL,… His help was invaluable too!
 - [Lup Yuen Lee](https://github.com/lupyuen): He is everywhere: he works on a Rust firmware, builds a MCUBoot based bootloader for the Pinetime, designs a Flutter based companion app for smartphones and writes a lot of articles about the Pinetime!
+```

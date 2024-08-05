@@ -1,6 +1,22 @@
 # The "Be Excellent To Each Other! Party On Dudes!" (BETEO!POD!) Code of Conduct
 ![Be excellent to each other](./doc/gifs/be_exelent.gif)
 
+<script>
+	SlowDownThereCowboy() {
+		alert(This will only open in private or incognito mode! So right click to open the page!);
+	}
+</script>
+
+-------------
+First thing first here is a copy of the most important part of the document, which is usually put at the end for whatever silly reason!
+
+If you're experiencing online harassment or bullying and need additional support, please consider looking at this site which is an international repository of helplines **OPEN IN A PRIVATE WINDOW PLEASE!!!**:
+* <a onclick=SlowDownThereCowboy()> https://findahelpline.com/ </a>: This is an **INTERNATIONAL** site. For people that need to exit the site quickly in the case that you're scared of being caugth on the site click this button:
+
+
+* <a onclick=SlowDownThereCowboy()> https://www.reddit.com/r/TalkTherapy/wiki/crisisresources/ </a>: This is a reddit post with many resources as well.
+
+Now the slightly less important
 -------------
 # Our Values
 Here are the core values that should be respected! They are pretty neat if you ask me! It's not super long, and pretty easy to understand. (HOPEFULY! O_O )
@@ -113,7 +129,7 @@ Some additional notes on what this means in practice:
 Any form of hateful or discriminatory speech, including racism, anti-Semitism, homophobia, or other forms of targeted harassment, will not be tolerated.
 
 ### But what if "/s?"
-Listen I love making fun of biggotry, it's so incredibly dumb that I can never imagine anyone saying something *actually* biggoted... SADDLY THOUGH, some people like to ruin my fun by being serious about it... so if biggotry happens, even with "/s":
+Listen I love making fun of biggotry, it's so incredibly dumb that I can never imagine anyone saying something *actually* biggoted... **SADDLY THOUGH**, some people like to ruin my fun by being serious about it... so if biggotry happens, even with "/s":
 ```
 Then the person(**OR GROUP**) receiving the insult will have a significant say in determining the fate of the person responsible. This means that they have the power of the Red Card, or Yellow Card if they feel merciful! To elaborate:
 ```
@@ -140,9 +156,41 @@ Some additional notes on what this means in practice:
 ---------------------
 # Reporting Incidents
 
-* Explain how to report incidents of unacceptable behavior, including:
-	+ Who to contact (e.g. moderators, administrators)
-	+ What information to provide when reporting an incident
+If you witness or experience any form of unacceptable behavior, including hateful speech, targeted harassment, or other forms of bullying or abuse, please report it to our moderators immediately.
+
+How to Report an Incident
+
+To report an incident, please follow these steps:
+
+```
+Gather information: Take note of the date, time, and location (including any relevant links or screenshots) where the incident occurred.
+
+Contact a moderator: Reach out to one of our moderators via private message or email (insert contact information). Be sure to include as much detail as possible about the incident.
+
+Provide context: Share any relevant background information that may help us understand the situation better.
+``
+
+What to Expect After Reporting an Incident
+
+After reporting an incident, you can expect:
+
+``
+Prompt response: Our moderators will respond to your report within [insert timeframe, e.g., 24 hours].
+
+Confidentiality: We will keep your identity confidential unless you explicitly give us permission to share it.
+
+Action taken: Depending on the severity of the incident, we may take disciplinary action against the person responsible, including temporary or permanent bans from our community.
+
+```
+## Additional Resources
+
+If you're experiencing online harassment or bullying and need additional support, please consider looking at this site which is an international repository of helplines:
+* [https://findahelpline.com/](https://findahelpline.com/): This is an **INTERNATIONAL** site. For people that need to exit the site quickly in the case that your
+* [https://www.reddit.com/r/TalkTherapy/wiki/crisisresources/](https://www.reddit.com/r/TalkTherapy/wiki/crisisresources/): This is a reddit post with many resources as well.
+
+Remember that your safety and well-being are important to us. If we are going to take some risks by being a bit more leanient with jokes then we should also take the time to help people what are in difficult situations. As a community we should be here to help and want to ensure that our community remains a welcoming and inclusive space for everyone.
+
+Please note that this is just a draft, and you may need to adjust it according to your specific community's needs and policies.
 
 --------------------------------------
 # Consequences of Unacceptable Behavior
