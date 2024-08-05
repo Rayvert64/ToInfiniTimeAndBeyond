@@ -1,20 +1,18 @@
 # The "Be Excellent To Each Other! Party On Dudes!" (BETEO!POD!) Code of Conduct
 ![Be excellent to each other](./doc/gifs/be_exelent.gif)
 
-<script>
-	SlowDownThereCowboy() {
-		alert(This will only open in private or incognito mode! So right click to open the page!);
-	}
-</script>
-
 -------------
 First thing first here is a copy of the most important part of the document, which is usually put at the end for whatever silly reason!
 
-If you're experiencing online harassment or bullying and need additional support, please consider looking at this site which is an international repository of helplines **OPEN IN A PRIVATE WINDOW PLEASE!!!**:
-* <a onclick=SlowDownThereCowboy()> https://findahelpline.com/ </a>: This is an **INTERNATIONAL** site. For people that need to exit the site quickly in the case that you're scared of being caugth on the site click this button:
+If you're experiencing online harassment or bullying and need additional support, please consider looking at this site which is an international repository of helplines by clicking the "details" dropdown just bellow:
+<details>
 
+**WARNING: YOU WILL NOTICE THAT THE LINKS DO NOT WORK, THIS IS BY DESIGN! IF YOU NEED HELP COPY THE LINKS, OPEN AN UNASSUMING TAB IN THIS WINDOW, THEN OPEN A PRIVATE WINDOW AND PASTE THE SITES YOU'VE COPIED!**
 
-* <a onclick=SlowDownThereCowboy()> https://www.reddit.com/r/TalkTherapy/wiki/crisisresources/ </a>: This is a reddit post with many resources as well.
+<a href=".">https://findahelpline.com/</a> : This is an **INTERNATIONAL** site.
+
+<a href=".">https://www.reddit.com/r/TalkTherapy/wiki/crisisresources/</a> : This is a reddit post with many resources as well.
+</details>
 
 Now the slightly less important
 -------------
@@ -184,9 +182,15 @@ Action taken: Depending on the severity of the incident, we may take disciplinar
 ```
 ## Additional Resources
 
-If you're experiencing online harassment or bullying and need additional support, please consider looking at this site which is an international repository of helplines:
-* [https://findahelpline.com/](https://findahelpline.com/): This is an **INTERNATIONAL** site. For people that need to exit the site quickly in the case that your
-* [https://www.reddit.com/r/TalkTherapy/wiki/crisisresources/](https://www.reddit.com/r/TalkTherapy/wiki/crisisresources/): This is a reddit post with many resources as well.
+If you're experiencing online harassment or bullying and need additional support, please consider looking at this site which is an international repository of helplines by clicking the "details" section just bellow:
+<details>
+
+**WARNING: YOU WILL NOTICE THAT THE LINKS DO NOT WORK, THIS IS BY DESIGN! IF YOU NEED HELP COPY THE LINKS, OPEN AN UNASSUMING TAB IN THIS WINDOW, THEN OPEN A PRIVATE WINDOW AND PASTE THE SITES YOU'VE COPIED!**
+
+<a href=".">https://findahelpline.com/</a> : **There is a "Quick Exit" button at the top of the page in case you need to exit the page quickly, if your internet connection is slow, closing the window is faster! I've tried.**
+
+<a href=".">https://www.reddit.com/r/TalkTherapy/wiki/crisisresources/</a> : This is a reddit post with many resources as well.
+</details>
 
 Remember that your safety and well-being are important to us. If we are going to take some risks by being a bit more leanient with jokes then we should also take the time to help people what are in difficult situations. As a community we should be here to help and want to ensure that our community remains a welcoming and inclusive space for everyone.
 
