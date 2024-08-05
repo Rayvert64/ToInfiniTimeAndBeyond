@@ -132,7 +132,7 @@ Listen I love making fun of biggotry, it's so incredibly dumb that I can never i
 Then the person(**OR GROUP**) receiving the insult will have a significant say in determining the fate of the person responsible. This means that they have the power of the Red Card, or Yellow Card if they feel merciful! To elaborate:
 ```
 ### Context and Intent are Not Excuses; they are Explanations, but not Excuses:
-So to contextualize the header above: **An Excuse** is when you try to move the responsibility of your action to something else, in some cases this is valid. Like when you were late to work because your car exploded, that's a good excuse! **An Explanation** on the other hand, explains your behaviour(duh), but the resposibility is still on you. For example: I really like messed up humour! I have probably done my fair share of horrible jokes, but I do them with people that I know won't be affected by them. But I don't use this as an excuse if someone hears me say that and feels offended! If you say/do something that could be considered terrible by someone, YOU MUST ACCEPT THAT RISK AND THE RESPOSIBILITY THAT COMES WITH IT!
+So to contextualize the header above: **An Excuse** is when you try to move the responsibility of your action to something else, in some cases this is valid. Like when you were late to work because your car exploded, that's a good excuse! **An Explanation** on the other hand, explains your behaviour(duh), but the resposibility is still on you. For example: I really like messed up humour! I have probably done my fair share of horrible jokes, but I do them with people that I know won't be affected by them. But I don't use this as an excuse if someone hears me say that and feels offended! If you say/do something that could be considered terrible by someone, YOU MUST TRY TO ACCEPT THAT RISK AND THE RESPOSIBILITY THAT COMES WITH IT!
 
 ### Said more professionaly...
 
@@ -192,22 +192,10 @@ If you're experiencing online harassment or bullying and need additional support
 <a href=".">https://www.reddit.com/r/TalkTherapy/wiki/crisisresources/</a> : This is a reddit post with many resources as well.
 </details>
 
-Remember that your safety and well-being are important to us. If we are going to take some risks by being a bit more leanient with jokes then we should also take the time to help people what are in difficult situations. As a community we should be here to help and want to ensure that our community remains a welcoming and inclusive space for everyone.
+Remember that your safety and well-being are important. If we are going to take some risks by being a bit more leanient with jokes, then we should also take the time to help people what are in difficult situations. As a community we should help and want to ensure that our community remains a welcoming and inclusive space for everyone.
 
 Please note that this is just a draft, and you may need to adjust it according to your specific community's needs and policies.
 
---------------------------------------
-# Consequences of Unacceptable Behavior
-
-* Describe the consequences for engaging in unacceptable behavior, such as:
-	+ Warnings or temporary bans
-	+ Permanent ban from the community
-
 ----------------------
 # Changes and Updates
-
-* Explain how changes will be made to this Code of Conduct, including:
-	+ Who is responsible for reviewing and updating the document
-	+ How updates will be communicated to the community
-
-Now it's your turn! Please guide me through filling in each section.
+Initial Document
