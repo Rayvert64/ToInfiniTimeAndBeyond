@@ -2,14 +2,14 @@
 ![Be excellent to each other](./doc/gifs/be_exelent.gif)
 
 -------------
-First thing first here is a copy of the most important part of the document, which is usually put at the end for whatever silly reason!
+First thing's first, here is a copy of the most important part of the document, which is usually put at the end for whatever silly reason!
 
 If you're experiencing online harassment or bullying and need additional support, please consider looking at this site which is an international repository of helplines by clicking the "details" dropdown just bellow:
 <details>
 
 **WARNING: YOU WILL NOTICE THAT THE LINKS DO NOT WORK, THIS IS BY DESIGN! IF YOU NEED HELP COPY THE LINKS, OPEN AN UNASSUMING TAB IN THIS WINDOW, THEN OPEN A PRIVATE WINDOW AND PASTE THE SITES YOU'VE COPIED!**
 
-<a href=".">https://findahelpline.com/</a> : This is an **INTERNATIONAL** site.
+<a href=".">https://findahelpline.com/</a> : **There is a "Quick Exit" button at the top of the page in case you need to exit the page quickly, if your internet connection is slow, closing the window is faster! I've tried.**
 
 <a href=".">https://www.reddit.com/r/TalkTherapy/wiki/crisisresources/</a> : This is a reddit post with many resources as well.
 </details>
@@ -17,27 +17,38 @@ If you're experiencing online harassment or bullying and need additional support
 Now the slightly less important
 -------------
 # Our Values
-Here are the core values that should be respected! They are pretty neat if you ask me! It's not super long, and pretty easy to understand. (HOPEFULY! O_O )
+Here are the core values that should be respected! They are pretty neat if you ask me! It's not super long, and pretty easy to understand.
+
+**You should know that this document is subject to change. There might be some things I have ethically missed, I(The person writing this) am only human after all!**
 
 ## Embracing snowflakes, but also... not... snowflakes?...:
-We recognize that everyone has their own unique sensitivities, boundaries, and needs. It's okay to be a snowflake – in fact, it's more than okay; it's human. And if someone is not a snowflake, a ...rock... flake, per-say, that person should not be dehumanised for having thicker skin!
+We recognize that everyone has their own unique sensitivities, boundaries, and needs. It's okay to be a snowflake – in fact, it's more than okay; it's human. And if someone is not a snowflake, a ...rock... flake, per-say, that person should not be dehumanized for having thicker skin!
 
 ## Respectful accommodations:
 While we can't cater to every individual's needs all the time, we strive to be understanding and accommodating when possible. If you're a snowflake, we'll try our best to respect your boundaries and make you feel comfortable – but also remember that others may not share your sensitivities.
 
 ## Life is grey, not black and white:
-We find that this quote is a perfect analogy for the complexities of life. Like pixels on a black-and-white screen, there are truths out there that exist. These are the black and white pixels, like math, and physics, we have to really zoom-in to see these truths. But when you see the bigger picture, everything just seems uniformely grey! (or *gray*, whatever!)- If anyone insults someone in a hateful manner(racism, anti-Semitism, homophobic, or any other hateful comment), the person who is  receiving the insult will decide the fate the person insulting as the maintain In this case the three-strike rule can be ignored. The reason for this is that certain people will say these derogatory comments in sarcastic manner(as to laugh at the absurdity of the statement) some people from the targeted demographics might catch on when this happens. No one will be allowed to complain about someone feeling a statement goes to far EVEN AS A JOKE, even if said person is not the one receiving the (perhaps) "joke" as for certain people "jokes" like these will "hit to close to home" as many humans tend to be complete idiots.(Bigotry is idiotic) So we shouldn't expect people to just "get the joke." In the case where this escalates and the user insulted is not available for whatever reason, the comment will be automatically deleted as promptly as possible.
+We find that this quote is a perfect analogy for the complexities of life. Just like pixels on a black-and-white screen, there are truths out there that exist in stark contrast. These are the black and white pixels, such as mathematical equations or physical laws, which can be clearly understood when examined closely. However, when viewed from a broader perspective, everything appears uniformly grey – a nuanced representation of life's intricacies.
+
+In our community, we strive to maintain a respectful environment where everyone feels welcome and valued. If someone makes a hateful comment, such as racism, anti-Semitism, homophobia, or any other form of discriminatory language:
+
+* The individual who is targeted by the insult will have the final say in how it is handled.
+* In this case, our three-strike rule may not apply, as certain individuals might use derogatory comments in a sarcastic manner to highlight the absurdity of the statement. However, some people from the targeted demographics might still interpret these comments as genuine insults.
+* To avoid any confusion or hurt feelings, we will not tolerate jokes or statements that could be perceived as mocking or belittling certain groups. If someone feels that a comment has gone too far, even if intended as a joke, it is essential to respect their perspective and take the matter seriously.
+* In situations where the user who was insulted is unavailable for some reason, we will automatically delete the offending comment as soon as possible to prevent further harm or discomfort.
+
+
 
 ## Brazil
-🇧🇷 mentioned.
+🇧🇷 mentioned!
 
 ## Humanity over ego:
 We prioritize being kind, empathetic, and understanding over being "right" or winning arguments. Remember, we're all in this together!
 
-**THAT BEING SAID:** Someone *can* be right about something, and people should be ok being wrong. If someone has a hard time seeing that they are wrong, it is the responsability of the people who are right to not be "dinguses" about it.
+**THAT BEING SAID:** Someone *can* be right about something, and people should be ok being wrong. If someone has a hard time seeing that they are wrong, it is the responsibility of the people who are right to not be "dinguses" about it.
 
 ## Red Card, Yellow Card:
-Here's an exerpt of a group of fellas I like and I think they got a pretty good system:
+Here's an excerpt of a group of fellas I like, and I think they got a pretty good system:
 ```
 ‐ Wanna know what? Soccer's got a pretty good thing going with that card system, eh?
 
@@ -86,10 +97,12 @@ This will be implemented. You get one warning, you know, you can make mistakes. 
 # Expected Behavior
 ![high_five](./doc/gifs/borat-high-five.gif)
 
-Here's how we expect people to act. It's kinda depressing that this has to be stated in the first place but oh well! Usually breaking the behaviours bellow are "yellow-card" worthy if done more than once, unless mentioned. Speaking of:
+Here's how we expect people to act. It's kinda depressing that this has to be stated in the first place...
+
+Usually breaking the behaviors bellow are "yellow-card" worthy if done more than once, unless mentioned. Speaking of:
 
 ## Use humor responsibly:
-If you're about to share something that could be considered hurtful as a joke, **prefix** your comment with "/s" (short for "sarcasm" or " warning: snarky remark ahead") so others know to take it lightly. This helps us avoid misunderstandings and keeps the vibes light. **YOU MUST PUT IT AT THE BEGINNING OF YOUR COMMENT. Or else someone might read it and be triggered UNTILL they see the "/s" in which case they HAVE already been triggered, and it kind of defeats the point of this rule.**
+If you're about to share something that could be considered hurtful as a joke, **prefix** your comment with "/s" (short for "sarcasm" or "warning: snarky remark ahead") so others know to take it lightly. This helps us avoid misunderstandings and keeps the vibes light. **YOU MUST PUT IT AT THE BEGINNING OF YOUR COMMENT. Or else someone might read it and be triggered until they reach the end and see the "/s," in which case they HAVE already been triggered, and it kind of defeats the point of this rule.**
 
 **Putting "/s" at the end is an automatic yellow card since you didn't bother reading this fun document I put so much prompt-I mean EFFORT into!**
 
@@ -105,6 +118,9 @@ If someone expresses discomfort or asks for space, respect their wishes and give
 ## Don't take yourself too seriously:
 We're all human, and we all make mistakes. Learn to laugh at yourself and don't be afraid to admit when you're wrong.
 
+## Have you seen *One Piece*?
+I haven't.
+
 ## Engage in good-faith discussions:
 Come to conversations with an open mind and a willingness to learn. Avoid trolling, baiting, or deliberately trying to provoke others.
 
@@ -119,20 +135,18 @@ Some additional notes on what this means in practice:
 
 ----------------------
 # Unacceptable Behavior
-\s Tits out!(Did you know they are a type of chickadee?)
-
 ![Red Card](./doc/gifs/red_card.gif)
 
 ## Hateful speech:
 Any form of hateful or discriminatory speech, including racism, anti-Semitism, homophobia, or other forms of targeted harassment, will not be tolerated.
 
 ### But what if "/s?"
-Listen I love making fun of biggotry, it's so incredibly dumb that I can never imagine anyone saying something *actually* biggoted... **SADDLY THOUGH**, some people like to ruin my fun by being serious about it... so if biggotry happens, even with "/s":
+Listen I love making fun of bigotry, it's so incredibly dumb that I can never imagine anyone saying something *actually* bigoted... **SADLY THOUGH**, some people like to ruin my fun by being serious about it... so if bigotry happens, even with "/s":
 ```
 Then the person(**OR GROUP**) receiving the insult will have a significant say in determining the fate of the person responsible. This means that they have the power of the Red Card, or Yellow Card if they feel merciful! To elaborate:
 ```
 ### Context and Intent are Not Excuses; they are Explanations, but not Excuses:
-So to contextualize the header above: **An Excuse** is when you try to move the responsibility of your action to something else, in some cases this is valid. Like when you were late to work because your car exploded, that's a good excuse! **An Explanation** on the other hand, explains your behaviour(duh), but the resposibility is still on you. For example: I really like messed up humour! I have probably done my fair share of horrible jokes, but I do them with people that I know won't be affected by them. But I don't use this as an excuse if someone hears me say that and feels offended! If you say/do something that could be considered terrible by someone, YOU MUST TRY TO ACCEPT THAT RISK AND THE RESPOSIBILITY THAT COMES WITH IT!
+So to contextualize the header above: **An Excuse** is when you try to move the responsibility of your action to something else, in some cases this is valid. Like when you were late to work because your car exploded, that's a good excuse! **An Explanation** on the other hand, explains your behaviour(duh), but the responsibility is still on you. For example: I really like messed up humor! I have probably done my fair share of horrible jokes, but I do them with people that I know won't be affected by them. But I don't use this as an excuse if someone hears me say that and feels offended! If you say/do something that could be considered terrible by someone, YOU MUST TRY TO ACCEPT THAT RISK AND THE RESPONSIBILITY THAT COMES WITH IT!
 
 ### Said more professionaly...
 
@@ -156,30 +170,21 @@ Some additional notes on what this means in practice:
 
 If you witness or experience any form of unacceptable behavior, including hateful speech, targeted harassment, or other forms of bullying or abuse, please report it to our moderators immediately.
 
-How to Report an Incident
+## How to Report an Incident
 
 To report an incident, please follow these steps:
+* Gather information: Take note of the date, time, and location (including any relevant links or screenshots) where the incident occurred.
+* Contact a moderator: Reach out to one of our moderators via private message or email (insert contact information). Be sure to include as much detail as possible about the incident.
+* Provide context: Share any relevant background information that may help us understand the situation better.
 
-```
-Gather information: Take note of the date, time, and location (including any relevant links or screenshots) where the incident occurred.
 
-Contact a moderator: Reach out to one of our moderators via private message or email (insert contact information). Be sure to include as much detail as possible about the incident.
-
-Provide context: Share any relevant background information that may help us understand the situation better.
-``
-
-What to Expect After Reporting an Incident
-
+## What to Expect After Reporting an Incident
 After reporting an incident, you can expect:
+* Confidentiality: We will keep your identity confidential unless you explicitly give us permission to share it.
+* Action taken: Depending on the severity of the incident, we may take disciplinary action against the person responsible, including temporary or permanent bans from the community.
+* Fast response: Depending on the size of the contributor pool, it might be hard to be prompt when dealing with issues like this. **If no action is taken, feel free to report the repo to whoever is hosting this repo. Just because we have this file doesn't mean we should not be held responsible when we drop the ball.**
 
-``
-Prompt response: Our moderators will respond to your report within [insert timeframe, e.g., 24 hours].
 
-Confidentiality: We will keep your identity confidential unless you explicitly give us permission to share it.
-
-Action taken: Depending on the severity of the incident, we may take disciplinary action against the person responsible, including temporary or permanent bans from our community.
-
-```
 ## Additional Resources
 
 If you're experiencing online harassment or bullying and need additional support, please consider looking at this site which is an international repository of helplines by clicking the "details" section just bellow:
@@ -192,7 +197,7 @@ If you're experiencing online harassment or bullying and need additional support
 <a href=".">https://www.reddit.com/r/TalkTherapy/wiki/crisisresources/</a> : This is a reddit post with many resources as well.
 </details>
 
-Remember that your safety and well-being are important. If we are going to take some risks by being a bit more leanient with jokes, then we should also take the time to help people what are in difficult situations. As a community we should help and want to ensure that our community remains a welcoming and inclusive space for everyone.
+Remember that your safety and well-being are important. If we are going to take some risks by being a bit more lenient with jokes, then we should also take the time to help people what are in difficult situations. As a community we should help and want to ensure that our community remains a welcoming and inclusive space for everyone.
 
 Please note that this is just a draft, and you may need to adjust it according to your specific community's needs and policies.
 
