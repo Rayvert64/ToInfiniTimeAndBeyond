@@ -2,11 +2,13 @@
 
 ![BOTWatch logo](doc/logo/BOTWatch-logo.png "InfiniTime Logo")
 
+First: read [this](./CODE_OF_CONDUCT_PROTOTYPE.md).
+
 Do you like Zelda from the Legend Of Zelda: Breath Of The Wild? I do to, I wish I could run and scale mountains like he does!
 
-Great, now that I have caught you're attention with that first sentence and triggered you with the blatantly silly gramatical mistake in this sentence: this is an open-source firmware for the [PineTime smartwatch](https://www.pine64.org/pinetime/) with many features, written in "modern-ish" C++. A fork of the Popular [Infinitime](https://github.com/InfiniTimeOrg/InfiniTime) firmware that runs on the PineWatch. Forked from version 1.14.
+Great, now that I have caught you're attention with that first sentence and triggered you with the blatantly silly grammatical mistake in this sentence: this is an open-source firmware for the [PineTime smartwatch](https://www.pine64.org/pinetime/) with many features, written in "modern-ish" C++. A fork of the Popular [Infinitime](https://github.com/InfiniTimeOrg/InfiniTime) firmware that runs on the PineWatch. Forked from version 1.14.
 
-**NOTE TO THE READER: In order to get people to read documentation, I like to add a bit of humour and flair to my docs. This should be addressed in the [CODE_OF_CONDUCT](./CODE_OF_CONDUCT.md) file that will be included if it isn't already**
+**NOTE TO THE READER: In order to get people to read documentation, I like to add a bit of humor and flair to my docs. This should be addressed in the [CODE_OF_CONDUCT](./CODE_OF_CONDUCT_TEMPLATE.md) file that will be included if it isn't already**
 
 **MINI CODE OF CONDUCT(TW(Trigger Warning)): In the documentation I like to joke at the expense of the reader, it keeps them on their toes, and makes the reading entertaining! That being said, if you are one to be easily triggered, that is OK, not everyone has the same sensibilities. If, say, "userA" has issues with an other user("userB") being insulted by a joke, "userA" will be the one told to "chill out." (That's right _userA_)**
 

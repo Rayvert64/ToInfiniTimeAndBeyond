@@ -1,10 +1,10 @@
 # The "Be Excellent To Each Other! Party On Dudes!" (BETEO!POD!) Code of Conduct
 ![Be excellent to each other](./doc/gifs/be_exelent.gif)
 
--------------
+
 First thing's first, here is a copy of the most important part of the document, which is usually put at the end for whatever silly reason!
 
-If you're experiencing online harassment or bullying and need additional support, please consider looking at this site which is an international repository of helplines by clicking the "details" dropdown just bellow:
+*If you're experiencing online harassment or bullying and need additional support, please consider looking at this site which is an international repository of helplines by clicking the "details" dropdown just bellow:*
 <details>
 
 **WARNING: YOU WILL NOTICE THAT THE LINKS DO NOT WORK, THIS IS BY DESIGN! IF YOU NEED HELP COPY THE LINKS, OPEN AN UNASSUMING TAB IN THIS WINDOW, THEN OPEN A PRIVATE WINDOW AND PASTE THE SITES YOU'VE COPIED!**
@@ -14,15 +14,18 @@ If you're experiencing online harassment or bullying and need additional support
 <a href=".">https://www.reddit.com/r/TalkTherapy/wiki/crisisresources/</a> : This is a reddit post with many resources as well.
 </details>
 
-Now the slightly less important
 -------------
+-------------
+
 # Our Values
-Here are the core values that should be respected! They are pretty neat if you ask me! It's not super long, and pretty easy to understand.
+Here are the core values that should be respected! They are pretty neat if you ask me! It's not super long, and pretty easy to understand. At some points in this document you will notice that both "we" and "I" is used to create a more approachable and human tone. This is intentional: we(I) want to avoid the feeling of bureaucratic jargon or disingenuous language which is(in my opinion) often used as a "legal cover," kind of like "green-washing" if you are into the whole "save the planet thing." (Which I am, but some people are not.)
+
+I want to make clear that people are allowed to make mistakes, and that most people are redeemable. Often some inappropriate people just need to be given a chance become better, but we must also accept that sometimes in a community if someone is hurt is done, there is no going back.
 
 **You should know that this document is subject to change. There might be some things I have ethically missed, I(The person writing this) am only human after all!**
 
 ## Embracing snowflakes, but also... not... snowflakes?...:
-We recognize that everyone has their own unique sensitivities, boundaries, and needs. It's okay to be a snowflake – in fact, it's more than okay; it's human. And if someone is not a snowflake, a ...rock... flake, per-say, that person should not be dehumanized for having thicker skin!
+We recognize that everyone has their own unique sensitivities, boundaries, and needs. It's okay to be a snowflake – in fact, it's more than okay; it's human. And if someone is not a snowflake, a ...rock...flake(?), per-say, that person should not be dehumanized for having thicker skin!
 
 ## Respectful accommodations:
 While we can't cater to every individual's needs all the time, we strive to be understanding and accommodating when possible. If you're a snowflake, we'll try our best to respect your boundaries and make you feel comfortable – but also remember that others may not share your sensitivities.
@@ -30,25 +33,19 @@ While we can't cater to every individual's needs all the time, we strive to be u
 ## Life is grey, not black and white:
 We find that this quote is a perfect analogy for the complexities of life. Just like pixels on a black-and-white screen, there are truths out there that exist in stark contrast. These are the black and white pixels, such as mathematical equations or physical laws, which can be clearly understood when examined closely. However, when viewed from a broader perspective, everything appears uniformly grey – a nuanced representation of life's intricacies.
 
-In our community, we strive to maintain a respectful environment where everyone feels welcome and valued. If someone makes a hateful comment, such as racism, anti-Semitism, homophobia, or any other form of discriminatory language:
-
-* The individual who is targeted by the insult will have the final say in how it is handled.
-* In this case, our three-strike rule may not apply, as certain individuals might use derogatory comments in a sarcastic manner to highlight the absurdity of the statement. However, some people from the targeted demographics might still interpret these comments as genuine insults.
-* To avoid any confusion or hurt feelings, we will not tolerate jokes or statements that could be perceived as mocking or belittling certain groups. If someone feels that a comment has gone too far, even if intended as a joke, it is essential to respect their perspective and take the matter seriously.
-* In situations where the user who was insulted is unavailable for some reason, we will automatically delete the offending comment as soon as possible to prevent further harm or discomfort.
-
-
-
 ## Brazil
 🇧🇷 mentioned!
 
 ## Humanity over ego:
 We prioritize being kind, empathetic, and understanding over being "right" or winning arguments. Remember, we're all in this together!
 
-**THAT BEING SAID:** Someone *can* be right about something, and people should be ok being wrong. If someone has a hard time seeing that they are wrong, it is the responsibility of the people who are right to not be "dinguses" about it.
+**THAT BEING SAID:** Someone *can* be right about something, and people should be ok being wrong. If someone has a hard time seeing that they are wrong; we should at least *try* leading people in the right direction rather than shunning them.
 
 ## Red Card, Yellow Card:
 Here's an excerpt of a group of fellas I like, and I think they got a pretty good system:
+<details>
+<summary>The next excerpt in this dropdown, could be considered sensitive to some folks. Usually I would not censor this, but since this is a more sensitive document. I personally think it's funny!</summary>
+
 ```
 ‐ Wanna know what? Soccer's got a pretty good thing going with that card system, eh?
 
@@ -84,14 +81,18 @@ Here's an excerpt of a group of fellas I like, and I think they got a pretty goo
 
 ‐ It'd be Macho Man Handy Savage.
 
-‐ It's like, we could weed out the tits, it'll give us more time for real people. What's the problems?
+‐ It's like, we could weed out the tits, it'll give us more time to help real people. What's the problems?
 
 ‐ Well, yeah. And then we wouldn't have to deal with the tits.
 
 ‐ Yeah, yeah. So if ya gets a yellow card, it means stops being a dinks. And if you keeps being a dinks, you gets a red card which means you're out, ya tit!
 ```
+</details>
 
-This will be implemented. You get one warning, you know, you can make mistakes. But if you start being "a dink..." well, you know the rest.
+```
+This is the classic yellow-card/red-card system that you see in football(soccer): You get one warning before a yellow card, since mistakes are common. But if you start being a nuisance well, you know the rest.
+```
+**Some more egregious behavior can get you an automatic red card!**
 
 --------------------
 # Expected Behavior
@@ -102,7 +103,7 @@ Here's how we expect people to act. It's kinda depressing that this has to be st
 Usually breaking the behaviors bellow are "yellow-card" worthy if done more than once, unless mentioned. Speaking of:
 
 ## Use humor responsibly:
-If you're about to share something that could be considered hurtful as a joke, **prefix** your comment with "/s" (short for "sarcasm" or "warning: snarky remark ahead") so others know to take it lightly. This helps us avoid misunderstandings and keeps the vibes light. **YOU MUST PUT IT AT THE BEGINNING OF YOUR COMMENT. Or else someone might read it and be triggered until they reach the end and see the "/s," in which case they HAVE already been triggered, and it kind of defeats the point of this rule.**
+If you're about to share something that could be considered to have a sensitive subject in the joke or comment, **prefix** your comment with "/s" (short for "sarcasm" or "warning: snarky remark ahead") so others know to take it lightly. This helps us avoid misunderstandings and keeps the vibes light. **YOU MUST PUT IT AT THE BEGINNING OF YOUR COMMENT. Or else someone might read it and be triggered until they reach the end and see the "/s," in which case they HAVE already been triggered, and it kind of defeats the point of this rule.**
 
 **Putting "/s" at the end is an automatic yellow card since you didn't bother reading this fun document I put so much prompt-I mean EFFORT into!**
 
@@ -120,6 +121,8 @@ We're all human, and we all make mistakes. Learn to laugh at yourself and don't 
 
 ## Have you seen *One Piece*?
 I haven't.
+
+<small>I hear it's good. :)</small>
 
 ## Engage in good-faith discussions:
 Come to conversations with an open mind and a willingness to learn. Avoid trolling, baiting, or deliberately trying to provoke others.
@@ -146,9 +149,11 @@ Listen I love making fun of bigotry, it's so incredibly dumb that I can never im
 Then the person(**OR GROUP**) receiving the insult will have a significant say in determining the fate of the person responsible. This means that they have the power of the Red Card, or Yellow Card if they feel merciful! To elaborate:
 ```
 ### Context and Intent are Not Excuses; they are Explanations, but not Excuses:
-So to contextualize the header above: **An Excuse** is when you try to move the responsibility of your action to something else, in some cases this is valid. Like when you were late to work because your car exploded, that's a good excuse! **An Explanation** on the other hand, explains your behaviour(duh), but the responsibility is still on you. For example: I really like messed up humor! I have probably done my fair share of horrible jokes, but I do them with people that I know won't be affected by them. But I don't use this as an excuse if someone hears me say that and feels offended! If you say/do something that could be considered terrible by someone, YOU MUST TRY TO ACCEPT THAT RISK AND THE RESPONSIBILITY THAT COMES WITH IT!
+So to contextualize the header above: **An Excuse** is when you try to move the responsibility of your action to something else, in some cases this is valid. Like when you were late to work because your car exploded, that's a good excuse! **An Explanation** on the other hand, explains your behavior(duh), but the responsibility is still on you. For example: I really like messed up humor! I have probably done my fair share of horrible jokes, but I do them with people that I know won't be affected by them. But I don't use this as an excuse if someone hears me say that and feels offended! If you say/do something that could be considered terrible by someone, YOU MUST TRY TO ACCEPT THAT RISK AND THE RESPONSIBILITY THAT COMES WITH IT!
 
-### Said more professionaly...
+Having an explanation might help with being forgiven, but it won't guarantee it. A "sorry" doesn't fix anything that has already been done, but it can help the healing process.
+
+### Said more professionally...
 
 We understand that some individuals may attempt to use sarcasm or humor as an excuse for hateful speech. However, we also recognize that certain comments can have a significant impact on members of targeted demographics, even if they're intended as jokes. As such, we will not tolerate complaints about people feeling that a statement has gone too far, even if the complainant is not the one being targeted.
 
@@ -168,13 +173,13 @@ Some additional notes on what this means in practice:
 ---------------------
 # Reporting Incidents
 
-If you witness or experience any form of unacceptable behavior, including hateful speech, targeted harassment, or other forms of bullying or abuse, please report it to our moderators immediately.
+If you witness or experience any form of unacceptable behavior, including hateful speech, targeted harassment, or other forms of bullying or abuse, please report it to moderators immediately.
 
 ## How to Report an Incident
 
 To report an incident, please follow these steps:
 * Gather information: Take note of the date, time, and location (including any relevant links or screenshots) where the incident occurred.
-* Contact a moderator: Reach out to one of our moderators via private message or email (insert contact information). Be sure to include as much detail as possible about the incident.
+* Contact a moderator: Reach out to one of the projects' moderators via private message or email (insert contact information). Be sure to include as much detail as possible about the incident.
 * Provide context: Share any relevant background information that may help us understand the situation better.
 
 
