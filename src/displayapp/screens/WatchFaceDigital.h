@@ -55,6 +55,8 @@ namespace Pinetime {
         void InitWeatherRollerObjects();
         void InitTemperatureMeter();
         void InitMotionMeter();
+        void UpdateNotificationTriforce();
+        void UpdateSheikaSensor();
 
         bool sleepDisabled;
 

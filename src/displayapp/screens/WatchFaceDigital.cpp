@@ -129,38 +129,14 @@ WatchFaceDigital::~WatchFaceDigital() {
 }
 
 void WatchFaceDigital::Refresh() {
-  static int16_t throbber = 0;
-  static bool animDir = true;
 
   statusIcons.Update();
 
   UpdateTempGauge();
-  notificationState = notificationManager.AreNewNotificationsAvailable();
-  if ((bool) notificationManager.NbNotifications()) {
-    //    This should do a throbbing effect- I mean PULSATING... pulsating... is... what...I......meant...
-    if (animDir) {
-      throbber += 5;
-      if (throbber == MAX_U08) {
-        animDir = false;
-      }
-    } else {
-      throbber -= 5;
-      if (throbber == 0) {
-        animDir = true;
-      }
-    }
-    if (throbber % 15 == 0) {
-      lv_obj_set_style_local_image_opa(notificationIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, throbber);
-      lv_obj_invalidate(notificationIcon);
-    }
-  } else {
-    lv_obj_set_style_local_image_opa(notificationIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER);
-  }
-  lv_obj_realign(notificationIcon);
 
-  lv_img_set_src(sheikaSensorBle, (bleController.IsConnected() ? &sheika_ble_active : &sheika_ble_inactive));
-  lv_obj_invalidate(sheikaSensorBle);
-  lv_obj_realign(sheikaSensorBle);
+  UpdateNotificationTriforce();
+
+  // UpdateSheikaSensor();
 
   currentDateTime = std::chrono::time_point_cast<std::chrono::minutes>(dateTimeController.CurrentDateTime());
 
@@ -525,4 +501,37 @@ int32_t WatchFaceDigital::GetMotionLevel() {
 static float loweredSin(int16_t val) {
   // Value between -1 and 1
   return ((float) _lv_trigo_sin(val) / (float) INT16_MAX);
+}
+
+void WatchFaceDigital::UpdateNotificationTriforce() {
+  static int16_t throbber = 0;
+  static bool animDir = true;
+  notificationState = notificationManager.AreNewNotificationsAvailable();
+  if ((bool) notificationManager.NbNotifications()) {
+    //    This should do a throbbing effect- I mean PULSATING... pulsating... is... what...I......meant...
+    if (animDir) {
+      throbber += 5;
+      if (throbber == MAX_U08) {
+        animDir = false;
+      }
+    } else {
+      throbber -= 5;
+      if (throbber == 0) {
+        animDir = true;
+      }
+    }
+    if (throbber % 15 == 0) {
+      lv_obj_set_style_local_image_opa(notificationIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, throbber);
+      lv_obj_invalidate(notificationIcon);
+    }
+  } else {
+    lv_obj_set_style_local_image_opa(notificationIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER);
+  }
+  lv_obj_realign(notificationIcon);
+}
+
+void WatchFaceDigital::UpdateSheikaSensor() {
+  lv_img_set_src(sheikaSensorBle, (bleController.IsConnected() ? &sheika_ble_active : &sheika_ble_inactive));
+  lv_obj_invalidate(sheikaSensorBle);
+  lv_obj_realign(sheikaSensorBle);
 }
