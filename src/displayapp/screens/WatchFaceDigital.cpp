@@ -136,7 +136,7 @@ void WatchFaceDigital::Refresh() {
 
   UpdateNotificationTriforce();
 
-  // UpdateSheikaSensor();
+  UpdateSheikaSensor();
 
   currentDateTime = std::chrono::time_point_cast<std::chrono::minutes>(dateTimeController.CurrentDateTime());
 
@@ -226,7 +226,7 @@ void WatchFaceDigital::UpdateTempGauge() {
         temp = Controllers::SimpleWeatherService::CelsiusToFahrenheit(temp);
       }
       temp = temp / 100 + (temp % 100 >= 50 ? 1 : 0);
-      if (temp * 100 != target_temp)
+      if (temp * 100 != temperature)
         go_to_temp = true;
       target_temp = temp * 10;
     }
@@ -239,6 +239,7 @@ void WatchFaceDigital::UpdateTempGauge() {
     // A little wiggle on the guage looks neat
     int16_t hysteresis = (int16_t) (((std::rand() % 5) + 1) * (std::rand() % 2 ? -1 : 1));
     temp = target_temp + hysteresis;
+    //go_to_temp = true;
   } else {
     int32_t curr = lv_gauge_get_value(weatherMeter, 0);
 
@@ -367,7 +368,7 @@ void WatchFaceDigital::InitTemperatureMeter() {
   lv_obj_set_style_local_text_opa(weatherMeter, LV_GAUGE_PART_MAJOR, LV_STATE_DEFAULT, LV_OPA_TRANSP);
   lv_gauge_set_needle_count(weatherMeter, 1, needleColor);
   lv_obj_set_size(weatherMeter, 50, 50);
-  lv_gauge_set_range(weatherMeter, -400, 500);
+  lv_gauge_set_range(weatherMeter, -100, 350);
   lv_gauge_set_needle_img(weatherMeter, &gauge_needle, 3, 4);
   lv_gauge_set_value(weatherMeter, 0, 0u);
   temperature = lv_gauge_get_value(weatherMeter, 0);
