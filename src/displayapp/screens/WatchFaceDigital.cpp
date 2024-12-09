@@ -239,7 +239,7 @@ void WatchFaceDigital::UpdateTempGauge() {
     // A little wiggle on the guage looks neat
     int16_t hysteresis = (int16_t) (((std::rand() % 5) + 1) * (std::rand() % 2 ? -1 : 1));
     temp = target_temp + hysteresis;
-    //go_to_temp = true;
+    go_to_temp = true;
   } else {
     int32_t curr = lv_gauge_get_value(weatherMeter, 0);
 
